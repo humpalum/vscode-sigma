@@ -1,7 +1,7 @@
 {
-  "name": "vscode-sigma",
-	"displayName": "vscode-sigma",
-	"description": "VSCode Extension for Sigma",
+  "name": "sigma",
+	"displayName": "sigma",
+	"description": "Support for Sigma Signature Format",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.65.0"
@@ -10,13 +10,13 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:vscode-sigma.helloWorld"
+        "onCommand:sigma.helloWorld"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vscode-sigma.helloWorld",
+				"command": "sigma.helloWorld",
 				"title": "Hello World"
 			}
 		]

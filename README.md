@@ -1,4 +1,4 @@
-# vscode-sigma README
+# sigma README
 
 This extension will enhance your VSCode for the [Sigma signature format](https://github.com/SigmaHQ/sigma)
 
