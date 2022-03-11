@@ -2,6 +2,8 @@
 
 This extension will enhance your VSCode for the [Sigma signature format](https://github.com/SigmaHQ/sigma)
 
+Checkout Ideas.md for planned features!
+
 ## Features
 
 None
