@@ -1,3 +1,5 @@
+![sigma_logo](./images/Sigma_0.3.png)
+
 # sigma README
 
 This extension will enhance your VSCode for the [Sigma signature format](https://github.com/SigmaHQ/sigma)
