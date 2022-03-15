@@ -13,7 +13,7 @@
 			"    - ${CLIPBOARD/(^http.+){0,1}.*/$1/s}"
 		],
 		"description": "Prints references Skeleton. If a link is in clipboard, it will be used as the first reference"
-	},
+	}
 	/*
 	Seems to be better done some other way then with snippets
 	"modifier": {
