@@ -1,0 +1,28 @@
+{
+	"uuid": {
+		"prefix": "uuid",
+		"body": [
+			"${UUID}"
+		],
+		"description": "Generate new uuid"
+	},
+	"references": {
+		"prefix": "references:",
+		"body": [
+			"references:",
+			"    - ${CLIPBOARD/(^http.+){0,1}.*/$1/s}"
+		],
+		"description": "Prints references Skeleton. If a link is in clipboard, it will be used as the first reference"
+	},
+	/*
+	Seems to be better done some other way then with snippets
+	"modifier": {
+		"prefix": "|",
+		"body": [ 
+		"|${1|contains,all,base64,base64offset,endswith,startswith,utf16le,utf16be,wide,utf16|}",
+		],
+		"description": "List possible modifiers"
+		},
+	}
+		*/
+}

@@ -1,5 +1,5 @@
 {
-  "name": "sigma",
+	"name": "sigma",
 	"displayName": "sigma",
 	"description": "Support for Sigma Signature Format",
 	"version": "0.0.1",
@@ -10,16 +10,67 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:sigma.helloWorld"
+		"onCommand:sigma.helloWorld",
+		"onLanguage:sigma"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
+		"languages": [
+			{
+				"embeddedLanguages": {
+					"meta.embedded.block.frontmatter": "yaml"
+				},
+				"id": "sigma",
+				"aliases": [
+					"sigma",
+					"sigma-syntax",
+					"sigmalang",
+					"SIGMA",
+					"Sigma"
+				],
+				"extensions": [
+					".yml"
+				]
+			}
+		],
+		"grammars": [
+			{
+				"comments": [
+					"YAML syntax as base for Sigma",
+					"scopeName changed so that we can use it as base for injections"
+				],
+				"language": "sigma",
+				"scopeName": "source.sigma",
+				"path": "./syntaxes/external/YAML.tmLanguage.json"
+			}
+		],
 		"commands": [
 			{
 				"command": "sigma.helloWorld",
 				"title": "Hello World"
 			}
-		]
+		],
+		"snippets": [
+			{
+				"language": "yaml",
+				"path": "./snippets/sigma.json"
+			}
+		],
+		"configuration": {
+			"title": "sigma",
+			"properties": {
+				"sigma.debug": {
+					"type": "bool",
+					"default": false,
+					"description": "Sigma Extension Debug Mode"
+				},
+				"sigma.author": {
+					"type": "string",
+					"default": "",
+					"description": "Sets the Sigma author"
+				}
+			}
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",
