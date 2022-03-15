@@ -6,7 +6,7 @@ Checkout Ideas.md for planned features!
 
 ## Features
 
-None
+Various Snippets
 
 ## Requirements
 
@@ -14,19 +14,19 @@ None
 
 ## Extension Settings
 
-
+- sigma.Author: Set this for the newRule and author snippet
+- sigma.Debug: If true, debug dessages will be printed in console
 
 ## Known Issues
 
-No Features == No Issues :)
+None so far
 
 ## Release Notes
-
-Just the initial Commit so far :)
 
 ### 0.0.1
 
 Initial commit
+Snippets!
 
 -----------------------------------------------------------------------------------------------------------
 
