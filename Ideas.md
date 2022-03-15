@@ -61,3 +61,7 @@
 ## Check Syntax as per Rx YAML
 - https://github.com/SigmaHQ/sigma/wiki/Specification#rx-yaml
 - make this live
+
+
+## Commands
+- Sort Keys 
