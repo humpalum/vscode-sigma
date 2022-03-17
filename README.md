@@ -16,8 +16,8 @@ None
 
 ## Extension Settings
 
-- sigma.Author: Set this for the newRule and author snippet
-- sigma.Debug: If true, debug dessages will be printed in console
+- sigma.author: Set this for the newRule and author snippet
+- sigma.debug: If true, debug dessages will be printed in console
 
 ## Known Issues
 

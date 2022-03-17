@@ -55,13 +55,14 @@ function generateReferencesSnippet(snippet: vscode.SnippetString = new vscode.Sn
     snippet.appendText("references: \n");
     snippet.appendText('\t- ');
     // Sadly, CLIPBOARD Variable doesnt work from here. TODO: Open Issue in vscode repo
-    //snippet.appendVariable('CLIPBOARD/(^http.+){0,1}.*/\$1/s', "");
-    snippet.appendVariable('CLIPBOARD', "");
+    snippet.appendVariable('CLIPBOARD/(^http.+){0,1}.*/\$1/s', "");
+    //snippet.appendVariable('CLIPBOARD', "");
     return snippet;
 }
 function generateLogsourceSnippet(snippet: vscode.SnippetString = new vscode.SnippetString(), numTabs = 0): vscode.SnippetString {
     if (debug) { console.log("SigmaSnippetCompletionItemProvider: Generating 'logsource' snippet"); }
     snippet.appendText('logsource:\n');
+    // TODO Choices for each 
     snippet.appendText('\tcategory: \n');
     snippet.appendText('\tproduct: ');
     return snippet;
@@ -84,8 +85,17 @@ function generateLevelSnippet(snippet: vscode.SnippetString = new vscode.Snippet
 
 function generateTitleSnippet(snippet: vscode.SnippetString = new vscode.SnippetString(), numTabs = 0): vscode.SnippetString {
     if (debug) { console.log("SigmaSnippetCompletionItemProvider: Generating 'title' snippet"); }
-    snippet.appendText('title: ');
+    snippet.appendText('title:');
     snippet.appendVariable('TM_FILENAME_BASE/(^.[^_]+)|_([^_]+)/ ${1:/capitalize}${2:/capitalize}/gi', '');
+    return snippet;
+}
+
+function generateFalsePositves(snippet: vscode.SnippetString = new vscode.SnippetString(), numTabs = 0): vscode.SnippetString {
+    if (debug) { console.log("SigmaSnippetCompletionItemProvider: Generating 'title' snippet"); }
+    snippet.appendText('falsepositives:\n');
+    snippet.appendText('\t - ');
+    snippet.appendChoice(['Unknown','Unlikely','Software installation','Legitimate administrative activities','Legitimate PowerShell scripts']);
+
     return snippet;
 }
 
@@ -95,9 +105,9 @@ function generateRuleSnippet(snippet: vscode.SnippetString = new vscode.SnippetS
     snippet.appendText('\n');
     generateUUIDSnippet(snippet);
     snippet.appendText("\n");
-    generateStatusSnippet(snippet);
+    snippet.appendText("status: experimental");
     snippet.appendText("\n");
-    snippet.appendText('description: ');
+    snippet.appendText('description: Detects ');
     snippet.appendText("\n");
     generateAuthorSnippet(snippet);
     snippet.appendText("\n");
@@ -111,12 +121,8 @@ function generateRuleSnippet(snippet: vscode.SnippetString = new vscode.SnippetS
     snippet.appendText('\n');
     generateDetectionSnippet(snippet);
     snippet.appendText('\n');
-    // TODO: Export Fields list and build snippet
-    snippet.appendText('fields:\n');
-    snippet.appendText('\t- \n');
-    // TODO: Maybe there are common Falsepositives such as Administrative actions and such. Could build a list
-    snippet.appendText('falsepositives:\n');
-    snippet.appendText('\t - \n');
+    generateFalsePositves(snippet);
+    snippet.appendText('\n');
     generateLevelSnippet(snippet);
     snippet.appendText('\n');
     return snippet;
@@ -206,6 +212,13 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
         levelItem.documentation.appendCodeblock('level: [choice]');
         items.items.push(levelItem);
 
+        const falsepositiveItem: vscode.CompletionItem = new vscode.CompletionItem('falsepositives: ', vscode.CompletionItemKind.Snippet);
+        falsepositiveItem.detail = 'Generate falsepositives (sigma)';
+        falsepositiveItem.insertText = new vscode.SnippetString('falsepositives: ');
+        falsepositiveItem.documentation = new vscode.MarkdownString('Generates falsepositives');
+        falsepositiveItem.documentation.appendCodeblock('falsepositives: [choice]');
+        items.items.push(falsepositiveItem);
+
         if (debug) { console.log(`SigmaSnippetCompletionItemProvider: Generated ${items.items.length} snippets`); }
         return items;
     }
@@ -264,6 +277,9 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
                     break;
                 case 'level: ':
                     snippet = generateLevelSnippet();
+                    break;
+                case 'falsepositives: ':
+                    snippet = generateFalsePositves();
                     break;
                 default:
                     console.log(`Unrecognizable snippet: ${item.label} => ${JSON.stringify(item)}`);

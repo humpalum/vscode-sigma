@@ -6,20 +6,30 @@
 	"engines": {
 		"vscode": "^1.65.0"
 	},
+	"icon": "images/Sigma_0.3.png",
+	"publisher": "humpalum",
+	"license": "MIT License - full document in LICENSE",
 	"categories": [
-		"Other"
+		"Programming Languages",
+		"Snippets"
 	],
 	"activationEvents": [
 		"onCommand:sigma.helloWorld",
-		"onLanguage:sigma"
+		"onLanguage:sigma",
+		"onLanguage:plaintext",
+		"onLanguage:yaml"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/humpalum/vscode-sigma"
+	},
+	"bugs": {
+		"url": "https://github.com/humpalum/vscode-sigma/issues"
+	},
 	"main": "./dist/extension.js",
 	"contributes": {
 		"languages": [
 			{
-				"embeddedLanguages": {
-					"meta.embedded.block.frontmatter": "yaml"
-				},
 				"id": "sigma",
 				"aliases": [
 					"sigma",
@@ -30,7 +40,13 @@
 				],
 				"extensions": [
 					".yml"
-				]
+				],
+				"firstLine": "^title:.*$",
+				"icon": {
+					"light": "./images/Sigma_Icon_trans.png",
+					"dark": "./images/Sigma_Icon_trans.png"
+				},
+				"configuration": "./language-configuration.json"
 			}
 		],
 		"grammars": [
@@ -52,7 +68,7 @@
 		],
 		"snippets": [
 			{
-				"language": "yaml",
+				"language": "sigma",
 				"path": "./snippets/sigma.json"
 			}
 		],
@@ -69,6 +85,18 @@
 					"default": "",
 					"description": "Sets the Sigma author"
 				}
+			},
+			"configurationDefaults": {
+				"[sigma]": {
+					"editor.insertSpaces": true,
+					"editor.tabSize": 3,
+					"editor.quickSuggestions": {
+						"other": true,
+						"comments": false,
+						"strings": true
+					},
+					"editor.autoIndent": "keep"
+				}
 			}
 		}
 	},
@@ -84,19 +112,22 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.65.0",
 		"@types/glob": "^7.2.0",
 		"@types/mocha": "^9.1.0",
 		"@types/node": "14.x",
+		"@types/vscode": "^1.65.0",
 		"@typescript-eslint/eslint-plugin": "^5.12.1",
 		"@typescript-eslint/parser": "^5.12.1",
+		"@vscode/test-electron": "^2.1.2",
 		"eslint": "^8.9.0",
 		"glob": "^7.2.0",
 		"mocha": "^9.2.1",
-		"typescript": "^4.5.5",
 		"ts-loader": "^9.2.6",
+		"typescript": "^4.5.5",
 		"webpack": "^5.69.1",
-		"webpack-cli": "^4.9.2",
-		"@vscode/test-electron": "^2.1.2"
+		"webpack-cli": "^4.9.2"
+	},
+	"dependencies": {
+		"yo": "^2.0.2"
 	}
 }

@@ -1,30 +1,30 @@
 # Ideas
 
 ## Snippets (LowHanging)
-- Unique ID
-- modified, automatic date
-- date, automatic date
-- References: List
-- author: Name from Config
-- logsource: 
+- [x] Unique ID 
+- [x] modified, automatic date
+- [x] date, automatic date
+- [x] References: List
+- [x] author: Name from Config
+- [ ] logsource: 
     - ex. lssysmon -> logsource: product: windows\n service: sysmon 
     product: Windows/Linux/Webserver/Proxy/(EDR, Amazon,...)
     category: ...
     service: ...
-- level: Critical/High/medium/low
-- status: experimental, test, stable, deprecated, unsupported
-- relation: (LowPrio)
-- "|" opens modifier
+- [x] level: Critical/High/medium/low
+- [x] status: experimental, test, stable, deprecated, unsupported
+- [ ] relation: (LowPrio)
+- [ ] "|" opens modifier
 
 
 ## New Rule Generation
 - New File Generation -- Thats the Hard part. Templates for every kind of rule? Sort Rule by Logsource? Get current combination of Logsources? (LowPrio)
-- get author. Set author in config
-- Automatic UUID
-- Set Logsource? From file Directory?
-- status: experimental
-- date
-- FalsePositives
+- [x] get author. Set author in config
+- [x] Automatic UUID
+- [x] Set Logsource? From file Directory?
+- [x] status: experimental
+- [x] date
+- [x] FalsePositives
 
 ## Mitre Tags
 - tags: Own module
@@ -65,3 +65,6 @@
 
 ## Commands
 - Sort Keys 
+- 3 Spaces as tabs for sigma files
+
+- If in condition, give fieldnames as completion
