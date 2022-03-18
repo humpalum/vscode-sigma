@@ -3,6 +3,8 @@
 import * as vscode from 'vscode';
 import { SigmaSnippetCompletionItemProvider } from "./snippetProvider";
 import { debug } from "./configuration";
+import { subscribeToDocumentChanges } from './diagnostics';
+import { SigmaFixer} from './actions';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -26,8 +28,25 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(snippetsDisposable);
 	if (debug) { console.log("Registered snippet provider"); }
 
+	// Push Diagnostics
+	context.subscriptions.push(
+		vscode.languages.registerCodeActionsProvider('sigma', new SigmaFixer(), {
+			providedCodeActionKinds: SigmaFixer.providedCodeActionKinds
+		}));
+		
+	const sigmaDiagnostics = vscode.languages.createDiagnosticCollection("sigma");
+	context.subscriptions.push(sigmaDiagnostics);
+
+	subscribeToDocumentChanges(context, sigmaDiagnostics);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('sigma.wikiSpecification', () => vscode.env.openExternal(vscode.Uri.parse('https://github.com/SigmaHQ/sigma/wiki/Specification')))
+	);
+	
 	context.subscriptions.push(disposable);
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() { }
+
+

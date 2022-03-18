@@ -49,7 +49,6 @@ function generateTodaySnippet(snippet: vscode.SnippetString = new vscode.Snippet
     return snippet;
 }
 
-
 function generateReferencesSnippet(snippet: vscode.SnippetString = new vscode.SnippetString(), numTabs = 0): vscode.SnippetString {
     if (debug) { console.log("SigmaSnippetCompletionItemProvider: Generating 'references' snippet"); }
     snippet.appendText("references: \n");
@@ -59,14 +58,34 @@ function generateReferencesSnippet(snippet: vscode.SnippetString = new vscode.Sn
     //snippet.appendVariable('CLIPBOARD', "");
     return snippet;
 }
+
 function generateLogsourceSnippet(snippet: vscode.SnippetString = new vscode.SnippetString(), numTabs = 0): vscode.SnippetString {
     if (debug) { console.log("SigmaSnippetCompletionItemProvider: Generating 'logsource' snippet"); }
     snippet.appendText('logsource:\n');
     // TODO Choices for each 
-    snippet.appendText('\tcategory: \n');
-    snippet.appendText('\tproduct: ');
+    snippet.appendText('\t');
+    generateCategorySnippet(snippet);
+    snippet.appendText('\n');
+    snippet.appendText('\t');
+    generateProductSnippet(snippet);
     return snippet;
 }
+
+function generateCategorySnippet(snippet: vscode.SnippetString = new vscode.SnippetString(), numTabs = 0): vscode.SnippetString {
+    if (debug) { console.log("SigmaSnippetCompletionItemProvider: Generating 'category' snippet"); }
+    snippet.appendText('category: ');
+    // TODO Choices for each 
+    snippet.appendChoice(['process_creation','process_access','registry_event','ps_script','file_event','webserver','image_load']);
+    return snippet;
+}
+
+function generateProductSnippet(snippet: vscode.SnippetString = new vscode.SnippetString(), numTabs = 0): vscode.SnippetString {
+    if (debug) { console.log("SigmaSnippetCompletionItemProvider: Generating 'product' snippet"); }
+    snippet.appendText('product: ');
+    snippet.appendChoice(['windows','linux','azure','macos','aws']);
+    return snippet;
+}
+
 function generateDetectionSnippet(snippet: vscode.SnippetString = new vscode.SnippetString(), numTabs = 0): vscode.SnippetString {
     if (debug) { console.log("SigmaSnippetCompletionItemProvider: Generating 'detection' snippet"); }
     snippet.appendText('detection:\n');
