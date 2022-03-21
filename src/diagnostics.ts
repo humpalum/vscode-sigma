@@ -20,11 +20,11 @@ export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: v
 					diagnostics.push(creatDiaContainsInMiddle(doc, lineOfText, lineIndex));
 				}
 			}
-			if (lineOfText.text.match(/^title:.{50,}/)){
-					diagnostics.push(creatDiaTitleToLong(doc, lineOfText, lineIndex));
+			if (lineOfText.text.match(/^title:.{71,}/)){
+					diagnostics.push(creatDiaTitleTooLong(doc, lineOfText, lineIndex));
 			}
-			if (lineOfText.text.match(/^description:.{0,16}$/)){
-				diagnostics.push(creatDiaDescToShort(doc, lineOfText, lineIndex));
+			if (lineOfText.text.match(/^description:.{0,17}$/)){
+				diagnostics.push(creatDiaDescTooShort(doc, lineOfText, lineIndex));
 			}
 			if (lineOfText.text.match(/[\s]+$/)){
 				diagnostics.push(creatDiaTrailingWhitespace(doc, lineOfText, lineIndex));
@@ -71,23 +71,23 @@ function creatDiaTrailingWhitespace(doc: vscode.TextDocument, lineOfText: vscode
 	
 	return diagnostic;
 }
-function creatDiaTitleToLong(doc: vscode.TextDocument, lineOfText: vscode.TextLine, lineIndex: number): vscode.Diagnostic {
+function creatDiaTitleTooLong(doc: vscode.TextDocument, lineOfText: vscode.TextLine, lineIndex: number): vscode.Diagnostic {
 	// create range that represents, where in the document the word is
 	const range = lineOfText.range;
 
-	const diagnostic = new vscode.Diagnostic(range, "Title is to long. Please consider shortening it",
+	const diagnostic = new vscode.Diagnostic(range, "Title is too long. Please consider shortening it",
 	vscode.DiagnosticSeverity.Warning);
-	diagnostic.code = "sigma_TitleToLong";
+	diagnostic.code = "sigma_TitleTooLong";
 	return diagnostic;
 }
 
-function creatDiaDescToShort(doc: vscode.TextDocument, lineOfText: vscode.TextLine, lineIndex: number): vscode.Diagnostic {
+function creatDiaDescTooShort(doc: vscode.TextDocument, lineOfText: vscode.TextLine, lineIndex: number): vscode.Diagnostic {
 	// create range that represents, where in the document the word is
 	const range = lineOfText.range;
 
-	const diagnostic = new vscode.Diagnostic(range, "Description is to short. Please elaborate",
+	const diagnostic = new vscode.Diagnostic(range, "Description is too short. Please elaborate",
 		vscode.DiagnosticSeverity.Warning);
-	diagnostic.code = "sigma_DescToShort";
+	diagnostic.code = "sigma_DescTooShort";
 	return diagnostic;
 }
 export function subscribeToDocumentChanges(context: vscode.ExtensionContext, sigmaDiagnostics: vscode.DiagnosticCollection): void {
