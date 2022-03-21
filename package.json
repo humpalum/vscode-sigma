@@ -2,11 +2,11 @@
 	"name": "sigma",
 	"displayName": "sigma",
 	"description": "Support for Sigma Signature Format",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.65.0"
 	},
-	"icon": "images/Sigma_0.3.png",
+	"icon": "images/Sigma_Icon_trans.png",
 	"publisher": "humpalum",
 	"license": "MIT License - full document in LICENSE",
 	"categories": [
