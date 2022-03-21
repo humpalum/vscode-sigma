@@ -51,7 +51,7 @@
     - unique ID (LowPrio)
         - unique ID Checker 
         - check if ID is used somewhere else
-    
+    - Check if all modifiers are valid
     - Check if all identifier are used
     - contains should be at the end of modifier (Exception contains|all)
         - Mark yellow: contains|base64 as most likely unwanted
