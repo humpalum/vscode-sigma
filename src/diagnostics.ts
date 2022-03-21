@@ -10,27 +10,27 @@ import * as vscode from 'vscode';
  */
 export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: vscode.DiagnosticCollection): void {
 	const diagnostics: vscode.Diagnostic[] = [];
-
-	for (let lineIndex = 0; lineIndex < doc.lineCount; lineIndex++) {
-		const lineOfText = doc.lineAt(lineIndex);
-        // Check for Errors Here
-		// Check modifiers
-		if (lineOfText.text.includes("contains|")) {
-			if (!lineOfText.text.includes("contains|all:")){
-				diagnostics.push(creatDiaContainsInMiddle(doc, lineOfText, lineIndex));
+	if(doc.languageId === "sigma"){
+		for (let lineIndex = 0; lineIndex < doc.lineCount; lineIndex++) {
+			const lineOfText = doc.lineAt(lineIndex);
+			// Check for Errors Here
+			// Check modifiers
+			if (lineOfText.text.includes("contains|")) {
+				if (!lineOfText.text.includes("contains|all:")){
+					diagnostics.push(creatDiaContainsInMiddle(doc, lineOfText, lineIndex));
+				}
+			}
+			if (lineOfText.text.match(/^title:.{50,}/)){
+					diagnostics.push(creatDiaTitleToLong(doc, lineOfText, lineIndex));
+			}
+			if (lineOfText.text.match(/^description:.{0,16}$/)){
+				diagnostics.push(creatDiaDescToShort(doc, lineOfText, lineIndex));
+			}
+			if (lineOfText.text.match(/[\s]+$/)){
+				diagnostics.push(creatDiaTrailingWhitespace(doc, lineOfText, lineIndex));
 			}
 		}
-		if (lineOfText.text.match(/^title:.{50,}/)){
-				diagnostics.push(creatDiaTitleToLong(doc, lineOfText, lineIndex));
-		}
-		if (lineOfText.text.match(/^description:.{0,16}$/)){
-			diagnostics.push(creatDiaDescToShort(doc, lineOfText, lineIndex));
-		}
-		if (lineOfText.text.match(/[\s]+$/)){
-			diagnostics.push(creatDiaTrailingWhitespace(doc, lineOfText, lineIndex));
-		}
 	}
-
 	sigmaDiagnostics.set(doc.uri, diagnostics);
 }
 function creatDiaContainsInMiddle(doc: vscode.TextDocument, lineOfText: vscode.TextLine, lineIndex: number): vscode.Diagnostic {
@@ -85,7 +85,7 @@ function creatDiaDescToShort(doc: vscode.TextDocument, lineOfText: vscode.TextLi
 	// create range that represents, where in the document the word is
 	const range = lineOfText.range;
 
-	const diagnostic = new vscode.Diagnostic(range, "Description is to short. Please Consider expanding it",
+	const diagnostic = new vscode.Diagnostic(range, "Description is to short. Please elaborate",
 		vscode.DiagnosticSeverity.Warning);
 	diagnostic.code = "sigma_DescToShort";
 	return diagnostic;
