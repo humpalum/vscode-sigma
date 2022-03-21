@@ -31,13 +31,13 @@ export class SigmaFixer implements vscode.CodeActionProvider {
 			actions.push(removeContains);
 		}
 
-		if (context.diagnostics[0].code === "sigma_TitleToLong" ){
+		if (context.diagnostics[0].code === "sigma_TitleTooLong" ){
 			// "^title: Much To Long Title nothing we can do here"
 			let wikiAction = this.createOpenWikiAction();
 			wikiAction.isPreferred = true;
 			actions.push(wikiAction);
 		}
-		if (context.diagnostics[0].code === "sigma_DescToShort" ){
+		if (context.diagnostics[0].code === "sigma_DescTooShort" ){
 			// "^description: Detects nothing"
 			let wikiAction = this.createOpenWikiAction();
 			wikiAction.isPreferred = true;
