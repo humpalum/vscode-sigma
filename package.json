@@ -41,7 +41,7 @@
 				"extensions": [
 					".yml"
 				],
-				"firstLine": "^title:.*$",
+				"firstLine": "^title:.*",
 				"icon": {
 					"light": "./images/Sigma_Icon_trans.png",
 					"dark": "./images/Sigma_Icon_trans.png"
