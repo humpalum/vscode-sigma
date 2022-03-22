@@ -37,18 +37,19 @@ Every '.yml' file will be detected as Sigma. Go upvote this [issue](https://gith
 
 ## Release Notes
 
-### 0.0.1
-
-Initial commit
-Snippets!
+### 0.0.3
+New Icon.
+Provide Diagnostics only for sigma files.
+Some fixes for diagnostics.
 
 ### 0.0.2
 Fixed some Snippets
 First Diagnostics!
 
-### 0.0.3
-New Icon.
-Provide Diagnostics only for sigma files.
-Some fixes for diagnostics.
+### 0.0.1
+
+Initial commit
+Snippets!
+
 -----------------------------------------------------------------------------------------------------------
 
