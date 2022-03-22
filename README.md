@@ -8,7 +8,19 @@ Checkout Ideas.md for planned features!
 
 ## Features
 
-Various Snippets
+Various Snippets:
+- new Rule Snippet
+- automatic Author
+- Date/modifiedDate
+- ...
+
+Diagnostics:
+- Title too Long
+- Description too Short
+- 'contains' at wrong position in modifiers
+- Whitespace at end of Line
+
+Quickfixes for some of the Diagnostics.
 
 ## Requirements
 
@@ -21,7 +33,7 @@ None
 
 ## Known Issues
 
-None so far
+Every '.yml' file will be detected as Sigma. Go upvote this [issue](https://github.com/microsoft/vscode/issues/145659) to get it fixed :)
 
 ## Release Notes
 
@@ -30,5 +42,13 @@ None so far
 Initial commit
 Snippets!
 
+### 0.0.2
+Fixed some Snippets
+First Diagnostics!
+
+### 0.0.3
+New Icon.
+Provide Diagnostics only for sigma files.
+Some fixes for diagnostics.
 -----------------------------------------------------------------------------------------------------------
 
