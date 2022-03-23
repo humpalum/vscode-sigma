@@ -56,6 +56,7 @@
     - contains should be at the end of modifier (Exception contains|all)
         - Mark yellow: contains|base64 as most likely unwanted
     - mark blue: String with \*abc\* instead of contains #MARKDOWN ESCAPES
+- Check for Arrays with 1 Entry in detection:
 - Experimental Rule older than 1 Year???
 
 ## Check Syntax as per Rx YAML
@@ -68,3 +69,5 @@
 - 3 Spaces as tabs for sigma files
 
 - If in condition, give fieldnames as completion
+
+- Update to todays Date /modified

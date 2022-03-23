@@ -32,10 +32,12 @@ None
 - sigma.debug: If true, debug dessages will be printed in console
 
 ## Known Issues
-
-Every '.yml' file will be detected as Sigma. Go upvote this [issue](https://github.com/microsoft/vscode/issues/145659) to get it fixed :)
+Only Files that are opened and begin with `title:` are set as `sigma`
 
 ## Release Notes
+
+### 0.0.4
+Kind of Fixed the Language Problem. Could still be better, See: https://github.com/microsoft/vscode/issues/145659
 
 ### 0.0.3
 New Icon.
@@ -47,7 +49,6 @@ Fixed some Snippets
 First Diagnostics!
 
 ### 0.0.1
-
 Initial commit
 Snippets!
 

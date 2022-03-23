@@ -10,6 +10,23 @@ import { SigmaFixer} from './actions';
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
+	// Setting VSCode Language
+	if (debug){	console.log("Docs to check: ");}
+	if (debug){console.log(vscode.workspace.textDocuments.length);}
+	vscode.workspace.textDocuments.forEach(doc => {
+		if (debug){console.log(doc.fileName);}
+		if (doc.lineAt(0).text.match(/^title: .*$/)){
+			vscode.languages.setTextDocumentLanguage(doc,'sigma');
+		}
+	});
+
+	// This Part Works fine. When opening a new file with "title:", sigma gets set as the Language
+	context.subscriptions.push(vscode.workspace.onDidOpenTextDocument( (doc) => {
+		if (doc.lineAt(0).text.match(/^title: .*$/)){
+				vscode.languages.setTextDocumentLanguage(doc,'sigma');
+		}
+	}));
+
 	const SIGMA: vscode.DocumentSelector = { language: "sigma", scheme: "file" };
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
@@ -33,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.languages.registerCodeActionsProvider('sigma', new SigmaFixer(), {
 			providedCodeActionKinds: SigmaFixer.providedCodeActionKinds
 		}));
-		
+
 	const sigmaDiagnostics = vscode.languages.createDiagnosticCollection("sigma");
 	context.subscriptions.push(sigmaDiagnostics);
 
@@ -42,7 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('sigma.wikiSpecification', () => vscode.env.openExternal(vscode.Uri.parse('https://github.com/SigmaHQ/sigma/wiki/Specification')))
 	);
-	
+
 	context.subscriptions.push(disposable);
 }
 
