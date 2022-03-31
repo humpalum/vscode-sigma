@@ -2,7 +2,7 @@
 	"name": "sigma",
 	"displayName": "sigma",
 	"description": "Support for Sigma Signature Format",
-	"version": "0.0.4",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.65.0"
 	},
@@ -13,6 +13,7 @@
 		"Programming Languages",
 		"Snippets"
 	],
+	"browser": "./dist/extension.js",
 	"activationEvents": [
 		"onCommand:sigma.helloWorld",
 		"onLanguage:sigma",
@@ -99,8 +100,11 @@
 	"scripts": {
 		"vscode:prepublish": "npm run package",
 		"compile": "webpack",
+		"compile-web": "webpack",
 		"watch": "webpack --watch",
+		"watch-web": "webpack --watch",
 		"package": "webpack --mode production --devtool hidden-source-map",
+		"package-web": "webpack --mode production --devtool hidden-source-map",
 		"compile-tests": "tsc -p . --outDir out",
 		"watch-tests": "tsc -p . -w --outDir out",
 		"pretest": "npm run compile-tests && npm run compile && npm run lint",
@@ -124,6 +128,6 @@
 		"webpack-cli": "^4.9.2"
 	},
 	"dependencies": {
-		"yo": "^2.0.2"
+		"yo": "^4.3.0"
 	}
 }

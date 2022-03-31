@@ -20,8 +20,9 @@ Diagnostics:
 - 'contains' at wrong position in modifiers
 - Whitespace at end of Line
 
-Quickfixes for some of the Diagnostics.
+Quickfixes for some of the Diagnostics
 
+Webextension Support (Quite untested)
 ## Requirements
 
 None
@@ -36,21 +37,15 @@ Only Files that are opened and begin with `title:` are set as `sigma`
 
 ## Release Notes
 
-### 0.0.4
-Kind of Fixed the Language Problem. Could still be better, See: https://github.com/microsoft/vscode/issues/145659
 
-### 0.0.3
-New Icon.
-Provide Diagnostics only for sigma files.
-Some fixes for diagnostics.
+-----------------------------------------------------------------------------------------------------------
+#### 1.0.0
 
-### 0.0.2
-Fixed some Snippets
-First Diagnostics!
-
-### 0.0.1
-Initial commit
-Snippets!
+- Initial Release!
+- Snippets
+- Diagnostics
+- Lagnuage Detecion
+- Webextension Support (Quite untested)
 
 -----------------------------------------------------------------------------------------------------------
 
