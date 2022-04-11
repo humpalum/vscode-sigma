@@ -2,9 +2,13 @@
 
 # sigma README
 
-This extension will enhance your VSCode for the [Sigma signature format](https://github.com/SigmaHQ/sigma)
+This [extension](https://marketplace.visualstudio.com/items?itemName=humpalum.sigma) will enhance your VSCode for the [Sigma signature format](https://github.com/SigmaHQ/sigma)
 
 Checkout Ideas.md for planned features!
+## Installation
+Simply grab it in the [VSCode marketplace](https://marketplace.visualstudio.com/items?itemName=humpalum.sigma). 
+Install it from VSCode in the Extension Tab (Ctrl + Shift + X) and search for Sigma.
+![image](https://user-images.githubusercontent.com/11175099/162737795-6e3b09df-355e-471d-babc-78125120ddc0.png)
 
 ## Features
 
