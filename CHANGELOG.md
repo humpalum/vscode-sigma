@@ -4,6 +4,11 @@ All notable changes to the "sigma" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 1.1.0
+Attack Tag Hover
+Attack Tag Command - Add Attack Tag (sigma.AddTag)
+Attack Tag Codelens
+
 ## 1.0.0
 Version 1.0.0
 Webextension Support (Quite untested)

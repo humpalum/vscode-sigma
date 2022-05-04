@@ -43,6 +43,15 @@ Only Files that are opened and begin with `title:` are set as `sigma`
 
 
 -----------------------------------------------------------------------------------------------------------
+#### 1.1.0
+
+- Attack Tags!
+  - Codelens at tags section
+  - Command to add tags
+  - Hover Over Tags for Information
+
+-----------------------------------------------------------------------------------------------------------
+
 #### 1.0.0
 
 - Initial Release!

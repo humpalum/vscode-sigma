@@ -5,6 +5,7 @@
 {
 	"version": "0.2.0",
 	"configurations": [
+		
 		{
 			"name": "Run Web Extension ",
 			"type": "pwa-extensionHost",
@@ -44,6 +45,12 @@
 				"${workspaceFolder}/dist/**/*.js"
 			],
 			"preLaunchTask": "tasks: watch-tests"
-		}
+		},
+		{"name":"Python: Build ATTCK",
+			"type":"python",
+			"request":"launch",
+			"program":"buildattck.py",
+			"console":"integratedTerminal",
+			"justMyCode":true}
 	]
 }

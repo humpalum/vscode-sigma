@@ -26,10 +26,10 @@
 - [x] date
 - [x] FalsePositives
 
-## Mitre Tags
-- tags: Own module
-- Load Tags with a search?
-- Mouse Over a Tag -> Description...
+## Attack Tags
+-  [x] tags: Own module
+-  [x] Load Tags with a search?
+-  [x] Mouse Over a Tag -> Description...
 
 ## condition values 
 - escaped stuff "" '' \ doesn't need escapes. Check exceptions
