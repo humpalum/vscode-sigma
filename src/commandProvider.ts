@@ -31,7 +31,7 @@ export async function addTagQuickpick() {
             vscode.window.activeTextEditor?.edit(textEdit => {
                 textEdit.insert(
                     vscode.window.activeTextEditor?.document.positionAt(index)!,
-                    `\n   - attack.${target?.label.match("(.+?) -")![1].toLowerCase()}`,
+                    `\n    - attack.${target?.label.match("(.+?) -")![1].toLowerCase()}`,
                 )
             })
         } else {
@@ -41,7 +41,7 @@ export async function addTagQuickpick() {
             vscode.window.activeTextEditor?.edit(textEdit => {
                 textEdit.insert(
                     vscode.window.activeTextEditor?.selection.end!,
-                    `   - attack.${target?.label.match("(.+?) -")![1].toLowerCase()}`,
+                    `    - attack.${target?.label.match("(.+?) -")![1].toLowerCase()}`,
                 )
             })
         }
