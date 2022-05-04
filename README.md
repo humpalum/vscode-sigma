@@ -26,6 +26,13 @@ Diagnostics:
 
 Quickfixes for some of the Diagnostics
 
+
+Tags:
+- Hover for attack Tags
+- Adding new Tags per command
+![output](https://user-images.githubusercontent.com/11175099/166656944-36159691-2acd-4c90-a79e-0fb846c36e47.gif)
+
+
 Webextension Support (Quite untested)
 ## Requirements
 
