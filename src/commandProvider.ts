@@ -32,6 +32,11 @@ export async function addTagQuickpick() {
         ) {
             tab = ` `.repeat(vscode.window.activeTextEditor?.options.tabSize)
         }
+        let tagtoadd = target?.label.match("(.+?) -")![1].toLowerCase()
+        if (tagtoadd.match(/^ta.*/)) {
+            // Use actual name instead
+            tagtoadd = target?.label.match(".+ - (.+)")![1].replace(/\s/g, "_").toLocaleLowerCase()
+        }
         if (tags) {
             let index = docText.indexOf(tags[0]) + tags[0].length
 
@@ -39,18 +44,13 @@ export async function addTagQuickpick() {
             vscode.window.activeTextEditor?.edit(textEdit => {
                 textEdit.insert(
                     vscode.window.activeTextEditor?.document.positionAt(index)!,
-                    `\n${tab}- attack.${target?.label.match("(.+?) -")![1].toLowerCase()}`,
+                    `\n${tab}- attack.${tagtoadd}`,
                 )
             })
         } else {
-            const range = vscode.window.activeTextEditor!.document.lineAt(
-                vscode.window.activeTextEditor!.selection.active.line,
-            ).range
+            vscode.window.activeTextEditor!.document.lineAt(vscode.window.activeTextEditor!.selection.active.line).range
             vscode.window.activeTextEditor?.edit(textEdit => {
-                textEdit.insert(
-                    vscode.window.activeTextEditor?.selection.end!,
-                    `${tab}- attack.${target?.label.match("(.+?) -")![1].toLowerCase()}`,
-                )
+                textEdit.insert(vscode.window.activeTextEditor?.selection.end!, `${tab}- attack.${tagtoadd}`)
             })
         }
     }
