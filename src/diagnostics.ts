@@ -19,6 +19,11 @@ export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: v
                     diagnostics.push(creatDiaContainsInMiddle(doc, lineOfText, lineIndex))
                 }
             }
+            if (lineOfText.text.includes("|all:")) {
+                if (!lineOfText.text.match(/\|all:\s*$/)) {
+                    diagnostics.push(creatDiaSingleAll(doc, lineOfText, lineIndex))
+                }
+            }
             if (lineOfText.text.match(/^title:.{71,}/)) {
                 diagnostics.push(creatDiaTitleTooLong(doc, lineOfText, lineIndex))
             }
@@ -34,6 +39,27 @@ export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: v
     }
     sigmaDiagnostics.set(doc.uri, diagnostics)
 }
+function creatDiaSingleAll(
+    doc: vscode.TextDocument,
+    lineOfText: vscode.TextLine,
+    lineIndex: number,
+): vscode.Diagnostic {
+    // find where in the line the 'contains' is mentioned
+    const index = lineOfText.text.indexOf("|all")
+    let indexLength = "|all".length
+
+    // create range that represents, where in the document the word is
+    const range = new vscode.Range(lineIndex, index, lineIndex, index + indexLength)
+
+    const diagnostic = new vscode.Diagnostic(
+        range,
+        'Modifier: "|all" may not be a single entry',
+        vscode.DiagnosticSeverity.Warning,
+    )
+    diagnostic.code = "sigma_AllSingle"
+    return diagnostic
+}
+
 function creatDiaContainsInMiddle(
     doc: vscode.TextDocument,
     lineOfText: vscode.TextLine,

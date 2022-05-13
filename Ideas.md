@@ -71,3 +71,9 @@
 - If in condition, give fieldnames as completion
 
 - Update to todays Date /modified
+
+
+
+
+Fix Highlighting:
+- panda syntax

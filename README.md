@@ -23,6 +23,7 @@ Diagnostics:
 - Description too Short
 - 'contains' at wrong position in modifiers
 - Whitespace at end of Line
+- Single Item with All modifier
 
 Quickfixes for some of the Diagnostics
 
