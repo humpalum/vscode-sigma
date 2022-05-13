@@ -153,9 +153,9 @@ function generateDetectionSnippet(
     }
     snippet.appendText("detection:\n")
     snippet.appendText("\tselection:\n")
-    snippet.appendText("\t\t\n")
+    snippet.appendText("\t\t")
     snippet.appendTabstop()
-    snippet.appendText("\tcondition: selection")
+    snippet.appendText("\n\tcondition: selection")
     return snippet
 }
 
