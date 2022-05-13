@@ -7,7 +7,7 @@ import { subscribeToDocumentChanges } from "./diagnostics"
 import { SigmaFixer } from "./actions"
 import { provideHover } from "./hoverProvider"
 import { SigmaLensProvider } from "./codeLensProvider"
-import { addTagQuickpick } from "./commandProvider"
+import { addTagQuickpick, onEnterKey } from "./commandProvider"
 
 export var attackTags = require("./techniques.json")
 
@@ -85,6 +85,17 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.languages.registerHoverProvider(SIGMA, { provideHover })
 
     context.subscriptions.push(vscode.commands.registerCommand("sigma.AddTag", addTagQuickpick))
+    context.subscriptions.push(vscode.commands.registerCommand("sigma.onEnterKey", onEnterKey))
+    context.subscriptions.push(
+        vscode.commands.registerCommand("sigma.onCtrlEnterKey", () => {
+            return onEnterKey("ctrl")
+        }),
+    )
+    context.subscriptions.push(
+        vscode.commands.registerCommand("sigma.onShiftEnterKey", () => {
+            return onEnterKey("shift")
+        }),
+    )
 
     let codeLensProviderDisposable = vscode.languages.registerCodeLensProvider(SIGMA, new SigmaLensProvider())
     context.subscriptions.push(codeLensProviderDisposable)

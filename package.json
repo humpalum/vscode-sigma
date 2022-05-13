@@ -62,6 +62,24 @@
 				"title": "Add Attack Tag"
 			}
 		],
+		"keybindings":[
+			{
+                "command": "sigma.onEnterKey",
+                "key": "enter",
+                "when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections && vim.mode != 'Normal' && vim.mode != 'Visual' && vim.mode != 'VisualBlock' && vim.mode != 'VisualLine' && vim.mode != 'SearchInProgressMode' && vim.mode != 'CommandlineInProgress' && vim.mode != 'Replace' && vim.mode != 'EasyMotionMode' && vim.mode != 'EasyMotionInputMode' && vim.mode != 'SurroundInputMode'"
+            },
+			{
+                "command": "sigma.onCtrlEnterKey",
+                "key": "ctrl+enter",
+                "mac": "cmd+enter",
+                "when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections"
+            },
+            {
+                "command": "sigma.onShiftEnterKey",
+                "key": "shift+enter",
+                "when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections"
+            }
+		],
 		"snippets": [
 			{
 				"language": "sigma",
