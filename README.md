@@ -27,6 +27,7 @@ Diagnostics:
 
 Quickfixes for some of the Diagnostics
 
+Automatic continuation of lists
 
 Tags:
 - Hover for attack Tags
@@ -35,6 +36,7 @@ Tags:
 
 
 Webextension Support (Quite untested)
+
 ## Requirements
 
 None

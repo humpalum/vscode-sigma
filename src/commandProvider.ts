@@ -1,4 +1,3 @@
-import { type } from "os"
 import * as vscode from "vscode"
 import { attackTags } from "./extension"
 
