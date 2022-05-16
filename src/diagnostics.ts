@@ -27,7 +27,7 @@ export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: v
             if (lineOfText.text.match(/^title:.{71,}/)) {
                 diagnostics.push(creatDiaTitleTooLong(doc, lineOfText, lineIndex))
             }
-            if (lineOfText.text.match(/^description:.{0,17}$/)) {
+            if (lineOfText.text.match(/^description:.{0,32}$/)) {
                 if (!lineOfText.text.match(/^description:\s+\|\s*$/)) {
                     diagnostics.push(creatDiaDescTooShort(doc, lineOfText, lineIndex))
                 }
