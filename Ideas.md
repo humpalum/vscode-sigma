@@ -1,12 +1,12 @@
 # Ideas
 
-## Snippets (LowHanging)
+## Snippets
 - [x] Unique ID 
 - [x] modified, automatic date
 - [x] date, automatic date
 - [x] References: List
 - [x] author: Name from Config
-- [ ] logsource: 
+- [x] logsource: 
     - ex. lssysmon -> logsource: product: windows\n service: sysmon 
     product: Windows/Linux/Webserver/Proxy/(EDR, Amazon,...)
     category: ...
@@ -73,7 +73,9 @@
 - Update to todays Date /modified
 
 
-
-
 Fix Highlighting:
 - panda syntax
+  
+## Codelens
+- Codelens for regenerating id
+- Codelens for reset modified Date
