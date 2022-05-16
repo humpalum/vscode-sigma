@@ -3,7 +3,9 @@
 All notable changes to the "sigma" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
+## [1.2.1]
+### Changed
+Readme Cleanup
 ## [1.2.0]
 ### Added
 - Automatic List Continuation
