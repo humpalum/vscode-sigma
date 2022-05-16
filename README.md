@@ -9,7 +9,7 @@ This [extension](https://marketplace.visualstudio.com/items?itemName=humpalum.si
   - [Snippets](#snippets)
   - [Diagnostics](#diagnostics)
   - [Automatic continuation of lists](#automatic-continuation-of-lists)
-  - [Tags:](#tags)
+  - [Tags](#tags)
   - [Webextension Support (Quite untested)](#webextension-support-quite-untested)
 - [Requirements](#requirements)
 - [Extension Settings](#extension-settings)
@@ -61,7 +61,7 @@ When there is an empty string, it gets deleted.
 
 ![lists](images/gifs/lists.gif)
 
-### Tags:
+### Tags
 - Hover for attack Tags
 - Adding new Tags per command
 
