@@ -19,8 +19,9 @@ This [extension](https://marketplace.visualstudio.com/items?itemName=humpalum.si
 
 Checkout Ideas.md for planned features!
 ## Installation
-Simply grab it in the [VSCode marketplace](https://marketplace.visualstudio.com/items?itemName=humpalum.sigma). 
-Install it from VSCode in the Extension Tab (Ctrl + Shift + X) and search for Sigma.
+Simply grab it in the [VSCode marketplace](https://marketplace.visualstudio.com/items?itemName=humpalum.sigma).  
+Install it from VSCode in the Extension Tab (Ctrl + Shift + X) and search for Sigma.  
+Setup your Author Name in the extensions config section.
 
 ## Features
 ### Snippets
