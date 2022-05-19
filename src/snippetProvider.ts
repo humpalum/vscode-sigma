@@ -86,7 +86,7 @@ function generateReferencesSnippet(
     if (debug) {
         console.log("SigmaSnippetCompletionItemProvider: Generating 'references' snippet")
     }
-    snippet.appendText("references: \n")
+    snippet.appendText("references:\n")
     snippet.appendText("\t- ")
     // Sadly, CLIPBOARD Variable doesnt work from here. TODO: Open Issue in vscode repo
     snippet.appendVariable("CLIPBOARD/(^http.+){0,1}.*/$1/s", "")
