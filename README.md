@@ -21,7 +21,22 @@ Checkout Ideas.md for planned features!
 ## Installation
 Simply grab it in the [VSCode marketplace](https://marketplace.visualstudio.com/items?itemName=humpalum.sigma).  
 Install it from VSCode in the Extension Tab (Ctrl + Shift + X) and search for Sigma.  
-Setup your Author Name in the extensions config section.
+- Setup your Author name in the extensions config section. `sigma.author`
+- Setup your sigmac compile configs in `sigma.compileConfig`
+  - For example:
+  ``` json
+   {
+      "target": "kibana",
+      "config":"~/sigma/tools/config/winlogbeat.yml",
+      "additionalArgs": ""
+    },
+    {
+      "target": "splunk",
+      "config":"~/sigma/tools/config/splunk-windows.yml"
+    }
+  ]
+  ```
+
 
 ## Features
 ### Snippets
@@ -68,6 +83,9 @@ When there is an empty string, it gets deleted.
 
 ![tags](images/gifs/tags.gif)
 
+### Sigmac compile
+After defining your sigmac configs, click on the codelens in the first line. The compile sigma rule will be in your clipboard.
+![sigmac](images/gifs/sigmac.gif)
 
 ### Webextension Support (Quite untested)
 The extension can be used in github vscode mode and on vscode.dev.
@@ -75,7 +93,10 @@ However these are not really tested, so in case you find bugs with it, feel free
 
 ## Requirements
 
-None
+For sigmac compilation: sigmatools
+```
+pip install sigmatools
+```
 
 ## Extension Settings
 

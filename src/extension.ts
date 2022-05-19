@@ -2,12 +2,12 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode"
 import { SigmaSnippetCompletionItemProvider } from "./snippetProvider"
-import { debug } from "./configuration"
+import { debug, setConfigs } from "./configuration"
 import { subscribeToDocumentChanges } from "./diagnostics"
 import { SigmaFixer } from "./actions"
 import { provideHover } from "./hoverProvider"
 import { SigmaLensProvider } from "./codeLensProvider"
-import { addTagQuickpick, onEnterKey } from "./commandProvider"
+import { addTagQuickpick, sigmaCompile, onEnterKey } from "./commandProvider"
 
 export var attackTags = require("./techniques.json")
 
@@ -15,6 +15,7 @@ export var attackTags = require("./techniques.json")
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     // Setting VSCode Language
+    setConfigs()
     if (debug) {
         console.log("Docs to check: ")
     }
@@ -85,6 +86,8 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.languages.registerHoverProvider(SIGMA, { provideHover })
 
     context.subscriptions.push(vscode.commands.registerCommand("sigma.AddTag", addTagQuickpick))
+    context.subscriptions.push(vscode.commands.registerCommand("sigma.sigmaCompile", sigmaCompile))
+
     context.subscriptions.push(vscode.commands.registerCommand("sigma.onEnterKey", onEnterKey))
     context.subscriptions.push(
         vscode.commands.registerCommand("sigma.onCtrlEnterKey", () => {

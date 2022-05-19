@@ -1,6 +1,22 @@
 import * as vscode from "vscode"
 import { attackTags } from "./extension"
+const cp = require("child_process")
 
+export function sigmaCompile(cfg: any, rulepath: string) {
+    let command = `sigmac --config ${cfg.config} --target ${cfg.target} ${cfg.additionalArgs || ""} ${rulepath}`
+    return new Promise<any>((resolve, reject) =>
+        cp.exec(command, (err: string, stdout: string, stderr: string) => {
+            if (err) {
+                reject(`${err} --- ${stderr}`)
+            } else {
+                vscode.env.clipboard.writeText(stdout).then(nil => {
+                    vscode.window.showInformationMessage("Sigma rule copied to clipboard")
+                })
+                resolve(stdout)
+            }
+        }),
+    )
+}
 export async function addTagQuickpick() {
     const buildQuickPickItems = (callback: (value: vscode.QuickPickItem[]) => void) => {
         callback(

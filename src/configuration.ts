@@ -1,17 +1,18 @@
-"use strict";
+"use strict"
 
-import * as vscode from 'vscode';
+import * as vscode from "vscode"
 
-export const configSection = 'sigma';
-export let debug = false;
+export const configSection = "sigma"
+export let sigmacConfigs: any[] | undefined
+export let debug = false
 
-export function setDebugLogState(): void {
-    if (vscode.workspace.getConfiguration(configSection).get('debug')) {
-        debug = true;
-        console.log('Debug logging enabled');
+export function setConfigs(): void {
+    if (vscode.workspace.getConfiguration(configSection).get("debug")) {
+        debug = true
+        console.log("Debug logging enabled")
+    } else {
+        debug = false
+        console.log("Debug logging disabled")
     }
-    else {
-        debug = false;
-        console.log('Debug logging disabled');
-    }
+    sigmacConfigs = vscode.workspace.getConfiguration(configSection).get("compileConfig")
 }

@@ -2,7 +2,7 @@
 	"name": "sigma",
 	"displayName": "sigma",
 	"description": "Support for Sigma Signature Format",
-	"version": "1.2.1",
+	"version": "1.3.0",
 	"engines": {
 		"vscode": "^1.66.0"
 	},
@@ -60,6 +60,10 @@
 			{
 				"command": "sigma.AddTag",
 				"title": "Add Attack Tag"
+			},
+			{
+				"command": "sigma.sigmaCompile",
+				"title": "Compile Sigma Rule"
 			}
 		],
 		"keybindings":[
@@ -98,6 +102,24 @@
 					"type": "string",
 					"default": "",
 					"description": "Sets the Sigma author"
+				},
+				"sigma.compileConfig": {
+					"type": "array",
+					"description": "SigmaC configurations. Example: \"sigma.compileConfig\": [{\"target\": \"kibana\", \"config\":\"/mnt/yara/sigma/tools/config/winlogbeat.yml\", \"additionalArgs\": \"\"}]",
+					"items": {
+						"target" :{
+							"type": "string",
+							"description": "target of the config (--target in sigmac)"
+						},
+						"config":{
+							"type": "string",
+							"description": "Path to the sigma config (--config in sigmac)"
+						},
+						"additionalArgs":{
+							"type": "string",
+							"description": "Any additional args you want to use for that sigmac"
+						}
+					}
 				}
 			},
 			"configurationDefaults": {

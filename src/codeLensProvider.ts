@@ -1,5 +1,6 @@
+import { privateEncrypt } from "crypto"
 import * as vscode from "vscode"
-import { debug } from "./configuration"
+import { debug, sigmacConfigs } from "./configuration"
 
 export class SigmaLensProvider implements vscode.CodeLensProvider {
     // Each provider requires a provideCodeLenses function which will give the various documents
@@ -24,7 +25,22 @@ export class SigmaLensProvider implements vscode.CodeLensProvider {
                 lenses.push(codeLens)
             }
         }
-
+        let cls
+        if ((cls = this.prepSigmaCompiler())) {
+            lenses = lenses.concat(cls)
+        }
         return lenses
+    }
+    prepSigmaCompiler(): vscode.CodeLens[] | undefined {
+        return sigmacConfigs?.map(config => {
+            let strRange = new vscode.Range(0, 0, 0, 0)
+            let c: vscode.Command = {
+                command: "sigma.sigmaCompile",
+                title: `Compile: ${config.target}`,
+                arguments: [config, vscode.window.activeTextEditor?.document.uri.path],
+            }
+            let codeLens = new vscode.CodeLens(strRange, c)
+            return codeLens
+        })
     }
 }

@@ -3,9 +3,20 @@
 All notable changes to the "sigma" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [1.3.0]
+### Added
+- Compile Rule Codelens
+  - Install sigmac (pip install sigmatools)
+  - Configure your sigmac compile configs in settings: sigma.compileConfig
+  - Click on the codelens in the first line (Compile: kibana)
+  - Compiled sigma rule will be in your clipboard
+
+### Changed
+- Small bugfixes
 ## [1.2.1]
 ### Changed
 Readme Cleanup
+
 ## [1.2.0]
 ### Added
 - Automatic List Continuation
