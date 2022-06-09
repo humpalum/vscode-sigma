@@ -1,6 +1,9 @@
 import { Console } from "console"
 import * as vscode from "vscode"
-
+import * as YAML from "yaml"
+import { attackTags } from "./extension"
+import { debug } from "./configuration"
+import { privateEncrypt } from "crypto"
 /**
  * Analyzes the text document for problems.
  * This demo diagnostic problem provider finds all mentions of 'emoji'.
@@ -8,8 +11,44 @@ import * as vscode from "vscode"
  * @param sigmaDiagnostics diagnostic collection
  */
 export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: vscode.DiagnosticCollection): void {
-    const diagnostics: vscode.Diagnostic[] = []
+    if (debug) {
+        console.log("Providing Dias")
+    }
+    let diagnostics: vscode.Diagnostic[] = []
     if (doc.languageId === "sigma") {
+        let tmpDias
+        let sigmaRule
+        try {
+            sigmaRule = YAML.parse(doc.getText())
+        } catch (error: any) {
+            console.log(error)
+            diagnostics.push(
+                new vscode.Diagnostic(
+                    new vscode.Range(doc.positionAt(error.pos[0]), doc.positionAt(error.pos[1])),
+                    error.message,
+                    vscode.DiagnosticSeverity.Error,
+                ),
+            )
+        }
+        if (sigmaRule) {
+            tmpDias = testSigmaTags(sigmaRule, doc)
+            if (tmpDias) {
+                diagnostics = diagnostics.concat(tmpDias)
+            }
+            tmpDias = testSigmaDetection(sigmaRule, doc)
+            if (tmpDias) {
+                diagnostics = diagnostics.concat(tmpDias)
+            }
+            tmpDias = testMeta(sigmaRule, doc)
+            if (tmpDias) {
+                diagnostics = diagnostics.concat(tmpDias)
+            }
+            tmpDias = testOther(sigmaRule, doc)
+            if (tmpDias) {
+                diagnostics = diagnostics.concat(tmpDias)
+            }
+        }
+
         for (let lineIndex = 0; lineIndex < doc.lineCount; lineIndex++) {
             const lineOfText = doc.lineAt(lineIndex)
             // Check for Errors Here
@@ -160,4 +199,260 @@ export function subscribeToDocumentChanges(
     )
 
     context.subscriptions.push(vscode.workspace.onDidCloseTextDocument(doc => sigmaDiagnostics.delete(doc.uri)))
+}
+
+function testSigmaTags(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
+    try {
+        var tagsPattern = /cve\.\d+\.\d+|attack\.t\d+\.*\d*|attack\.[a-z_]+|car\.\d{4}-\d{2}-\d{3}/
+        let knowntags: string[] = []
+        var diagnostics = rule.tags
+            .map((tag: string) => {
+                let tagDias: vscode.Diagnostic[] = []
+                // Check with tag Pattern (Prefix)
+                if (!tagsPattern.test(tag)) {
+                    var range = getRangeOfString(tag, doc)
+                    if (range) {
+                        tagDias.push(new vscode.Diagnostic(range, "Bad Tag", vscode.DiagnosticSeverity.Warning))
+                    }
+                }
+                // Check if Tag is Duplicate
+                if (knowntags.includes(tag)) {
+                    var range = getRangeOfString(tag, doc)
+                    if (range) {
+                        tagDias.push(new vscode.Diagnostic(range, "Duplicate Tag", vscode.DiagnosticSeverity.Warning))
+                    }
+                }
+                knowntags.push(tag)
+                // Check if Tag is exists
+                let tagExists = false
+                attackTags.map((tag2: any) => {
+                    if (tag.toLowerCase() === "attack." + tag2["tag"].toLowerCase()) {
+                        tagExists = true
+                    }
+                    if (tag2["tag"].toLowerCase().match(/^ta.*/)) {
+                        // Check actual name instead
+                        let testTag = "attack." + tag2["name"].replace(/\s/g, "_").toLocaleLowerCase()
+                        if (tag === testTag) {
+                            tagExists = true
+                        }
+                    }
+                })
+                if (tagExists === false && tag.startsWith("attack.")) {
+                    var range = getRangeOfString(tag, doc)
+                    if (range) {
+                        tagDias.push(new vscode.Diagnostic(range, "Unknown Tag", vscode.DiagnosticSeverity.Warning))
+                    }
+                }
+                return tagDias
+            })
+            .flat() //Remove unidentified elements
+            .filter(function (element: any) {
+                return element !== undefined
+            })
+        diagnostics = diagnostics.concat(
+            rule.tags
+                .map((tag: string) => {}) //Remove unidentified elements
+                .filter(function (element: any) {
+                    return element !== undefined
+                }),
+        )
+        return diagnostics
+    } catch (error) {
+        if (debug) {
+            console.log("Something went wrong testing Tags:")
+            console.log(error)
+        }
+    }
+}
+
+function testSigmaDetection(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
+    try {
+        var diagnostics: vscode.Diagnostic[] = []
+        // Check Duplicates
+        function checkListRecursive(cur: any, depth: number): vscode.Diagnostic | undefined {
+            if (depth > 3) {
+                return
+            }
+            if (cur.constructor !== Object) {
+                if (Array.isArray(cur)) {
+                    if (cur.length !== [new Set(cur)].length) {
+                        let duplicates = cur.filter((item: string, index: Number) => index !== cur.indexOf(item))
+                        duplicates.map((item: string) => {
+                            var range = getRangeOfString(item, doc)
+                            if (range) {
+                                diagnostics.push(
+                                    new vscode.Diagnostic(range, "Duplicate Value", vscode.DiagnosticSeverity.Warning),
+                                )
+                            }
+                        })
+                    }
+                }
+            }
+            if (cur.constructor === Object) {
+                Object.values(cur).map((next: any) => {
+                    checkListRecursive(next, depth + 1)
+                })
+            }
+        }
+        checkListRecursive(rule.detection, 0)
+
+        // Check Single named condition with x of them
+        if (rule.detection.condition.includes("them") && Object.keys(rule.detection).length === 2) {
+            var range = getRangeOfString(rule.detection.condition, doc)
+            if (range) {
+                diagnostics.push(
+                    new vscode.Diagnostic(
+                        range,
+                        "Using '1/all of them' style condition but only has one condition",
+                        vscode.DiagnosticSeverity.Warning,
+                    ),
+                )
+            }
+        }
+
+        // Check "all of them"
+        if (rule.detection.condition.includes("all of them")) {
+            var range = getRangeOfString(rule.detection.condition, doc)
+            if (range) {
+                diagnostics.push(
+                    new vscode.Diagnostic(
+                        range,
+                        "Better use e.g. 'all of selection*' instead (and use the 'selection_' prefix as search-identifier).",
+                        vscode.DiagnosticSeverity.Warning,
+                    ),
+                )
+            }
+        }
+
+        return diagnostics
+    } catch (error) {
+        console.log("Something went wring checking duplicate Filters:")
+        console.log(error)
+    }
+}
+
+function testMeta(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
+    try {
+        var diagnostics: vscode.Diagnostic[] = []
+        function recursiveChecks(cur: any, depth: number) {
+            if (cur.constructor === Object) {
+                // Check if any Key contains a space
+                Object.keys(cur).map((k: string) => {
+                    if (/\s/.test(k)) {
+                        var range = getRangeOfString(k, doc)
+                        if (range) {
+                            diagnostics.push(
+                                new vscode.Diagnostic(range, "Space in Key", vscode.DiagnosticSeverity.Warning),
+                            )
+                        }
+                    }
+                })
+            }
+
+            // Recursive check all dicts
+            if (cur.constructor === Object) {
+                Object.values(cur).map((next: any) => {
+                    if (next) {
+                        recursiveChecks(next, depth + 1)
+                    }
+                })
+            }
+        }
+        recursiveChecks(rule, 0)
+
+        // Check if ID is good
+        if (!("id" in rule)) {
+            diagnostics.push(
+                new vscode.Diagnostic(
+                    new vscode.Range(0, 0, 100, 0),
+                    "Rule needs ID Field",
+                    vscode.DiagnosticSeverity.Warning,
+                ),
+            )
+        }
+        if (!rule.id) {
+            range = getRangeOfString("id:", doc)
+            if (range) {
+                diagnostics.push(
+                    new vscode.Diagnostic(range, "ID field cant be empty", vscode.DiagnosticSeverity.Warning),
+                )
+            }
+        } else if (rule.id.length !== 36) {
+            var range = getRangeOfString("id: " + rule.id, doc)
+            if (rule.id.length === 0) {
+                range = getRangeOfString("id:", doc)
+            }
+            if (range) {
+                diagnostics.push(new vscode.Diagnostic(range, "Malformed ID", vscode.DiagnosticSeverity.Warning))
+            }
+        }
+        // Check Related Field
+        let validRelType = ["derived", "obsoletes", "merged", "renamed", "similar"]
+        if (rule.related) {
+            if (!Array.isArray(rule.related)) {
+                var range = getRangeOfString("related:", doc)
+                if (range) {
+                    diagnostics.push(
+                        new vscode.Diagnostic(range, "Related needs to be a List", vscode.DiagnosticSeverity.Warning),
+                    )
+                }
+            } else {
+                rule.related.map((rel: any) => {
+                    if (!validRelType.includes(rel.type)) {
+                        var range = getRangeOfString(rel.type, doc)
+                        if (range) {
+                            diagnostics.push(
+                                new vscode.Diagnostic(
+                                    range,
+                                    "Unknown Related Type - Allowed: derived, obsoletes, merged, renamed, similar",
+                                    vscode.DiagnosticSeverity.Warning,
+                                ),
+                            )
+                        }
+                    }
+                })
+            }
+        }
+        //
+        return diagnostics
+    } catch (error) {
+        console.log("Something went wrong while testing Meta Infos:")
+        console.log(error)
+    }
+}
+
+function testOther(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
+    try {
+        var diagnostics: vscode.Diagnostic[] = []
+
+        // Sysmon old Event IDs
+        if (/EventID: (?:1|4688)\s*\n/gm.test(doc.getText().toString())) {
+            var range = getRangeOfString("EventID: 1", doc)
+            if (!range) {
+                range = getRangeOfString("EventID: 4688", doc)
+            }
+            if (range) {
+                diagnostics.push(
+                    new vscode.Diagnostic(
+                        range,
+                        "Dont useSysmon Event ID 1 or Event ID 4688. Please migrate to the process_creation category",
+                        vscode.DiagnosticSeverity.Warning,
+                    ),
+                )
+            }
+        }
+        return diagnostics
+    } catch (error) {
+        console.log("Something went wrong while testing Other stuff:")
+        console.log(error)
+    }
+}
+function getRangeOfString(str: string, doc: vscode.TextDocument): vscode.Range | undefined {
+    const index = doc.getText().toString().indexOf(str)
+    if (index !== -1) {
+        let posA = doc.positionAt(index)
+        let posB = doc.positionAt(index + `${str}`.length)
+        return new vscode.Range(posA, posB)
+    }
+    return
 }
