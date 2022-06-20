@@ -66,23 +66,23 @@
 				"title": "Compile Sigma Rule"
 			}
 		],
-		"keybindings":[
+		"keybindings": [
 			{
-                "command": "sigma.onEnterKey",
-                "key": "enter",
-                "when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections && vim.mode != 'Normal' && vim.mode != 'Visual' && vim.mode != 'VisualBlock' && vim.mode != 'VisualLine' && vim.mode != 'SearchInProgressMode' && vim.mode != 'CommandlineInProgress' && vim.mode != 'Replace' && vim.mode != 'EasyMotionMode' && vim.mode != 'EasyMotionInputMode' && vim.mode != 'SurroundInputMode'"
-            },
+				"command": "sigma.onEnterKey",
+				"key": "enter",
+				"when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections && vim.mode != 'Normal' && vim.mode != 'Visual' && vim.mode != 'VisualBlock' && vim.mode != 'VisualLine' && vim.mode != 'SearchInProgressMode' && vim.mode != 'CommandlineInProgress' && vim.mode != 'Replace' && vim.mode != 'EasyMotionMode' && vim.mode != 'EasyMotionInputMode' && vim.mode != 'SurroundInputMode'"
+			},
 			{
-                "command": "sigma.onCtrlEnterKey",
-                "key": "ctrl+enter",
-                "mac": "cmd+enter",
-                "when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections"
-            },
-            {
-                "command": "sigma.onShiftEnterKey",
-                "key": "shift+enter",
-                "when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections"
-            }
+				"command": "sigma.onCtrlEnterKey",
+				"key": "ctrl+enter",
+				"mac": "cmd+enter",
+				"when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections"
+			},
+			{
+				"command": "sigma.onShiftEnterKey",
+				"key": "shift+enter",
+				"when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections"
+			}
 		],
 		"snippets": [
 			{
@@ -107,15 +107,15 @@
 					"type": "array",
 					"description": "SigmaC configurations. Example: \"sigma.compileConfig\": [{\"target\": \"kibana\", \"config\":\"/mnt/yara/sigma/tools/config/winlogbeat.yml\", \"additionalArgs\": \"\"}]",
 					"items": {
-						"target" :{
+						"target": {
 							"type": "string",
 							"description": "target of the config (--target in sigmac)"
 						},
-						"config":{
+						"config": {
 							"type": "string",
 							"description": "Path to the sigma config (--config in sigmac)"
 						},
-						"additionalArgs":{
+						"additionalArgs": {
 							"type": "string",
 							"description": "Any additional args you want to use for that sigmac"
 						}
@@ -167,6 +167,7 @@
 		"webpack-cli": "^4.9.2"
 	},
 	"dependencies": {
+		"yaml": "^2.1.1",
 		"yo": "^4.3.0"
 	}
 }
