@@ -65,6 +65,9 @@ Various Snippets:
 - 'contains' at wrong position in modifiers
 - Whitespace at end of Line
 - Single Item with All modifier
+- YAML not parsing
+- Various Tests from the official sigma repo
+
 Quickfixes for some of the Diagnostics
 
 ![diagnostics](images/gifs/diagnostics.gif)

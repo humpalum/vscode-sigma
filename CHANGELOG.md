@@ -3,6 +3,14 @@
 All notable changes to the "sigma" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [1.3.1]
+### Added
+- Added more diagnostics
+  - YAML parser: Errors will be shown in the editor as diagnostics
+  - Started implementing the Tests from the official sigma repo
+
+### Fixed
+- Fixed cursor positioning in the auto list completion
 ## [1.3.0]
 ### Added
 - Compile Rule Codelens
