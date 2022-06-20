@@ -93,7 +93,6 @@ export function onEnterKey(modifiers?: string) {
         return asNormal("enter", modifiers)
     }
 
-    //// This is a possibility that te current line is a thematic break `<hr>` (GitHub #785)
     const lineTextNoSpace = line.text.replace(/\s/g, "")
     if (
         lineTextNoSpace.length > 2 &&
@@ -106,7 +105,6 @@ export function onEnterKey(modifiers?: string) {
     if ((matches = /^(\s*)-\s*(''|""|)$/.exec(line.text)) !== null) {
         return editor
             .edit(editBuilder => {
-                // Check if Previous line is a List Header, Then add a tab
                 let listHeader = /:\s*$/.test(editor!.document.lineAt(line.lineNumber - 1).text)
                 editBuilder.delete(line.range)
                 let tab = editor?.options.tabSize
@@ -149,11 +147,15 @@ export function onEnterKey(modifiers?: string) {
             })
             .then(() => {
                 // Fix cursor position
+                console.log(cursorPos.isEqual(lineBreakPos))
                 if (modifiers === "ctrl" && !cursorPos.isEqual(lineBreakPos)) {
                     let newCursorPos = cursorPos.with(line.lineNumber + 1, matches![1].length)
                     if (sep === true) {
                         newCursorPos = cursorPos.with(line.lineNumber + 1, matches![1].length + 1)
                     }
+                    editor!.selection = new vscode.Selection(newCursorPos, newCursorPos)
+                } else if (sep === true) {
+                    let newCursorPos = cursorPos.with(line.lineNumber + 1, matches![1].length + 1)
                     editor!.selection = new vscode.Selection(newCursorPos, newCursorPos)
                 }
             })
