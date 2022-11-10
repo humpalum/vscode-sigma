@@ -25,7 +25,9 @@ Install it from VSCode in the Extension Tab (Ctrl + Shift + X) and search for Si
 - Setup your sigmac compile configs in `sigma.compileConfig`
   - For example:
   ``` json
+  [
    {
+      "tag": "OptionalTag",
       "target": "kibana",
       "config":["~/sigma/tools/config/winlogbeat.yml"],
       "additionalArgs": ""
