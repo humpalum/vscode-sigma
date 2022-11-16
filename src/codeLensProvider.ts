@@ -36,7 +36,7 @@ export class SigmaLensProvider implements vscode.CodeLensProvider {
             let strRange = new vscode.Range(0, 0, 0, 0)
             let c: vscode.Command = {
                 command: "sigma.sigmaCompile",
-                title: `Compile: ${config.target}`,
+                title: `${(config.tag && `[${config.tag}]`) || ""} Compile: ${config.target}`,
                 arguments: [config, vscode.window.activeTextEditor?.document.uri.path],
             }
             let codeLens = new vscode.CodeLens(strRange, c)

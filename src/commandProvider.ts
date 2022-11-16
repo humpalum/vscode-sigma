@@ -3,7 +3,16 @@ import { attackTags } from "./extension"
 const cp = require("child_process")
 
 export function sigmaCompile(cfg: any, rulepath: string) {
-    let command = `sigmac --config ${cfg.config} --target ${cfg.target} ${cfg.additionalArgs || ""} ${rulepath}`
+    let configs = ""
+    // Check if cfg.config is not array
+    if (!Array.isArray(cfg.config)) {
+        configs = `--config ${cfg.config}`
+    } else {
+        for (let entry of cfg.config) {
+            configs = `${configs} --config ${entry}`
+        }
+    }
+    let command = `sigmac ${configs} --target ${cfg.target} ${cfg.additionalArgs || ""} ${rulepath}`
     return new Promise<any>((resolve, reject) =>
         cp.exec(command, (err: string, stdout: string, stderr: string) => {
             if (err) {

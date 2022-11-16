@@ -25,14 +25,16 @@ Install it from VSCode in the Extension Tab (Ctrl + Shift + X) and search for Si
 - Setup your sigmac compile configs in `sigma.compileConfig`
   - For example:
   ``` json
+  [
    {
+      "tag": "OptionalTag",
       "target": "kibana",
-      "config":"~/sigma/tools/config/winlogbeat.yml",
+      "config":["~/sigma/tools/config/winlogbeat.yml"],
       "additionalArgs": ""
     },
     {
       "target": "splunk",
-      "config":"~/sigma/tools/config/splunk-windows.yml"
+      "config":["~/sigma/tools/config/generic/windows-audit.yml","~/sigma/tools/config/splunk-windows.yml"]
     }
   ]
   ```
