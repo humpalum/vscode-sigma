@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.3.2]
 ### Fixed
 - Duplicate diagnostics now checks case insensitive
-
+- Changed how the sigmac config works (Thanks to @ZikyHD https://github.com/humpalum/vscode-sigma/pull/6)
 ## [1.3.1]
 ### Added
 - Added more diagnostics
