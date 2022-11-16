@@ -4,6 +4,7 @@ import * as YAML from "yaml"
 import { attackTags } from "./extension"
 import { debug } from "./configuration"
 import { privateEncrypt } from "crypto"
+
 /**
  * Analyzes the text document for problems.
  * This demo diagnostic problem provider finds all mentions of 'emoji'.
@@ -22,13 +23,15 @@ export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: v
             sigmaRule = YAML.parse(doc.getText())
         } catch (error) {
             console.log(error)
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    new vscode.Range(doc.positionAt(error.pos[0]), doc.positionAt(error.pos[1])),
-                    error.message,
-                    vscode.DiagnosticSeverity.Error,
-                ),
-            )
+            if (error instanceof Error) {
+                diagnostics.push(
+                    new vscode.Diagnostic(
+                        new vscode.Range(doc.positionAt((error as any).pos[0]), doc.positionAt((error as any).pos[1])),
+                        error.message,
+                        vscode.DiagnosticSeverity.Error,
+                    ),
+                )
+            }
         }
         if (sigmaRule) {
             tmpDias = testSigmaTags(sigmaRule, doc)
