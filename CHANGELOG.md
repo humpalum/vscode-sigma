@@ -3,6 +3,10 @@
 All notable changes to the "sigma" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [1.3.2]
+### Fixed
+- Duplicate diagnostics now checks case insensitive
+
 ## [1.3.1]
 ### Added
 - Added more diagnostics

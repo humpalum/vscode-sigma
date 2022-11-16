@@ -20,7 +20,7 @@ export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: v
         let sigmaRule
         try {
             sigmaRule = YAML.parse(doc.getText())
-        } catch (error: any) {
+        } catch (error) {
             console.log(error)
             diagnostics.push(
                 new vscode.Diagnostic(
@@ -276,7 +276,15 @@ function testSigmaDetection(rule: any, doc: vscode.TextDocument): vscode.Diagnos
             if (cur.constructor !== Object) {
                 if (Array.isArray(cur)) {
                     if (cur.length !== [new Set(cur)].length) {
-                        let duplicates = cur.filter((item: string, index: Number) => index !== cur.indexOf(item))
+                        let duplicates = cur.filter((item: string, index: Number) => {
+                            let dupl = false
+                            cur.forEach((item2: string, index2: Number) => {
+                                if (item.toLocaleLowerCase() === item2.toLocaleLowerCase() && index !== index2) {
+                                    dupl = true
+                                }
+                            })
+                            return dupl
+                        })
                         duplicates.map((item: string) => {
                             var range = getRangeOfString(item, doc)
                             if (range) {

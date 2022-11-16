@@ -1,173 +1,173 @@
 {
-	"name": "sigma",
-	"displayName": "sigma",
-	"description": "Support for Sigma Signature Format",
-	"version": "1.3.1",
-	"engines": {
-		"vscode": "^1.66.0"
-	},
-	"icon": "images/Sigma_Icon_trans.png",
-	"publisher": "humpalum",
-	"license": "MIT License - full document in LICENSE",
-	"categories": [
-		"Programming Languages",
-		"Snippets"
-	],
-	"browser": "./dist/extension.js",
-	"activationEvents": [
-		"onLanguage:sigma",
-		"onLanguage:plaintext",
-		"onLanguage:yaml"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/humpalum/vscode-sigma"
-	},
-	"bugs": {
-		"url": "https://github.com/humpalum/vscode-sigma/issues"
-	},
-	"main": "./dist/extension.js",
-	"contributes": {
-		"languages": [
-			{
-				"id": "sigma",
-				"aliases": [
-					"sigma",
-					"sigma-syntax",
-					"sigmalang",
-					"SIGMA",
-					"Sigma"
-				],
-				"icon": {
-					"light": "./images/Sigma_Icon_trans.png",
-					"dark": "./images/Sigma_Icon_trans.png"
-				},
-				"configuration": "./language-configuration.json"
-			}
-		],
-		"grammars": [
-			{
-				"comments": [
-					"YAML syntax as base for Sigma",
-					"scopeName changed so that we can use it as base for injections"
-				],
-				"language": "sigma",
-				"scopeName": "source.sigma",
-				"path": "./syntaxes/external/YAML.tmLanguage.json"
-			}
-		],
-		"commands": [
-			{
-				"command": "sigma.AddTag",
-				"title": "Add Attack Tag"
-			},
-			{
-				"command": "sigma.sigmaCompile",
-				"title": "Compile Sigma Rule"
-			}
-		],
-		"keybindings": [
-			{
-				"command": "sigma.onEnterKey",
-				"key": "enter",
-				"when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections && vim.mode != 'Normal' && vim.mode != 'Visual' && vim.mode != 'VisualBlock' && vim.mode != 'VisualLine' && vim.mode != 'SearchInProgressMode' && vim.mode != 'CommandlineInProgress' && vim.mode != 'Replace' && vim.mode != 'EasyMotionMode' && vim.mode != 'EasyMotionInputMode' && vim.mode != 'SurroundInputMode'"
-			},
-			{
-				"command": "sigma.onCtrlEnterKey",
-				"key": "ctrl+enter",
-				"mac": "cmd+enter",
-				"when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections"
-			},
-			{
-				"command": "sigma.onShiftEnterKey",
-				"key": "shift+enter",
-				"when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections"
-			}
-		],
-		"snippets": [
-			{
-				"language": "sigma",
-				"path": "./snippets/sigma.json"
-			}
-		],
-		"configuration": {
-			"title": "sigma",
-			"properties": {
-				"sigma.debug": {
-					"type": "bool",
-					"default": false,
-					"description": "Sigma Extension Debug Mode"
-				},
-				"sigma.author": {
-					"type": "string",
-					"default": "",
-					"description": "Sets the Sigma author"
-				},
-				"sigma.compileConfig": {
-					"type": "array",
-					"description": "SigmaC configurations. Example: \"sigma.compileConfig\": [{\"target\": \"kibana\", \"config\":\"/mnt/yara/sigma/tools/config/winlogbeat.yml\", \"additionalArgs\": \"\"}]",
-					"items": {
-						"target": {
-							"type": "string",
-							"description": "target of the config (--target in sigmac)"
-						},
-						"config": {
-							"type": "string",
-							"description": "Path to the sigma config (--config in sigmac)"
-						},
-						"additionalArgs": {
-							"type": "string",
-							"description": "Any additional args you want to use for that sigmac"
-						}
-					}
-				}
-			},
-			"configurationDefaults": {
-				"[sigma]": {
-					"editor.insertSpaces": true,
-					"editor.tabSize": 3,
-					"editor.quickSuggestions": {
-						"other": true,
-						"comments": false,
-						"strings": true
-					},
-					"editor.autoIndent": "keep"
-				}
-			}
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run package",
-		"compile": "webpack",
-		"compile-web": "webpack",
-		"watch": "webpack --watch",
-		"watch-web": "webpack --watch",
-		"package": "webpack --mode production --devtool hidden-source-map",
-		"package-web": "webpack --mode production --devtool hidden-source-map",
-		"compile-tests": "tsc -p . --outDir out",
-		"watch-tests": "tsc -p . -w --outDir out",
-		"pretest": "npm run compile-tests && npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.2.0",
-		"@types/mocha": "^9.1.0",
-		"@types/node": "14.x",
-		"@types/vscode": "^1.66.0",
-		"@typescript-eslint/eslint-plugin": "^5.12.1",
-		"@typescript-eslint/parser": "^5.12.1",
-		"@vscode/test-electron": "^2.1.2",
-		"eslint": "^8.9.0",
-		"glob": "^7.2.0",
-		"mocha": "^9.2.1",
-		"ts-loader": "^9.2.6",
-		"typescript": "^4.5.5",
-		"webpack": "^5.69.1",
-		"webpack-cli": "^4.9.2"
-	},
-	"dependencies": {
-		"yaml": "^2.1.1",
-		"yo": "^4.3.0"
-	}
+    "name": "sigma",
+    "displayName": "sigma",
+    "description": "Support for Sigma Signature Format",
+    "version": "1.3.2",
+    "engines": {
+        "vscode": "^1.66.0"
+    },
+    "icon": "images/Sigma_Icon_trans.png",
+    "publisher": "humpalum",
+    "license": "MIT License - full document in LICENSE",
+    "categories": [
+        "Programming Languages",
+        "Snippets"
+    ],
+    "browser": "./dist/extension.js",
+    "activationEvents": [
+        "onLanguage:sigma",
+        "onLanguage:plaintext",
+        "onLanguage:yaml"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/humpalum/vscode-sigma"
+    },
+    "bugs": {
+        "url": "https://github.com/humpalum/vscode-sigma/issues"
+    },
+    "main": "./dist/extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "sigma",
+                "aliases": [
+                    "sigma",
+                    "sigma-syntax",
+                    "sigmalang",
+                    "SIGMA",
+                    "Sigma"
+                ],
+                "icon": {
+                    "light": "./images/Sigma_Icon_trans.png",
+                    "dark": "./images/Sigma_Icon_trans.png"
+                },
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "comments": [
+                    "YAML syntax as base for Sigma",
+                    "scopeName changed so that we can use it as base for injections"
+                ],
+                "language": "sigma",
+                "scopeName": "source.sigma",
+                "path": "./syntaxes/external/YAML.tmLanguage.json"
+            }
+        ],
+        "commands": [
+            {
+                "command": "sigma.AddTag",
+                "title": "Add Attack Tag"
+            },
+            {
+                "command": "sigma.sigmaCompile",
+                "title": "Compile Sigma Rule"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "sigma.onEnterKey",
+                "key": "enter",
+                "when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections && vim.mode != 'Normal' && vim.mode != 'Visual' && vim.mode != 'VisualBlock' && vim.mode != 'VisualLine' && vim.mode != 'SearchInProgressMode' && vim.mode != 'CommandlineInProgress' && vim.mode != 'Replace' && vim.mode != 'EasyMotionMode' && vim.mode != 'EasyMotionInputMode' && vim.mode != 'SurroundInputMode'"
+            },
+            {
+                "command": "sigma.onCtrlEnterKey",
+                "key": "ctrl+enter",
+                "mac": "cmd+enter",
+                "when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections"
+            },
+            {
+                "command": "sigma.onShiftEnterKey",
+                "key": "shift+enter",
+                "when": "editorTextFocus && !editorReadonly && editorLangId == sigma && !suggestWidgetVisible && !editorHasMultipleSelections"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "sigma",
+                "path": "./snippets/sigma.json"
+            }
+        ],
+        "configuration": {
+            "title": "sigma",
+            "properties": {
+                "sigma.debug": {
+                    "type": "bool",
+                    "default": false,
+                    "description": "Sigma Extension Debug Mode"
+                },
+                "sigma.author": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Sets the Sigma author"
+                },
+                "sigma.compileConfig": {
+                    "type": "array",
+                    "description": "SigmaC configurations. Example: \"sigma.compileConfig\": [{\"target\": \"kibana\", \"config\":\"/mnt/yara/sigma/tools/config/winlogbeat.yml\", \"additionalArgs\": \"\"}]",
+                    "items": {
+                        "target": {
+                            "type": "string",
+                            "description": "target of the config (--target in sigmac)"
+                        },
+                        "config": {
+                            "type": "string",
+                            "description": "Path to the sigma config (--config in sigmac)"
+                        },
+                        "additionalArgs": {
+                            "type": "string",
+                            "description": "Any additional args you want to use for that sigmac"
+                        }
+                    }
+                }
+            },
+            "configurationDefaults": {
+                "[sigma]": {
+                    "editor.insertSpaces": true,
+                    "editor.tabSize": 3,
+                    "editor.quickSuggestions": {
+                        "other": true,
+                        "comments": false,
+                        "strings": true
+                    },
+                    "editor.autoIndent": "keep"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run package",
+        "compile": "webpack",
+        "compile-web": "webpack",
+        "watch": "webpack --watch",
+        "watch-web": "webpack --watch",
+        "package": "webpack --mode production --devtool hidden-source-map",
+        "package-web": "webpack --mode production --devtool hidden-source-map",
+        "compile-tests": "tsc -p . --outDir out",
+        "watch-tests": "tsc -p . -w --outDir out",
+        "pretest": "npm run compile-tests && npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.2.0",
+        "@types/mocha": "^9.1.0",
+        "@types/node": "14.x",
+        "@types/vscode": "^1.66.0",
+        "@typescript-eslint/eslint-plugin": "^5.12.1",
+        "@typescript-eslint/parser": "^5.12.1",
+        "@vscode/test-electron": "^2.1.2",
+        "eslint": "^8.9.0",
+        "glob": "^7.2.0",
+        "mocha": "^9.2.1",
+        "ts-loader": "^9.2.6",
+        "typescript": "^4.5.5",
+        "webpack": "^5.69.1",
+        "webpack-cli": "^4.9.2"
+    },
+    "dependencies": {
+        "yaml": "^2.1.1",
+        "yo": "^4.3.0"
+    }
 }
