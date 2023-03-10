@@ -1,6 +1,8 @@
 import * as vscode from "vscode"
 import { attackTags } from "./extension"
 const cp = require("child_process")
+import { SigmaSearchResultEntry  } from "./types"
+import {execQuery, escapeString, cleanField} from "./sse"
 
 export function sigmaCompile(cfg: any, rulepath: string) {
     let configs = ""
@@ -217,3 +219,237 @@ function asNormal(key: string, modifiers?: string) {
             return vscode.commands.executeCommand("deleteLeft")
     }
 }
+
+export async function related(idx: number) { 
+    let document = vscode.window.activeTextEditor?.document
+    if (!(document)) {
+        return
+    }
+
+    let stopDefinition = new RegExp('^[a-z].*', "i")
+    let idDefinition = new RegExp('^\\s*-\\sid:\\s([0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12})', "i")
+    let cur = idx+1
+    let ids = []
+    while (true) {
+        let line = document.lineAt(cur).text
+        const matchs = stopDefinition.exec(line)
+        if (matchs) {
+            break
+        }else{
+            const idmatch = idDefinition.exec(line)
+            if (idmatch){
+                ids.push(idmatch[1])
+            }
+        }
+        cur++
+    }
+
+    console.log(ids)
+
+    let result = new Map<string, SigmaSearchResultEntry>();
+    for (var id of ids) {
+        let results = execQuery("id:\""+id+"\"")
+        for (var r of await results) {
+            result.set(id, r)
+        }
+    }
+
+    let webviewPanel = vscode.window.createWebviewPanel("panel", "Sigma Search", vscode.ViewColumn.Beside, {
+        enableScripts: true,
+    })
+
+    let html = ""
+    html = `<html>` + HEAD
+    result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
+        html += `<button class="accordion">`
+        html += `<div style="float:left">`
+        html += `<a href="` + rule.url + `">` + rule.title + `</a>`
+        html += `</div>`
+        html += `<div style="float:right">` + key + `</div>`
+
+        html += `<br><div style="float:left">` + rule.description + `</div>`
+        
+        html += `<div style="float:left">File: ` + rule.file + `</div>`
+        html += `<br><div style="float:right">Level: ` + rule.level + `</div>`
+
+        html += `</button>`
+        html += `<div class="panel">`
+        html += "<pre>" + rule.detection + "</pre>"
+        html += `</div><br>`
+    });
+
+    html += SCRIPT + `</html>`
+
+    webviewPanel.webview.html = html
+}
+
+export async function lookup() {
+    let sels = vscode.window.activeTextEditor?.selections
+    let document = vscode.window.activeTextEditor?.document
+    let strings = []
+    let indeces = []
+    let stringDefinition = new RegExp('[:-]\\s["\'](.+)["\']', "i")
+    let fieldDefinition = new RegExp('^\\s*[-\\s]?(.+):', "i")
+    if (!(sels && document)) {
+        return
+    }
+
+    for (var sel of sels) {
+        for (let i = sel.start.line; i <= sel.end.line; i++) {
+            if (i === sel.end.line && sel.end.character === 0) {
+                continue
+            }
+            let line = document.lineAt(i).text
+            if (!line.trim()) {
+                continue
+            }
+
+            const matchs = stringDefinition.exec(line)
+            if (matchs) {
+                strings.push(matchs[1])
+                indeces.push(i)
+            }
+
+        }
+    }
+
+    if (strings.length == 0){
+        return
+    }
+
+    let queryFieldMust = ""
+    let queryFieldShould = ""
+    let queryFullMust = ""
+    let queryFullShould = ""
+    let c = 0
+    for (var s of strings) {
+        s = escapeString(s)
+        queryFullMust += '+"' + s + '" '
+        queryFullShould += '"' + s + '" '
+        let cur = indeces[c]
+        while (cur >= 0) {
+            let line = document.lineAt(cur).text
+            const matchs = fieldDefinition.exec(line)
+            if (matchs) {
+                queryFieldMust += "+" + cleanField(matchs[1]) + ":\"" + s + "\" "
+                queryFieldShould += cleanField(matchs[1]) + ":\"" + s + "\" "
+                break
+            }
+            cur--
+        }
+        c++
+    }
+
+    console.log(queryFieldMust)
+    console.log(queryFieldShould)
+    console.log(queryFullMust)
+    console.log(queryFullShould)
+
+    let queries = [queryFieldMust, queryFieldShould, queryFullMust, queryFullShould]
+    let result = new Map<string, SigmaSearchResultEntry>();
+    for (var q of queries) {
+        let results = execQuery(q)
+        for (var r of await results) {
+            let tmp = result.get(r.title)
+            if (!tmp) {
+                result.set(r.title, r)
+            } else {
+                if (r.score > tmp.score) {
+                    result.set(r.title, r)
+                }
+            }
+        }
+    }
+
+    let webviewPanel = vscode.window.createWebviewPanel("panel", "Sigma Search", vscode.ViewColumn.Beside, {
+        enableScripts: true,
+    })
+
+    let html = ""
+    html = `<html>` + HEAD
+    html += "<pre>Query ~ " + queryFullShould + "</pre>"
+    result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
+        html += `<button class="accordion">`
+        html += `<div style="float:left">`
+        html += `<a href="` + rule.url + `">` + rule.title + `</a>`
+        html += `</div>`
+        html += `<div style="float:right">Significance: ` + rule.score.toFixed(2) + `</div>`
+
+        html += `<br><div style="float:left">` + rule.description + `</div>`
+        
+        html += `<div style="float:left">File: ` + rule.file + `</div>`
+        html += `<br><div style="float:right">Level: ` + rule.level + `</div>`
+
+        html += `</button>`
+        html += `<div class="panel">`
+        html += "<pre>" + rule.detection + "</pre>"
+        html += `</div><br>`
+    });
+
+    html += SCRIPT + `</html>`
+
+    webviewPanel.webview.html = html
+}
+
+var HEAD: string = `
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.accordion {
+  cursor: pointer;
+  padding: 12px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  color: white;
+  background-color: #32302f;
+}
+
+.active, .accordion:hover {
+  background-color: #464a43;
+}
+
+.panel {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+} 
+
+.arrow {
+    border: solid grey;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 4px;
+  }
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+</style>
+</head>
+`
+
+var SCRIPT: string = `
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+
+    /* Toggle between hiding and showing the active panel */
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>
+`

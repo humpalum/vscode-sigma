@@ -44,3 +44,42 @@ export class SigmaLensProvider implements vscode.CodeLensProvider {
         })
     }
 }
+
+export class SigmaSearchEngineCodeLensProvider implements vscode.CodeLensProvider {
+    async provideCodeLenses(document: vscode.TextDocument): Promise<vscode.CodeLens[]> {
+        const tagsSectionRE = new RegExp("^detection:\s?$", "i")
+        let lenses: vscode.CodeLens[] = []
+        // Define where the CodeLens will exist
+        for (let i = 0; i < document.lineCount; i++) {
+            if (tagsSectionRE.exec(document.lineAt(i).text)) {
+                let strRange = new vscode.Range(i, 0, i, 0)
+                let c1: vscode.Command = {
+                    command: "sigmaSE.lookup",
+                    title: "Look Up",
+                }
+                lenses.push(new vscode.CodeLens(strRange, c1))
+            }
+        }
+        return lenses
+    }
+}
+
+export class RelatedSigmaCodeLensProvider implements vscode.CodeLensProvider {
+    async provideCodeLenses(document: vscode.TextDocument): Promise<vscode.CodeLens[]> {
+        const tagsSectionRE = new RegExp("^related:\s?$", "i")
+        let lenses: vscode.CodeLens[] = []
+        // Define where the CodeLens will exist
+        for (let i = 0; i < document.lineCount; i++) {
+            if (tagsSectionRE.exec(document.lineAt(i).text)) {
+                let strRange = new vscode.Range(i, 0, i, 0)
+                let c1: vscode.Command = {
+                    command: "sigmaSE.related",
+                    title: "Look Up Related",
+                    arguments: [strRange.start.line ],
+                }
+                lenses.push(new vscode.CodeLens(strRange, c1))
+            }
+        }
+        return lenses
+    }
+}

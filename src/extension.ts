@@ -7,7 +7,9 @@ import { subscribeToDocumentChanges } from "./diagnostics"
 import { SigmaFixer } from "./actions"
 import { provideHover } from "./hoverProvider"
 import { SigmaLensProvider } from "./codeLensProvider"
-import { addTagQuickpick, sigmaCompile, onEnterKey } from "./commandProvider"
+import { SigmaSearchEngineCodeLensProvider } from "./codeLensProvider"
+import { RelatedSigmaCodeLensProvider } from "./codeLensProvider"
+import { addTagQuickpick, sigmaCompile, onEnterKey, lookup, related } from "./commandProvider"
 
 export var attackTags = require("./techniques.json")
 
@@ -83,7 +85,10 @@ export function activate(context: vscode.ExtensionContext) {
         ),
     )
     context.subscriptions.push(disposable)
-    vscode.languages.registerHoverProvider(SIGMA, { provideHover })
+    vscode.languages.registerHoverProvider(SIGMA, { provideHover: provideHover })
+
+    context.subscriptions.push(vscode.commands.registerCommand("sigmaSE.lookup", lookup))
+    context.subscriptions.push(vscode.commands.registerCommand("sigmaSE.related", related))
 
     context.subscriptions.push(vscode.commands.registerCommand("sigma.AddTag", addTagQuickpick))
     context.subscriptions.push(vscode.commands.registerCommand("sigma.sigmaCompile", sigmaCompile))
@@ -101,6 +106,10 @@ export function activate(context: vscode.ExtensionContext) {
     )
 
     let codeLensProviderDisposable = vscode.languages.registerCodeLensProvider(SIGMA, new SigmaLensProvider())
+    context.subscriptions.push(codeLensProviderDisposable)
+    codeLensProviderDisposable = vscode.languages.registerCodeLensProvider(SIGMA, new SigmaSearchEngineCodeLensProvider())
+    context.subscriptions.push(codeLensProviderDisposable)
+    codeLensProviderDisposable = vscode.languages.registerCodeLensProvider(SIGMA, new RelatedSigmaCodeLensProvider())
     context.subscriptions.push(codeLensProviderDisposable)
 }
 

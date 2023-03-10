@@ -4,6 +4,7 @@ import * as vscode from "vscode"
 
 export const configSection = "sigma"
 export let sigmacConfigs: any[] | undefined
+export let sigmasearchengineURL: any[] | undefined
 export let debug = false
 
 export function setConfigs(): void {
@@ -15,4 +16,5 @@ export function setConfigs(): void {
         console.log("Debug logging disabled")
     }
     sigmacConfigs = vscode.workspace.getConfiguration(configSection).get("compileConfig")
+    sigmasearchengineURL = vscode.workspace.getConfiguration(configSection).get("sigmasearchengineurl")
 }
