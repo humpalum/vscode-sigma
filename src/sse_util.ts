@@ -2,7 +2,6 @@ import axios, { AxiosResponse } from "axios"
 import { SigmaSearchResultEntry  } from "./types"
 import { sigmasearchengineURL } from "./configuration"
 
-export {}
 
 export function cleanField(field: string): string {
     let newField = field.replace("|endswith", "")

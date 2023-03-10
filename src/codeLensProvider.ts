@@ -54,7 +54,7 @@ export class SigmaSearchEngineCodeLensProvider implements vscode.CodeLensProvide
             if (tagsSectionRE.exec(document.lineAt(i).text)) {
                 let strRange = new vscode.Range(i, 0, i, 0)
                 let c1: vscode.Command = {
-                    command: "sigmaSE.lookup",
+                    command: "sigma.lookup",
                     title: "Look Up",
                 }
                 lenses.push(new vscode.CodeLens(strRange, c1))
@@ -73,7 +73,7 @@ export class RelatedSigmaCodeLensProvider implements vscode.CodeLensProvider {
             if (tagsSectionRE.exec(document.lineAt(i).text)) {
                 let strRange = new vscode.Range(i, 0, i, 0)
                 let c1: vscode.Command = {
-                    command: "sigmaSE.related",
+                    command: "sigma.related",
                     title: "Look Up Related",
                     arguments: [strRange.start.line ],
                 }

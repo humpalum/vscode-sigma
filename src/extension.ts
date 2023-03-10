@@ -87,8 +87,8 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable)
     vscode.languages.registerHoverProvider(SIGMA, { provideHover: provideHover })
 
-    context.subscriptions.push(vscode.commands.registerCommand("sigmaSE.lookup", lookup))
-    context.subscriptions.push(vscode.commands.registerCommand("sigmaSE.related", related))
+    context.subscriptions.push(vscode.commands.registerCommand("sigma.lookup", lookup))
+    context.subscriptions.push(vscode.commands.registerCommand("sigma.related", related))
 
     context.subscriptions.push(vscode.commands.registerCommand("sigma.AddTag", addTagQuickpick))
     context.subscriptions.push(vscode.commands.registerCommand("sigma.sigmaCompile", sigmaCompile))

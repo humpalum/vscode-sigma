@@ -1,4 +1,3 @@
-export {}
 export type SigmaSearchResultEntry = {
     id: string;
     url: string;

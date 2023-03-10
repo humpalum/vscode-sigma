@@ -2,7 +2,7 @@ import * as vscode from "vscode"
 import { attackTags } from "./extension"
 const cp = require("child_process")
 import { SigmaSearchResultEntry  } from "./types"
-import {execQuery, escapeString, cleanField} from "./sse"
+import {execQuery, escapeString, cleanField} from "./sse_util"
 
 export function sigmaCompile(cfg: any, rulepath: string) {
     let configs = ""
@@ -254,10 +254,10 @@ export async function related(idx: number) {
         }
     }
 
-    let webviewPanel = vscode.window.createWebviewPanel("panel", "Sigma Search", vscode.ViewColumn.Beside, {
+    let webviewPanel = vscode.window.createWebviewPanel("panel", "Related Sigma Rules", vscode.ViewColumn.Beside, {
         enableScripts: true,
     })
-
+    
     let html = ""
     html = `<html>` + HEAD
     result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
@@ -287,7 +287,7 @@ export async function lookup() {
     let sels = vscode.window.activeTextEditor?.selections
     let document = vscode.window.activeTextEditor?.document
     let strings = []
-    let indeces = []
+    let indices = []
     let stringDefinition = new RegExp('[:-]\\s["\'](.+)["\']', "i")
     let fieldDefinition = new RegExp('^\\s*[-\\s]?(.+):', "i")
     if (!(sels && document)) {
@@ -307,13 +307,13 @@ export async function lookup() {
             const matchs = stringDefinition.exec(line)
             if (matchs) {
                 strings.push(matchs[1])
-                indeces.push(i)
+                indices.push(i)
             }
 
         }
     }
 
-    if (strings.length == 0){
+    if (strings.length === 0){
         return
     }
 
@@ -326,7 +326,7 @@ export async function lookup() {
         s = escapeString(s)
         queryFullMust += '+"' + s + '" '
         queryFullShould += '"' + s + '" '
-        let cur = indeces[c]
+        let cur = indices[c]
         while (cur >= 0) {
             let line = document.lineAt(cur).text
             const matchs = fieldDefinition.exec(line)

@@ -1,12 +1,13 @@
 import * as vscode from "vscode"
 import { attackTags } from "./extension"
 import { SigmaSearchResultEntry  } from "./types"
-import {execQuery, escapeString, cleanField} from "./sse"
+import {execQuery, escapeString, cleanField} from "./sse_util"
 
-export async function provideHover(
+export function provideHover(
     document: vscode.TextDocument,
     position: vscode.Position,
-): Promise<vscode.ProviderResult<vscode.Hover>> {
+    token: vscode.CancellationToken
+): Thenable<vscode.Hover> | vscode.Hover | undefined {
     let tagDefinition = new RegExp("- attack\\.(.+)")
     const tagRange: vscode.Range | undefined = document.getWordRangeAtPosition(position, tagDefinition)
 
@@ -77,29 +78,31 @@ export async function provideHover(
 
         let queries = [queryFieldMust, queryFieldShould, queryFullMust, queryFullShould]
         let result = new Map<string, SigmaSearchResultEntry>();
-        for (var q of queries) {
-            let results = execQuery(q)
-            for (var r of await results) {
-                let tmp = result.get(r.title)
-                if (!tmp) {
-                    result.set(r.title, r)
-                } else {
-                    if (r.score > tmp.score) {
+        const execQueries = async function (queries: string[]): Promise<vscode.Hover> {
+            for (var q of queries) {
+                let results = execQuery(q)
+                for (var r of await results) {
+                    let tmp = result.get(r.title)
+                    if (!tmp) {
                         result.set(r.title, r)
+                    } else {
+                        if (r.score > tmp.score) {
+                            result.set(r.title, r)
+                        }
                     }
                 }
             }
-        }
+            let mds: Array<vscode.MarkdownString> = [];
+            result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
+                var s = "#### " + rule.title + " - Significance: " + rule.score.toFixed(2) + ` - [SigmaHQ](` + rule.url + `)` + "\n"
+                s += rule.description + "\n\n"
+                let md = new vscode.MarkdownString(s)
+                mds.push(md)
+            });
 
-        let mds: Array<vscode.MarkdownString> = [];
-        result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
-            var s = "#### " + rule.title + " - Significance: " + rule.score.toFixed(2) + ` - [SigmaHQ](` + rule.url + `)` + "\n"
-            s += rule.description + "\n\n"
-            let md = new vscode.MarkdownString(s)
-            mds.push(md)
-        });
+            return new vscode.Hover(mds)
+         }
 
-        return new vscode.Hover(mds)
+        return execQueries(queries)
     }
-    return
 }
