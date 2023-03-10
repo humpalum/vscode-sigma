@@ -3,6 +3,7 @@ import { attackTags } from "./extension"
 const cp = require("child_process")
 import { SigmaSearchResultEntry  } from "./types"
 import {execQuery, escapeString, cleanField} from "./sse_util"
+import * as sanitizeHtml from 'sanitize-html';
 
 export function sigmaCompile(cfg: any, rulepath: string) {
     let configs = ""
@@ -263,18 +264,18 @@ export async function related(idx: number) {
     result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
         html += `<button class="accordion">`
         html += `<div style="float:left">`
-        html += `<a href="` + rule.url + `">` + rule.title + `</a>`
+        html += `<a href="` + sanitizeHtml(rule.url) + `">` + sanitizeHtml(rule.title) + `</a>`
         html += `</div>`
-        html += `<div style="float:right">` + key + `</div>`
+        html += `<div style="float:right">` + sanitizeHtml(key) + `</div>`
 
-        html += `<br><div style="float:left">` + rule.description + `</div>`
+        html += `<br><div style="float:left">` + sanitizeHtml(rule.description) + `</div>`
         
-        html += `<div style="float:left">File: ` + rule.file + `</div>`
-        html += `<br><div style="float:right">Level: ` + rule.level + `</div>`
+        html += `<div style="float:left">File: ` + sanitizeHtml(rule.file) + `</div>`
+        html += `<br><div style="float:right">Level: ` + sanitizeHtml(rule.level) + `</div>`
 
         html += `</button>`
         html += `<div class="panel">`
-        html += "<pre>" + rule.detection + "</pre>"
+        html += "<pre>" + sanitizeHtml(rule.detection) + "</pre>"
         html += `</div><br>`
     });
 
@@ -367,22 +368,22 @@ export async function lookup() {
 
     let html = ""
     html = `<html>` + HEAD
-    html += "<pre>Query ~ " + queryFullShould + "</pre>"
+    html += "<pre>Query ~ " + sanitizeHtml(queryFullShould) + "</pre>"
     result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
         html += `<button class="accordion">`
         html += `<div style="float:left">`
-        html += `<a href="` + rule.url + `">` + rule.title + `</a>`
+        html += `<a href="` + sanitizeHtml(rule.url) + `">` + sanitizeHtml(rule.title) + `</a>`
         html += `</div>`
-        html += `<div style="float:right">Significance: ` + rule.score.toFixed(2) + `</div>`
+        html += `<div style="float:right">Significance: ` + sanitizeHtml(rule.score.toFixed(2)) + `</div>`
 
-        html += `<br><div style="float:left">` + rule.description + `</div>`
+        html += `<br><div style="float:left">` + sanitizeHtml(rule.description) + `</div>`
         
-        html += `<div style="float:left">File: ` + rule.file + `</div>`
-        html += `<br><div style="float:right">Level: ` + rule.level + `</div>`
+        html += `<div style="float:left">File: ` + sanitizeHtml(rule.file) + `</div>`
+        html += `<br><div style="float:right">Level: ` + sanitizeHtml(rule.level) + `</div>`
 
         html += `</button>`
         html += `<div class="panel">`
-        html += "<pre>" + rule.detection + "</pre>"
+        html += "<pre>" + sanitizeHtml(rule.detection) + "</pre>"
         html += `</div><br>`
     });
 

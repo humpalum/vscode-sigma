@@ -2,6 +2,7 @@ import * as vscode from "vscode"
 import { attackTags } from "./extension"
 import { SigmaSearchResultEntry  } from "./types"
 import {execQuery, escapeString, cleanField} from "./sse_util"
+import * as sanitizeHtml from 'sanitize-html';
 
 export function provideHover(
     document: vscode.TextDocument,
@@ -94,8 +95,8 @@ export function provideHover(
             }
             let mds: Array<vscode.MarkdownString> = [];
             result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
-                var s = "#### " + rule.title + " - Significance: " + rule.score.toFixed(2) + ` - [SigmaHQ](` + rule.url + `)` + "\n"
-                s += rule.description + "\n\n"
+                var s = "#### " + sanitizeHtml(rule.title) + " - Significance: " + sanitizeHtml(rule.score.toFixed(2)) + ` - [SigmaHQ](` + sanitizeHtml(rule.url) + `)` + "\n"
+                s += sanitizeHtml(rule.description) + "\n\n"
                 let md = new vscode.MarkdownString(s)
                 mds.push(md)
             });
