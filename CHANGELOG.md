@@ -3,6 +3,13 @@
 All notable changes to the "sigma" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [1.4.0]
+### Added
+- Sigma Search Engine Integration (Thanks to @ph-T https://github.com/humpalum/vscode-sigma/pull/8)
+
+### Changed
+- Updated Attack Map
+  
 ## [1.3.2]
 ### Fixed
 - Duplicate diagnostics now checks case insensitive
