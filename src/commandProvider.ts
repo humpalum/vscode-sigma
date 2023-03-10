@@ -395,6 +395,7 @@ export async function lookup() {
 var HEAD: string = `
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none';style-src 'unsafe-inline' ; script-src 'sha256-FYRAROSVI6vQbzhKsGMuKn53wS19N+92X8KtvdD843s='">
 <style>
 .accordion {
   cursor: pointer;
