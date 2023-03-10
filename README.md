@@ -96,6 +96,12 @@ After defining your sigmac configs, click on the codelens in the first line. The
 The extension can be used in github vscode mode and on vscode.dev.
 However these are not really tested, so in case you find bugs with it, feel free to open an issue.
 
+## Sigma Search Engine Integration
+Integration of https://sigmasearchengine.com/.
+* `Look Up Related` --> Look up related Sigma rules (see codelense above `related`)
+* `Look Up` --> Look for similar rules with multiline selection (see codelense above `detection`)
+* Hovering over `detection`-strings --> Look for similar rules
+
 ## Requirements
 
 For sigmac compilation: sigmatools

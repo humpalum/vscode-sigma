@@ -247,13 +247,26 @@ export async function related(idx: number) {
 
     console.log(ids)
 
-    let result = new Map<string, SigmaSearchResultEntry>();
+    let resultM = new Map<string, SigmaSearchResultEntry>();
     for (var id of ids) {
         let results = execQuery("id:\""+id+"\"")
         for (var r of await results) {
-            result.set(id, r)
+            resultM.set(id, r)
         }
     }
+
+    const result = Array.from(resultM.values());
+    result.sort((n1,n2) => {
+        if (n1.score > n2.score) {
+            return -1;
+        }
+    
+        if (n1.score < n2.score) {
+            return 1;
+        }
+    
+        return 0;
+    });
 
     let webviewPanel = vscode.window.createWebviewPanel("panel", "Related Sigma Rules", vscode.ViewColumn.Beside, {
         enableScripts: true,
@@ -261,12 +274,12 @@ export async function related(idx: number) {
     
     let html = ""
     html = `<html>` + HEAD
-    result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
+    result.forEach( (rule: SigmaSearchResultEntry) => {
         html += `<button class="accordion">`
         html += `<div style="float:left">`
         html += `<a href="` + sanitizeHtml(rule.url, {allowedTags: [], allowedAttributes: {}}) + `">` + sanitizeHtml(rule.title, {allowedTags: [], allowedAttributes: {}}) + `</a>`
         html += `</div>`
-        html += `<div style="float:right">` + sanitizeHtml(key, {allowedTags: [], allowedAttributes: {}}) + `</div>`
+        html += `<div style="float:right">` + sanitizeHtml(rule.id, {allowedTags: [], allowedAttributes: {}}) + `</div>`
 
         html += `<br><div style="float:left">` + sanitizeHtml(rule.description, {allowedTags: [], allowedAttributes: {}}) + `</div>`
         
@@ -347,16 +360,16 @@ export async function lookup() {
     console.log(queryFullShould)
 
     let queries = [queryFieldMust, queryFieldShould, queryFullMust, queryFullShould]
-    let result = new Map<string, SigmaSearchResultEntry>();
+    let resultM = new Map<string, SigmaSearchResultEntry>();
     for (var q of queries) {
         let results = execQuery(q)
         for (var r of await results) {
-            let tmp = result.get(r.title)
+            let tmp = resultM.get(r.title)
             if (!tmp) {
-                result.set(r.title, r)
+                resultM.set(r.title, r)
             } else {
                 if (r.score > tmp.score) {
-                    result.set(r.title, r)
+                    resultM.set(r.title, r)
                 }
             }
         }
@@ -366,15 +379,28 @@ export async function lookup() {
         enableScripts: true,
     })
 
+    const result = Array.from(resultM.values());
+    result.sort((n1,n2) => {
+        if (n1.score > n2.score) {
+            return -1;
+        }
+    
+        if (n1.score < n2.score) {
+            return 1;
+        }
+    
+        return 0;
+    });
+
     let html = ""
     html = `<html>` + HEAD
     html += "<pre>Query ~ " + sanitizeHtml(queryFullShould, {allowedTags: [], allowedAttributes: {}}) + "</pre>"
-    result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
+    result.forEach((rule: SigmaSearchResultEntry) => {
         html += `<button class="accordion">`
         html += `<div style="float:left">`
         html += `<a href="` + sanitizeHtml(rule.url, {allowedTags: [], allowedAttributes: {}}) + `">` + sanitizeHtml(rule.title, {allowedTags: [], allowedAttributes: {}}) + `</a>`
         html += `</div>`
-        html += `<div style="float:right">Significance: ` + sanitizeHtml(rule.score.toFixed(2), {allowedTags: [], allowedAttributes: {}}) + `</div>`
+        html += `<div style="float:right">String Similarity: ` + sanitizeHtml(rule.score.toFixed(2), {allowedTags: [], allowedAttributes: {}}) + `</div>`
 
         html += `<br><div style="float:left">` + sanitizeHtml(rule.description, {allowedTags: [], allowedAttributes: {}}) + `</div>`
         
