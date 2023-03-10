@@ -264,18 +264,18 @@ export async function related(idx: number) {
     result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
         html += `<button class="accordion">`
         html += `<div style="float:left">`
-        html += `<a href="` + sanitizeHtml(rule.url) + `">` + sanitizeHtml(rule.title) + `</a>`
+        html += `<a href="` + sanitizeHtml(rule.url, {allowedTags: [], allowedAttributes: {}}) + `">` + sanitizeHtml(rule.title, {allowedTags: [], allowedAttributes: {}}) + `</a>`
         html += `</div>`
-        html += `<div style="float:right">` + sanitizeHtml(key) + `</div>`
+        html += `<div style="float:right">` + sanitizeHtml(key, {allowedTags: [], allowedAttributes: {}}) + `</div>`
 
-        html += `<br><div style="float:left">` + sanitizeHtml(rule.description) + `</div>`
+        html += `<br><div style="float:left">` + sanitizeHtml(rule.description, {allowedTags: [], allowedAttributes: {}}) + `</div>`
         
-        html += `<div style="float:left">File: ` + sanitizeHtml(rule.file) + `</div>`
-        html += `<br><div style="float:right">Level: ` + sanitizeHtml(rule.level) + `</div>`
+        html += `<div style="float:left">File: ` + sanitizeHtml(rule.file, {allowedTags: [], allowedAttributes: {}}) + `</div>`
+        html += `<br><div style="float:right">Level: ` + sanitizeHtml(rule.level, {allowedTags: [], allowedAttributes: {}}) + `</div>`
 
         html += `</button>`
         html += `<div class="panel">`
-        html += "<pre>" + sanitizeHtml(rule.detection) + "</pre>"
+        html += "<pre>" + sanitizeHtml(rule.detection, {allowedTags: [], allowedAttributes: {}}) + "</pre>"
         html += `</div><br>`
     });
 
@@ -368,22 +368,22 @@ export async function lookup() {
 
     let html = ""
     html = `<html>` + HEAD
-    html += "<pre>Query ~ " + sanitizeHtml(queryFullShould) + "</pre>"
+    html += "<pre>Query ~ " + sanitizeHtml(queryFullShould, {allowedTags: [], allowedAttributes: {}}) + "</pre>"
     result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
         html += `<button class="accordion">`
         html += `<div style="float:left">`
-        html += `<a href="` + sanitizeHtml(rule.url) + `">` + sanitizeHtml(rule.title) + `</a>`
+        html += `<a href="` + sanitizeHtml(rule.url, {allowedTags: [], allowedAttributes: {}}) + `">` + sanitizeHtml(rule.title, {allowedTags: [], allowedAttributes: {}}) + `</a>`
         html += `</div>`
-        html += `<div style="float:right">Significance: ` + sanitizeHtml(rule.score.toFixed(2)) + `</div>`
+        html += `<div style="float:right">Significance: ` + sanitizeHtml(rule.score.toFixed(2), {allowedTags: [], allowedAttributes: {}}) + `</div>`
 
-        html += `<br><div style="float:left">` + sanitizeHtml(rule.description) + `</div>`
+        html += `<br><div style="float:left">` + sanitizeHtml(rule.description, {allowedTags: [], allowedAttributes: {}}) + `</div>`
         
-        html += `<div style="float:left">File: ` + sanitizeHtml(rule.file) + `</div>`
-        html += `<br><div style="float:right">Level: ` + sanitizeHtml(rule.level) + `</div>`
+        html += `<div style="float:left">File: ` + sanitizeHtml(rule.file, {allowedTags: [], allowedAttributes: {}}) + `</div>`
+        html += `<br><div style="float:right">Level: ` + sanitizeHtml(rule.level, {allowedTags: [], allowedAttributes: {}}) + `</div>`
 
         html += `</button>`
         html += `<div class="panel">`
-        html += "<pre>" + sanitizeHtml(rule.detection) + "</pre>"
+        html += "<pre>" + sanitizeHtml(rule.detection, {allowedTags: [], allowedAttributes: {}}) + "</pre>"
         html += `</div><br>`
     });
 

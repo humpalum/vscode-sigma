@@ -95,8 +95,8 @@ export function provideHover(
             }
             let mds: Array<vscode.MarkdownString> = [];
             result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
-                var s = "#### " + sanitizeHtml(rule.title) + " - Significance: " + sanitizeHtml(rule.score.toFixed(2)) + ` - [SigmaHQ](` + sanitizeHtml(rule.url) + `)` + "\n"
-                s += sanitizeHtml(rule.description) + "\n\n"
+                var s = "#### " + sanitizeHtml(rule.title, {allowedTags: [], allowedAttributes: {}}) + " - Significance: " + sanitizeHtml(rule.score.toFixed(2), {allowedTags: [], allowedAttributes: {}}) + ` - [SigmaHQ](` + sanitizeHtml(rule.url, {allowedTags: [], allowedAttributes: {}}) + `)` + "\n"
+                s += sanitizeHtml(rule.description, {allowedTags: [], allowedAttributes: {}}) + "\n\n"
                 let md = new vscode.MarkdownString(s)
                 mds.push(md)
             });
