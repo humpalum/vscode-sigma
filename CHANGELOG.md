@@ -3,6 +3,12 @@
 All notable changes to the "sigma" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [1.4.1]
+### Added
+- Readme update
+### Fixed
+- Results were not properly sorted
+
 ## [1.4.0]
 ### Added
 - Sigma Search Engine Integration (Thanks to @ph-T https://github.com/humpalum/vscode-sigma/pull/8)

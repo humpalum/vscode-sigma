@@ -78,23 +78,37 @@ export function provideHover(
         console.log(queryFullShould)
 
         let queries = [queryFieldMust, queryFieldShould, queryFullMust, queryFullShould]
-        let result = new Map<string, SigmaSearchResultEntry>();
+        let resultM = new Map<string, SigmaSearchResultEntry>();
         const execQueries = async function (queries: string[]): Promise<vscode.Hover> {
             for (var q of queries) {
                 let results = execQuery(q)
                 for (var r of await results) {
-                    let tmp = result.get(r.title)
+                    let tmp = resultM.get(r.title)
                     if (!tmp) {
-                        result.set(r.title, r)
+                        resultM.set(r.title, r)
                     } else {
                         if (r.score > tmp.score) {
-                            result.set(r.title, r)
+                            resultM.set(r.title, r)
                         }
                     }
                 }
             }
+
+            const result = Array.from(resultM.values());
+            result.sort((n1,n2) => {
+                if (n1.score > n2.score) {
+                    return -1;
+                }
+            
+                if (n1.score < n2.score) {
+                    return 1;
+                }
+            
+                return 0;
+            });
+
             let mds: Array<vscode.MarkdownString> = [];
-            result.forEach(async (rule: SigmaSearchResultEntry, key: string) => {
+            result.forEach((rule: SigmaSearchResultEntry) => {
                 var s = "#### " + sanitizeHtml(rule.title, {allowedTags: [], allowedAttributes: {}}) + " - Significance: " + sanitizeHtml(rule.score.toFixed(2), {allowedTags: [], allowedAttributes: {}}) + ` - [SigmaHQ](` + sanitizeHtml(rule.url, {allowedTags: [], allowedAttributes: {}}) + `)` + "\n"
                 s += sanitizeHtml(rule.description, {allowedTags: [], allowedAttributes: {}}) + "\n\n"
                 let md = new vscode.MarkdownString(s)
