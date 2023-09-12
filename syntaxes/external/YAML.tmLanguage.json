@@ -104,7 +104,7 @@
 								}
 							},
 							"contentName": "entity.name.tag.sigma",
-							"end": "(?x)\n                                (?=\n                                      \\s* $\n                                    | \\s+ \\#\n                                    | \\s* : (\\s|$)\n                                )\n                            ",
+							"end": "(?x)\n                                (?=\n                                      \\s* $\n                                    | \\s+ \\#\n                                    | \\s* . (\\s|$)\n                                )\n                            ",
 							"name": "string.unquoted.plain.out.sigma"
 						}
 					]
