@@ -191,7 +191,7 @@ function generateFalsePositves(
         console.log("SigmaSnippetCompletionItemProvider: Generating 'title' snippet")
     }
     snippet.appendText("falsepositives:\n")
-    snippet.appendText("\t - ")
+    snippet.appendText("\t- ")
     snippet.appendChoice([
         "Unknown",
         "Unlikely",
