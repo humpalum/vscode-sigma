@@ -378,7 +378,7 @@ export async function lookup() {
     let webviewPanel = vscode.window.createWebviewPanel("panel", "Sigma Search", vscode.ViewColumn.Beside, {
         enableScripts: true,
     })
-
+    
     const result = Array.from(resultM.values());
     result.sort((n1,n2) => {
         if (n1.score > n2.score) {
@@ -481,3 +481,54 @@ for (i = 0; i < acc.length; i++) {
 }
 </script>
 `
+
+
+
+export async function openSigconverter() {
+    let backend :string = vscode.workspace.getConfiguration("sigma").get("sigconverterBackend") || "splunk"
+    
+    let editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        return;
+    }
+
+    let rule = editor.document.getText();
+    let rule64 = Buffer.from(rule).toString("base64");
+
+    // Function to generate webview HTML
+    function generateWebviewContent(rule64: string, backend: string) {
+        return `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Sigma Rule Converter</title>
+            </head>
+            <body height="100vh">
+                <iframe id="sigconverter-iframe" style="position: absolute; height: 100%; width: 100%" 
+                        src='https://sigconverter.io/#backend=${backend}&format=default&pipeline=&rule=${rule64}'></iframe>
+            </body>
+            </html>
+        `;
+    }
+
+    let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", vscode.ViewColumn.Beside, {
+        enableScripts: true,
+    });
+
+    webviewPanel.webview.html = generateWebviewContent(rule64, backend);
+
+    // Update the webview content whenever the document changes
+    let disposables = vscode.workspace.onDidChangeTextDocument(event => {
+        if (editor && event.document === editor.document) {
+            rule = editor.document.getText();
+            rule64 = Buffer.from(rule).toString("base64");
+            webviewPanel.webview.html = generateWebviewContent(rule64, backend);
+        }
+    });
+
+    webviewPanel.onDidDispose(() => {
+        disposables.dispose();
+    });
+}

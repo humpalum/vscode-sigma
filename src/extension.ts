@@ -9,7 +9,7 @@ import { provideHover } from "./hoverProvider"
 import { SigmaLensProvider } from "./codeLensProvider"
 import { SigmaSearchEngineCodeLensProvider } from "./codeLensProvider"
 import { RelatedSigmaCodeLensProvider } from "./codeLensProvider"
-import { addTagQuickpick, sigmaCompile, onEnterKey, lookup, related } from "./commandProvider"
+import { addTagQuickpick, sigmaCompile, onEnterKey, lookup, related, openSigconverter } from "./commandProvider"
 
 export var attackTags = require("./techniques.json")
 
@@ -92,6 +92,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(vscode.commands.registerCommand("sigma.AddTag", addTagQuickpick))
     context.subscriptions.push(vscode.commands.registerCommand("sigma.sigmaCompile", sigmaCompile))
+    context.subscriptions.push(vscode.commands.registerCommand("sigma.OpenSigConverter", openSigconverter))
 
     context.subscriptions.push(vscode.commands.registerCommand("sigma.onEnterKey", onEnterKey))
     context.subscriptions.push(
