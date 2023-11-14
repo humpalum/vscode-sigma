@@ -504,7 +504,6 @@ export async function openSigconverter() {
 let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", vscode.ViewColumn.Beside, {
     enableScripts: true,
         });
-
     //webviewPanel.webview.html = generateWebviewContent(rule64, backend);
     webviewPanel.webview.html = html
 
@@ -515,6 +514,9 @@ let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", 
                 let html = `<!DOCTYPE html>
                                 ${SIGMACONVERTERHEAD}
                             <body height="100vh">
+                            <h3>
+                            <span>Backend:</span> <span class="text-sigma-blue">${backend}</span>
+                            </h3>
                             <pre onclick="focusSelect('rule-code')" class="border border-sigma-blue tab-code">
                             <code id="query-code" class="text-sm language-splunk-spl">
                             ${sanitizeHtml(res)}
