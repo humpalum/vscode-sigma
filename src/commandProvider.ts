@@ -4,6 +4,8 @@ const cp = require("child_process")
 import { SigmaSearchResultEntry  } from "./types"
 import {execQuery, escapeString, cleanField} from "./sse_util"
 import * as sanitizeHtml from 'sanitize-html';
+import axios, { AxiosError, AxiosResponse } from "axios"
+import { SIGMACONVERTERHEAD } from "./sigmaconverter/sigmaconverter"
 
 export function sigmaCompile(cfg: any, rulepath: string) {
     let configs = ""
@@ -482,8 +484,6 @@ for (i = 0; i < acc.length; i++) {
 </script>
 `
 
-
-
 export async function openSigconverter() {
     let backend :string = vscode.workspace.getConfiguration("sigma").get("sigconverterBackend") || "splunk"
     
@@ -491,44 +491,88 @@ export async function openSigconverter() {
     if (!editor) {
         return;
     }
+    let html = `<!DOCTYPE html>
+    ${SIGMACONVERTERHEAD}
+    <body height="100vh">
+        <code id="query-code" class="text-sm language-splunk-spl">
+        Loading...
+        </code>
+    </body>
+    </html>
+`
 
-    let rule = editor.document.getText();
-    let rule64 = Buffer.from(rule).toString("base64");
+let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", vscode.ViewColumn.Beside, {
+    enableScripts: true,
+        });
 
-    // Function to generate webview HTML
-    function generateWebviewContent(rule64: string, backend: string) {
-        return `
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Sigma Rule Converter</title>
-            </head>
-            <body height="100vh">
-                <iframe id="sigconverter-iframe" style="position: absolute; height: 100%; width: 100%" 
-                        src='https://sigconverter.io/#backend=${backend}&format=default&pipeline=&rule=${rule64}'></iframe>
-            </body>
-            </html>
-        `;
+    //webviewPanel.webview.html = generateWebviewContent(rule64, backend);
+    webviewPanel.webview.html = html
+
+    const updateSigconverter = () =>{
+        if (editor) {
+            let rule = editor?.document.getText();
+            translateRule(rule, backend).then((res: string) => {
+                let html = `<!DOCTYPE html>
+                                ${SIGMACONVERTERHEAD}
+                            <body height="100vh">
+                            <pre onclick="focusSelect('rule-code')" class="border border-sigma-blue tab-code">
+                            <code id="query-code" class="text-sm language-splunk-spl">
+                            ${sanitizeHtml(res)}
+                            </code>
+                                </pre>
+                                </body>
+                            </html>
+            `
+            webviewPanel.webview.html = html
+        }).catch((err: any) => {
+            console.log(err)
+        }
+        )
+        }
     }
+    updateSigconverter()
 
-    let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", vscode.ViewColumn.Beside, {
-        enableScripts: true,
-    });
-
-    webviewPanel.webview.html = generateWebviewContent(rule64, backend);
 
     // Update the webview content whenever the document changes
     let disposables = vscode.workspace.onDidChangeTextDocument(event => {
-        if (editor && event.document === editor.document) {
-            rule = editor.document.getText();
-            rule64 = Buffer.from(rule).toString("base64");
-            webviewPanel.webview.html = generateWebviewContent(rule64, backend);
+            updateSigconverter()       
         }
-    });
+    )
 
     webviewPanel.onDidDispose(() => {
         disposables.dispose();
     });
 }
+
+
+// Translate Rule using Sigconverter
+async function translateRule(rule: string, backend: string) {
+    let result = ""
+    let rule64 = Buffer.from(rule).toString("base64");
+    let url = `https://sigconverter.io/sigma`
+    
+    const data = {
+        rule: rule64,
+        format: "default",
+        target: backend,
+        pipelineYml: "",
+        pipeline: []
+    }
+
+    await axios.post(url, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((res : AxiosResponse) => {
+        result = res.data
+    }).catch((err: AxiosError) => {
+        console.log("Ohoh Something went wrong:")
+        console.log(err.response?.data)
+        console.log(err.request?.data)
+        console.log(err)
+    }
+    )
+        return result
+}
+
+
