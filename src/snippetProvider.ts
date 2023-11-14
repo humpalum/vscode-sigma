@@ -17,6 +17,21 @@ function generateUUIDSnippet(
     snippet.appendVariable("UUID", "Could not generate UUID")
     return snippet
 }
+
+function generateRelatedSnippet(
+    snippet: vscode.SnippetString = new vscode.SnippetString(),
+    numTabs = 0,
+): vscode.SnippetString {
+    if (debug) {
+        console.log("SigmaSnippetCompletionItemProvider: Generating 'related' snippet")
+    }
+    snippet.appendText("related:\n")
+    snippet.appendText("\t- id:")
+    snippet.appendText("\t  type:")
+    snippet.appendChoice(['derived', 'merged', 'obsoletes', 'renamed', 'similar'])
+    return snippet
+}
+
 function generateStatusSnippet(
     snippet: vscode.SnippetString = new vscode.SnippetString(),
     numTabs = 0,
@@ -58,7 +73,7 @@ function generateModifiedSnippet(
     numTabs = 0,
 ): vscode.SnippetString {
     if (debug) {
-        console.log("SigmaSnippetCompletionItemProvider: Generating 'date' snippet")
+        console.log("SigmaSnippetCompletionItemProvider: Generating 'modified' snippet")
     }
     snippet.appendText("modified: ")
     generateTodaySnippet(snippet)
@@ -94,6 +109,18 @@ function generateReferencesSnippet(
     return snippet
 }
 
+function generateTagsSnippet(
+    snippet: vscode.SnippetString = new vscode.SnippetString(),
+    numTabs = 0,
+): vscode.SnippetString {
+    if (debug) {
+        console.log("SigmaSnippetCompletionItemProvider: Generating 'tags' snippet")
+    }
+    snippet.appendText("tags:\n")
+    snippet.appendText("\t- ")
+    return snippet
+}
+
 function generateLogsourceSnippet(
     snippet: vscode.SnippetString = new vscode.SnippetString(),
     numTabs = 0,
@@ -108,6 +135,9 @@ function generateLogsourceSnippet(
     snippet.appendText("\n")
     snippet.appendText("\t")
     generateProductSnippet(snippet)
+    snippet.appendText("\n")
+    snippet.appendText("\t")
+    generateServiceSnippet(snippet)
     return snippet
 }
 
@@ -121,13 +151,38 @@ function generateCategorySnippet(
     snippet.appendText("category: ")
     // TODO Choices for each
     snippet.appendChoice([
-        "process_creation",
-        "process_access",
-        "registry_event",
-        "ps_script",
+        "antivirus",
+        "application",
+        "create_remote_thread",
+        "create_stream_hash",
+        "database",
+        "dns_query",
+        "dns",
+        "driver_load",
+        "file_access",
+        "file_change",
+        "file_delete",
         "file_event",
-        "webserver",
+        "file_rename",
+        "firewall",
         "image_load",
+        "network_connection",
+        "pipe_created",
+        "process_access",
+        "process_creation",
+        "process_tampering",
+        "proxy",
+        "ps_classic_start",
+        "ps_module",
+        "ps_script",
+        "raw_access_thread",
+        "registry_add",
+        "registry_delete",
+        "registry_event",
+        "registry_rename",
+        "registry_set",
+        "webserver",
+        "wmi_event",
     ])
     return snippet
 }
@@ -140,7 +195,52 @@ function generateProductSnippet(
         console.log("SigmaSnippetCompletionItemProvider: Generating 'product' snippet")
     }
     snippet.appendText("product: ")
-    snippet.appendChoice(["windows", "linux", "azure", "macos", "aws"])
+    snippet.appendChoice([
+        "aws", 
+        "azure", 
+        "cisco",
+        "gcp", 
+        "github",
+        "huawei",
+        "juniper",
+        "linux", 
+        "m365",
+        "macos", 
+        "okta",
+        "onelogin",
+        "spring", 
+        "windows", 
+        "zeek",
+    ])
+    return snippet
+}
+
+function generateServiceSnippet(
+    snippet: vscode.SnippetString = new vscode.SnippetString(),
+    numTabs = 0,
+): vscode.SnippetString {
+    if (debug) {
+        console.log("SigmaSnippetCompletionItemProvider: Generating 'service' snippet")
+    }
+    snippet.appendText("service: ")
+    snippet.appendChoice([
+        "activitylogs",
+        "audit",
+        "auditd",
+        "auditlogs",
+        "cloudtrail",
+        "gcp.audit",
+        "google_workspace.admin",
+        "netflow",
+        "okta",
+        "pim",
+        "riskdetection",
+        "security",
+        "signinlogs",
+        "sshd",
+        "syslog",
+        "threat_management",
+    ])
     return snippet
 }
 
@@ -188,7 +288,7 @@ function generateFalsePositves(
     numTabs = 0,
 ): vscode.SnippetString {
     if (debug) {
-        console.log("SigmaSnippetCompletionItemProvider: Generating 'title' snippet")
+        console.log("SigmaSnippetCompletionItemProvider: Generating 'falsepositives' snippet")
     }
     snippet.appendText("falsepositives:\n")
     snippet.appendText("\t- ")
@@ -198,6 +298,7 @@ function generateFalsePositves(
         "Software installation",
         "Legitimate administrative activities",
         "Legitimate PowerShell scripts",
+        "Vulnerability Scanners",
     ])
 
     return snippet
@@ -218,14 +319,14 @@ function generateRuleSnippet(
     snippet.appendText("\n")
     snippet.appendText("description: Detects ")
     snippet.appendText("\n")
+    generateReferencesSnippet(snippet)
+    snippet.appendText("\n")
     generateAuthorSnippet(snippet)
     snippet.appendText("\n")
     generateDateSnippet(snippet)
     snippet.appendText("\n")
-    generateReferencesSnippet(snippet)
+    generateTagsSnippet(snippet)
     snippet.appendText("\n")
-    snippet.appendText("tags:\n")
-    snippet.appendText("\t- \n")
     generateLogsourceSnippet(snippet)
     snippet.appendText("\n")
     generateDetectionSnippet(snippet)
@@ -397,6 +498,9 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
                     break
                 case "id: ":
                     snippet = generateUUIDSnippet()
+                    break
+                case "related: ":
+                    snippet = generateRelatedSnippet()
                     break
                 case "status: ":
                     snippet = generateStatusSnippet()
