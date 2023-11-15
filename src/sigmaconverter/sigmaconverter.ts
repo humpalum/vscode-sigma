@@ -1,4 +1,4 @@
-
+/* Based on https://github.com/magicsword-io/sigconverter.io */
 
 var SIGMACONVERTERCSS = `
 /* Color Definitions */
