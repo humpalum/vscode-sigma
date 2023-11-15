@@ -3,6 +3,14 @@
 All notable changes to the "sigma" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [1.5.1]
+### Added
+- Sigconverter.io codelens
+- Some more Snippets (Thanks to @nasbench https://github.com/humpalum/vscode-sigma/pull/16)
+
+### Fixed
+- Snippet having to many whitespaces (Thanks to @ThureinOo https://github.com/humpalum/vscode-sigma/pull/14)
+
 ## [1.4.1]
 ### Added
 - Readme update
