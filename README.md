@@ -1,6 +1,15 @@
-![sigma_logo](./images/Sigma_0.3.png)
+# Sigma VsCode Extension
 
-# sigma
+<a href="https://sigmahq.io/">
+<p align="center">
+<br />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./images/sigma_logo_dark.png">
+  <img width="454" alt="Sigma Logo" src="./images/sigma_logo_light.png">
+</picture>
+</p>
+</a>
+<br />
 
 This [extension](https://marketplace.visualstudio.com/items?itemName=humpalum.sigma) will enhance your VSCode for the [Sigma signature format](https://github.com/SigmaHQ/sigma)
 
@@ -18,13 +27,17 @@ This [extension](https://marketplace.visualstudio.com/items?itemName=humpalum.si
 
 
 Checkout Ideas.md for planned features!
+
 ## Installation
+
 Simply grab it in the [VSCode marketplace](https://marketplace.visualstudio.com/items?itemName=humpalum.sigma).  
+
 Install it from VSCode in the Extension Tab (Ctrl + Shift + X) and search for Sigma.  
+
 - Setup your Author name in the extensions config section. `sigma.author`
 - Setup your sigmac compile configs in `sigma.compileConfig`
   - For example:
-  ``` json
+  ```json
   [
    {
       "tag": "OptionalTag",
@@ -39,29 +52,41 @@ Install it from VSCode in the Extension Tab (Ctrl + Shift + X) and search for Si
   ]
   ```
 
-
 ## Features
+
 ### Snippets
-Various Snippets:
-- new Rule Snippet
+
+The extension offers various snippets to streamline the sigma rule creation process:
+
+- `newrule` Snippet
+
 ![newRules](images/gifs/newrules.gif)
-- auto uuid
-- automatic Author
-- Date/modifiedDate
-- logsource
-  - category
-  - product
 
+- `title`
+- `id`
+- `related`
+- `status`
+- `reference` (links will be auto-pasted)
 
-![snippets](images/gifs/snippetslogsource.gif)
-- falsepositives
-- status
-- level
-- title
-- reference (links will be auto-pasted)
 ![snippets](images/gifs/snippets.gif)
 
+- `author`
+- `date`/`modified`
+- `tags`
+- `logsource`
+  - `category`
+  - `product`
+  - `service`
+
+![snippets](images/gifs/snippetslogsource.gif)
+
+- `falsepositives`
+- `level`
+
 ### Diagnostics
+
+The extension will perform some sanity checks on the sigma rule itself on the fly to make sure that it's confomring with the sigma standard and the SigmaHQ conventions and guidelines. A list of the currently implemented checks is availbale below
+
 - Title too Long
 - Description too Short
 - 'contains' at wrong position in modifiers
