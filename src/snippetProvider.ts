@@ -26,8 +26,8 @@ function generateRelatedSnippet(
         console.log("SigmaSnippetCompletionItemProvider: Generating 'related' snippet")
     }
     snippet.appendText("related:\n")
-    snippet.appendText("\t- id:")
-    snippet.appendText("\t  type:")
+    snippet.appendText("\t- id: \n")
+    snippet.appendText("\t  type: ")
     snippet.appendChoice(['derived', 'merged', 'obsoletes', 'renamed', 'similar'])
     return snippet
 }
@@ -380,6 +380,38 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
         statusItem.documentation.appendCodeblock("status: [choice]")
         items.items.push(statusItem)
 
+
+        const relatedItem: vscode.CompletionItem = new vscode.CompletionItem(
+            "related: ",
+            vscode.CompletionItemKind.Snippet,
+        )
+        relatedItem.detail = "Generate a new related (sigma)"
+        relatedItem.insertText = new vscode.SnippetString("related: ")
+        relatedItem.documentation = new vscode.MarkdownString("Generates related string")
+        relatedItem.documentation.appendCodeblock("related: \n\t- id: \n\t  type:")
+        items.items.push(relatedItem)
+
+        const tagItem: vscode.CompletionItem = new vscode.CompletionItem(
+            "tags: ",
+            vscode.CompletionItemKind.Snippet,
+        )
+        tagItem.detail = "Generate a new tags section (sigma)"
+        tagItem.insertText = new vscode.SnippetString("tags: ")
+        tagItem.documentation = new vscode.MarkdownString("Generates tags section")
+        tagItem.documentation.appendCodeblock("tags: \n\t- ")
+        items.items.push(tagItem)
+
+        const serviceItem: vscode.CompletionItem = new vscode.CompletionItem(
+            "service: ",
+            vscode.CompletionItemKind.Snippet,
+        )
+        serviceItem.detail = "Generate a new service section (sigma)"
+        serviceItem.insertText = new vscode.SnippetString("service: ")
+        serviceItem.documentation = new vscode.MarkdownString("Generates service section")
+        serviceItem.documentation.appendCodeblock("service: ")
+        items.items.push(serviceItem)
+
+    
         const authorItem: vscode.CompletionItem = new vscode.CompletionItem(
             "author: ",
             vscode.CompletionItemKind.Snippet,
@@ -501,6 +533,12 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
                     break
                 case "related: ":
                     snippet = generateRelatedSnippet()
+                    break
+                case "tags: ":
+                    snippet = generateTagsSnippet()
+                    break
+                case "service: ":
+                    snippet = generateServiceSnippet()
                     break
                 case "status: ":
                     snippet = generateStatusSnippet()
