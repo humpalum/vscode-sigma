@@ -4,6 +4,8 @@ const cp = require("child_process")
 import { SigmaSearchResultEntry  } from "./types"
 import {execQuery, escapeString, cleanField} from "./sse_util"
 import * as sanitizeHtml from 'sanitize-html';
+import axios, { AxiosError, AxiosResponse } from "axios"
+import { SIGMACONVERTERHEAD } from "./sigmaconverter/sigmaconverter"
 
 export function sigmaCompile(cfg: any, rulepath: string) {
     let configs = ""
@@ -378,7 +380,7 @@ export async function lookup() {
     let webviewPanel = vscode.window.createWebviewPanel("panel", "Sigma Search", vscode.ViewColumn.Beside, {
         enableScripts: true,
     })
-
+    
     const result = Array.from(resultM.values());
     result.sort((n1,n2) => {
         if (n1.score > n2.score) {
@@ -481,3 +483,98 @@ for (i = 0; i < acc.length; i++) {
 }
 </script>
 `
+
+export async function openSigconverter() {
+    let backend :string = vscode.workspace.getConfiguration("sigma").get("sigconverterBackend") || "splunk"
+    
+    let editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        return;
+    }
+    let html = `<!DOCTYPE html>
+    ${SIGMACONVERTERHEAD}
+    <body height="100vh">
+        <code id="query-code" class="text-sm language-splunk-spl">
+        Loading...
+        </code>
+    </body>
+    </html>
+`
+
+let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", vscode.ViewColumn.Beside, {
+    enableScripts: true,
+        });
+    //webviewPanel.webview.html = generateWebviewContent(rule64, backend);
+    webviewPanel.webview.html = html
+
+    const updateSigconverter = () =>{
+        if (editor) {
+            let rule = editor?.document.getText();
+            translateRule(rule, backend).then((res: string) => {
+                let html = `<!DOCTYPE html>
+                                ${SIGMACONVERTERHEAD}
+                            <body height="100vh">
+                            <h3>
+                            <span>Backend:</span> <span class="text-sigma-blue">${sanitizeHtml(backend)}</span>
+                            </h3>
+                            <pre onclick="focusSelect('rule-code')" class="border border-sigma-blue tab-code">
+                            <code id="query-code" class="text-sm language-splunk-spl">
+                            ${sanitizeHtml(res)}
+                            </code>
+                                </pre>
+                                </body>
+                            </html>
+            `
+            webviewPanel.webview.html = html
+        }).catch((err: any) => {
+            console.log(err)
+        }
+        )
+        }
+    }
+    updateSigconverter()
+
+
+    // Update the webview content whenever the document changes
+    let disposables = vscode.workspace.onDidChangeTextDocument(event => {
+            updateSigconverter()       
+        }
+    )
+
+    webviewPanel.onDidDispose(() => {
+        disposables.dispose();
+    });
+}
+
+
+// Translate Rule using Sigconverter
+async function translateRule(rule: string, backend: string) {
+    let result = ""
+    let rule64 = Buffer.from(rule).toString("base64");
+    let url = `https://sigconverter.io/sigma`
+    
+    const data = {
+        rule: rule64,
+        format: "default",
+        target: backend,
+        pipelineYml: "",
+        pipeline: []
+    }
+
+    await axios.post(url, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((res : AxiosResponse) => {
+        result = res.data
+    }).catch((err: AxiosError) => {
+        console.log("Ohoh Something went wrong:")
+        console.log(err.response?.data)
+        console.log(err.request?.data)
+        console.log(err)
+    }
+    )
+        return result
+}
+
+

@@ -25,12 +25,28 @@ export class SigmaLensProvider implements vscode.CodeLensProvider {
                 lenses.push(codeLens)
             }
         }
+        let clsSigConv
+        if ((clsSigConv = this.prepSigConverter())) {
+            lenses = lenses.concat(clsSigConv)
+        }
         let cls
         if ((cls = this.prepSigmaCompiler())) {
             lenses = lenses.concat(cls)
         }
+        
         return lenses
     }
+
+    prepSigConverter(): vscode.CodeLens[] | undefined {
+        let strRange = new vscode.Range(0, 0, 0, 0)
+        let c: vscode.Command = {
+            command: "sigma.OpenSigConverter",
+            title: "Sigconverter",
+        }
+        let codeLens = new vscode.CodeLens(strRange, c)
+        return [codeLens]
+    }
+
     prepSigmaCompiler(): vscode.CodeLens[] | undefined {
         return sigmacConfigs?.map(config => {
             let strRange = new vscode.Range(0, 0, 0, 0)
@@ -75,7 +91,7 @@ export class RelatedSigmaCodeLensProvider implements vscode.CodeLensProvider {
                 let c1: vscode.Command = {
                     command: "sigma.related",
                     title: "Look Up Related",
-                    arguments: [strRange.start.line ],
+                    arguments: [strRange.start.line],
                 }
                 lenses.push(new vscode.CodeLens(strRange, c1))
             }
