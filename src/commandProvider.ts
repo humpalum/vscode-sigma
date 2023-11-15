@@ -515,7 +515,7 @@ let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", 
                                 ${SIGMACONVERTERHEAD}
                             <body height="100vh">
                             <h3>
-                            <span>Backend:</span> <span class="text-sigma-blue">${backend}</span>
+                            <span>Backend:</span> <span class="text-sigma-blue">${sanitizeHtml(backend)}</span>
                             </h3>
                             <pre onclick="focusSelect('rule-code')" class="border border-sigma-blue tab-code">
                             <code id="query-code" class="text-sm language-splunk-spl">
