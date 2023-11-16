@@ -568,10 +568,7 @@ async function translateRule(rule: string, backend: string) {
     }).then((res : AxiosResponse) => {
         result = res.data
     }).catch((err: AxiosError) => {
-        console.log("Ohoh Something went wrong:")
-        console.log(err.response?.data)
-        console.log(err.request?.data)
-        console.log(err)
+        result = err.response?.data  as string
     }
     )
         return result
