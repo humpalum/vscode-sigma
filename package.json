@@ -2,7 +2,7 @@
     "name": "sigma",
     "displayName": "sigma",
     "description": "Support for Sigma Signature Format",
-    "version": "1.4.1",
+    "version": "1.5.2",
     "engines": {
         "vscode": "^1.66.0"
     },
@@ -64,7 +64,12 @@
             {
                 "command": "sigma.sigmaCompile",
                 "title": "Compile Sigma Rule"
+            },
+            {
+                "command": "sigma.OpenSigConverter",
+                "title": "Open Rule in sigconverter.io"
             }
+            
         ],
         "keybindings": [
             {
@@ -125,6 +130,12 @@
                             "description": "Any additional args you want to use for that sigmac"
                         }
                     }
+                },
+                "sigma.sigconverterBackend": {
+                    "type": "string",
+                    "default": "splunk",
+                    "enum": ["splunk", "loki","microsoft365defender", "opensearch","qradar","sentinelone","sentinelone_pq"],
+                    "description": "Default backend in sigconverter "
                 }
             },
             "configurationDefaults": {

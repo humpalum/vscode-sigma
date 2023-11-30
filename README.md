@@ -121,11 +121,15 @@ After defining your sigmac configs, click on the codelens in the first line. The
 The extension can be used in github vscode mode and on vscode.dev.
 However these are not really tested, so in case you find bugs with it, feel free to open an issue.
 
-## Sigma Search Engine Integration
+### Sigma Search Engine Integration
 Integration of https://sigmasearchengine.com/.
 * `Look Up Related` --> Look up related Sigma rules (see codelense above `related`)
 * `Look Up` --> Look for similar rules with multiline selection (see codelense above `detection`)
 * Hovering over `detection`-strings --> Look for similar rules
+
+### Sigconverter.io codelens
+* Click on the `Sigconverter`-Codelens in the first line to your sigma rule converted by sigconverter.
+![sigconverter](images/sigconverter.png)
 
 ## Requirements
 
@@ -138,6 +142,9 @@ pip install sigmatools
 
 - sigma.author: Set this for the newRule and author snippet
 - sigma.debug: If true, debug messages will be printed in console
+- sigma.CompileConfig: SigmaC config to be used in codelens
+- sigma.sigconverterBacken: Sets the target backend to be used for sigconverter
+- sigma.sigmasearchengineurl: Lets you use your own sigmasearchengine
 
 ## Known Issues
 Only Files that are opened and begin with `title:` are set as `sigma`

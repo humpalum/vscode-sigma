@@ -4,6 +4,8 @@ const cp = require("child_process")
 import { SigmaSearchResultEntry  } from "./types"
 import {execQuery, escapeString, cleanField} from "./sse_util"
 import * as sanitizeHtml from 'sanitize-html';
+import axios, { AxiosError, AxiosResponse } from "axios"
+import { SIGMACONVERTERHEAD } from "./sigmaconverter/sigmaconverter"
 
 export function sigmaCompile(cfg: any, rulepath: string) {
     let configs = ""
@@ -378,7 +380,7 @@ export async function lookup() {
     let webviewPanel = vscode.window.createWebviewPanel("panel", "Sigma Search", vscode.ViewColumn.Beside, {
         enableScripts: true,
     })
-
+    
     const result = Array.from(resultM.values());
     result.sort((n1,n2) => {
         if (n1.score > n2.score) {
@@ -481,3 +483,161 @@ for (i = 0; i < acc.length; i++) {
 }
 </script>
 `
+
+export async function openSigconverter() {
+    let backend :string = vscode.workspace.getConfiguration("sigma").get("sigconverterBackend") || "splunk"
+    
+    let editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        return;
+    }
+    let html = `<!DOCTYPE html>
+    ${SIGMACONVERTERHEAD}
+    <body height="100vh">
+        <code id="query-code" class="text-sm language-splunk-spl">
+        Loading...
+        </code>
+    </body>
+    </html>
+`
+
+let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", vscode.ViewColumn.Beside, {
+    enableScripts: true,
+        });
+    //webviewPanel.webview.html = generateWebviewContent(rule64, backend);
+    webviewPanel.webview.html = html
+
+    const updateSigconverter = () =>{
+        if (editor) {
+            let rule = editor?.document.getText();
+            translateRule(rule, backend).then((res: string) => {
+                let html = `<!DOCTYPE html>
+                                ${SIGMACONVERTERHEAD}
+                            <body height="100vh">
+                            <div class="flex flex-row items-center gap-2 mb-2" >
+                            <p class="text-lg">
+                            <span>Backend:</span> <span class="text-sigma-blue">${sanitizeHtml(backend)}</span>
+                            </p>
+                            <span class="px-3 py-2 border-x border-t rounded border-sigma-blue">
+                                <i id="rule-share-btn" class="fas fa-share-nodes px-1 py-0 my-0 text-sm text-sigma-blue cursor-pointer"></i>
+                            </span>
+                            <span  id="query-copy-btn" class="px-3 py-2 border-x border-t rounded border-sigma-blue text-sigma-blue cursor-pointer select-none">
+                            <i class="fas fa-copy px-1 py-0 my-0 text-sm"></i>
+                            Query
+                            </span>
+                            <script>
+                                const vscode = acquireVsCodeApi();
+                                var ruleShareBtn = document.getElementById("rule-share-btn");
+                                ruleShareBtn.addEventListener('click', () => {
+                                    const message = {
+                                        command: 'shareLink',
+                                    };
+                                    vscode.postMessage(message);
+                                    ruleShareBtn.classList.toggle("text-sigma-blue");
+                                    ruleShareBtn.classList.toggle("text-green-400");
+                                
+                                    setTimeout(function () {
+                                    ruleShareBtn.classList.toggle("text-sigma-blue");
+                                    ruleShareBtn.classList.toggle("text-green-400");
+                                    }, 1200);
+                                });
+                                    var copyBtn = document.getElementById("query-copy-btn");
+                                    copyBtn.addEventListener('click', () => {
+                                        const message = {
+                                            command: 'copyRes',
+                                        };
+                                        vscode.postMessage(message);
+                                        copyBtn.classList.toggle("text-sigma-blue");
+                                        copyBtn.classList.toggle("text-green-400");
+                                      
+                                        setTimeout(function () {
+                                            copyBtn.classList.toggle("text-sigma-blue");
+                                            copyBtn.classList.toggle("text-green-400");
+                                        }, 1200);
+                                    });
+                                </script>
+                            </div>
+                            <pre onclick="focusSelect('rule-code')" class="border border-sigma-blue tab-code">
+                            <code id="query-code" class="text-sm language-splunk-spl">
+                            ${sanitizeHtml(res)}
+                            </code>
+                                </pre>
+                                </body>
+                            </html>
+            `
+            webviewPanel.webview.html = html
+            webviewPanel.webview.onDidReceiveMessage(
+                message => {
+                    switch (message.command) {
+                        case 'shareLink':
+                            vscode.env.clipboard.writeText(getShareLink(rule, backend))
+                              .then(() => {
+                                vscode.window.showInformationMessage("Successfully copied to clipboard!");
+                              })
+                            return;
+                        case 'copyRes':
+                            vscode.env.clipboard.writeText(res)
+                              .then(() => {
+                                vscode.window.showInformationMessage("Successfully copied to clipboard!");
+                              })
+                            return;
+                    }
+                },
+                undefined
+        )
+
+        }).catch((err: any) => {
+            console.log(err)
+        }
+        )
+        }
+    }
+    updateSigconverter()
+
+
+    // Update the webview content whenever the document changes
+    let disposables = vscode.workspace.onDidChangeTextDocument(event => {
+            updateSigconverter()       
+        }
+    )
+
+    webviewPanel.onDidDispose(() => {
+        disposables.dispose();
+    });
+}
+
+
+// Translate Rule using Sigconverter
+async function translateRule(rule: string, backend: string) {
+    let result = ""
+    let rule64 = Buffer.from(rule).toString("base64");
+    let url = `https://sigconverter.io/sigma`
+    
+    const data = {
+        rule: rule64,
+        format: "default",
+        target: backend,
+        pipelineYml: "",
+        pipeline: []
+    }
+
+    await axios.post(url, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((res : AxiosResponse) => {
+        result = res.data
+    }).catch((err: AxiosError) => {
+        result = err.response?.data  as string
+    }
+    )
+        return result
+}
+
+
+
+function getShareLink(rule: string, backend: string) {
+    let rule64 = Buffer.from(rule).toString("base64");
+    let url = `https://sigconverter.io/#backend=${backend}format=default&pipeline=&rule=${rule64}&pipelineYml=`
+    return url
+}
