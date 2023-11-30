@@ -5,6 +5,7 @@ import * as vscode from "vscode"
 export const configSection = "sigma"
 export let sigmacConfigs: any[] | undefined
 export let sigmasearchengineURL: any[] | undefined
+export let sigconverterUrl = "https://sigconverter.io/"
 export let debug = false
 
 export function setConfigs(): void {
@@ -17,4 +18,5 @@ export function setConfigs(): void {
     }
     sigmacConfigs = vscode.workspace.getConfiguration(configSection).get("compileConfig")
     sigmasearchengineURL = vscode.workspace.getConfiguration(configSection).get("sigmasearchengineurl")
+    sigconverterUrl = vscode.workspace.getConfiguration(configSection).get("sigconverterUrl")
 }

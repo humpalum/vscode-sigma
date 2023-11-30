@@ -143,8 +143,9 @@ pip install sigmatools
 - sigma.author: Set this for the newRule and author snippet
 - sigma.debug: If true, debug messages will be printed in console
 - sigma.CompileConfig: SigmaC config to be used in codelens
-- sigma.sigconverterBacken: Sets the target backend to be used for sigconverter
+- sigma.sigconverterBackend: Sets the target backend to be used for sigconverter
 - sigma.sigmasearchengineurl: Lets you use your own sigmasearchengine
+- sigma.sigconverterUrl: Lets you use your own instance of sigconverter
 
 ## Known Issues
 Only Files that are opened and begin with `title:` are set as `sigma`

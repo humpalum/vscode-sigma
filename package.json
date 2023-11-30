@@ -136,6 +136,11 @@
                     "default": "splunk",
                     "enum": ["splunk", "loki","microsoft365defender", "opensearch","qradar","sentinelone","sentinelone_pq"],
                     "description": "Default backend in sigconverter "
+                },
+                "sigma.sigconverterUrl": {
+                    "type": "string",
+                    "default": "https://sigconverter.io/",
+                    "description": "URL to Sigconverter Instance"
                 }
             },
             "configurationDefaults": {
