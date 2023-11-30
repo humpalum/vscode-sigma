@@ -206,7 +206,7 @@ export function subscribeToDocumentChanges(
 
 function testSigmaTags(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
     try {
-        var tagsPattern = /cve\.\d+\.\d+|attack\.t\d+\.*\d*|attack\.[a-z_]+|car\.\d{4}-\d{2}-\d{3}/
+        var tagsPattern = /cve\.\d+\.\d+|attack\.t\d+\.*\d*|attack\.[a-z_]+|car\.\d{4}-\d{2}-\d{3}|tlp\./
         let knowntags: string[] = []
         var diagnostics = rule.tags
             .map((tag: string) => {
