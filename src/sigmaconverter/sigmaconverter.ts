@@ -142,12 +142,18 @@ var SIGMACONVERTERCSS = `
 
 export var SIGMACONVERTERHEAD= `
 <head>
+  <!-- Tailwind UI -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+  
   <!-- PrismJS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js" integrity="sha512-RDQSW3KoqJMiX0L/UBgwBmH1EmRYp8LBOiLaA8rBHIy+7OGP/7Gxg8vbt8wG4ZYd29P0Fnoq6+LOytCqx3cyoQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-yaml.min.js" integrity="sha512-6O/PZimM3TD1NN3yrazePA4AbZrPcwt1QCGJrVY7WoHDJROZFc9TlBvIKMe+QfqgcslW4lQeBzNJEJvIMC8WhA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-splunk-spl.min.js" integrity="sha512-RLhcqVEXOdbZPCJ8YG5fZDRIK3nXiS6erMtnzLyaKzS17H7mRi/9a1o+s2TM2XlWk4Nk7E579LyL63R7nUlrgQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-bash.min.js" integrity="sha512-ZqfG//sXQwAA7DOArFJyMmZQ3knKe+0ft3tPQZPvDPJR04IatmhVO5pTazVV+fLVDYSy28PhoBeUj5wxGRiGAA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   <style>
     ${SIGMACONVERTERCSS}
   </style>

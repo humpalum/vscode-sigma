@@ -514,9 +514,49 @@ let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", 
                 let html = `<!DOCTYPE html>
                                 ${SIGMACONVERTERHEAD}
                             <body height="100vh">
-                            <h3>
+                            <div class="flex flex-row items-center gap-2 mb-2" >
+                            <p class="text-lg">
                             <span>Backend:</span> <span class="text-sigma-blue">${sanitizeHtml(backend)}</span>
-                            </h3>
+                            </p>
+                            <span class="px-3 py-2 border-x border-t rounded border-sigma-blue">
+                                <i id="rule-share-btn" class="fas fa-share-nodes px-1 py-0 my-0 text-sm text-sigma-blue cursor-pointer"></i>
+                            </span>
+                            <span  id="query-copy-btn" class="px-3 py-2 border-x border-t rounded border-sigma-blue text-sigma-blue cursor-pointer select-none">
+                            <i class="fas fa-copy px-1 py-0 my-0 text-sm"></i>
+                            Query
+                            </span>
+                            <script>
+                                const vscode = acquireVsCodeApi();
+                                var ruleShareBtn = document.getElementById("rule-share-btn");
+                                ruleShareBtn.addEventListener('click', () => {
+                                    const message = {
+                                        command: 'shareLink',
+                                    };
+                                    vscode.postMessage(message);
+                                    ruleShareBtn.classList.toggle("text-sigma-blue");
+                                    ruleShareBtn.classList.toggle("text-green-400");
+                                
+                                    setTimeout(function () {
+                                    ruleShareBtn.classList.toggle("text-sigma-blue");
+                                    ruleShareBtn.classList.toggle("text-green-400");
+                                    }, 1200);
+                                });
+                                    var copyBtn = document.getElementById("query-copy-btn");
+                                    copyBtn.addEventListener('click', () => {
+                                        const message = {
+                                            command: 'copyRes',
+                                        };
+                                        vscode.postMessage(message);
+                                        copyBtn.classList.toggle("text-sigma-blue");
+                                        copyBtn.classList.toggle("text-green-400");
+                                      
+                                        setTimeout(function () {
+                                            copyBtn.classList.toggle("text-sigma-blue");
+                                            copyBtn.classList.toggle("text-green-400");
+                                        }, 1200);
+                                    });
+                                </script>
+                            </div>
                             <pre onclick="focusSelect('rule-code')" class="border border-sigma-blue tab-code">
                             <code id="query-code" class="text-sm language-splunk-spl">
                             ${sanitizeHtml(res)}
@@ -526,6 +566,26 @@ let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", 
                             </html>
             `
             webviewPanel.webview.html = html
+            webviewPanel.webview.onDidReceiveMessage(
+                message => {
+                    switch (message.command) {
+                        case 'shareLink':
+                            vscode.env.clipboard.writeText(getShareLink(rule, backend))
+                              .then(() => {
+                                vscode.window.showInformationMessage("Successfully copied to clipboard!");
+                              })
+                            return;
+                        case 'copyRes':
+                            vscode.env.clipboard.writeText(res)
+                              .then(() => {
+                                vscode.window.showInformationMessage("Successfully copied to clipboard!");
+                              })
+                            return;
+                    }
+                },
+                undefined
+        )
+
         }).catch((err: any) => {
             console.log(err)
         }
@@ -575,3 +635,9 @@ async function translateRule(rule: string, backend: string) {
 }
 
 
+
+function getShareLink(rule: string, backend: string) {
+    let rule64 = Buffer.from(rule).toString("base64");
+    let url = `https://sigconverter.io/#backend=${backend}format=default&pipeline=&rule=${rule64}&pipelineYml=`
+    return url
+}
