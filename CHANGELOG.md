@@ -2,7 +2,13 @@
 
 All notable changes to the "sigma" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [1.5.2]
+### Added
+- Copy Button in sigconverter
+- Share Button in sigconverter
+### Fixed 
+- Added "tlp" in allowed tags
+
 ## [1.5.1]
 ### Fixed
 - Errors from sigconverter will be shown properly
