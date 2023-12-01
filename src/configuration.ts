@@ -18,5 +18,5 @@ export function setConfigs(): void {
     }
     sigmacConfigs = vscode.workspace.getConfiguration(configSection).get("compileConfig")
     sigmasearchengineURL = vscode.workspace.getConfiguration(configSection).get("sigmasearchengineurl")
-    sigconverterUrl = vscode.workspace.getConfiguration(configSection).get("sigconverterUrl")
+    sigconverterUrl = vscode.workspace.getConfiguration(configSection).get("sigconverterUrl") || "https://sigconverter.io/"
 }
