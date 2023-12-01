@@ -6,6 +6,7 @@ import {execQuery, escapeString, cleanField} from "./sse_util"
 import * as sanitizeHtml from 'sanitize-html';
 import axios, { AxiosError, AxiosResponse } from "axios"
 import { SIGMACONVERTERHEAD } from "./sigmaconverter/sigmaconverter"
+import { sigconverterUrl } from "./configuration"
 
 export function sigmaCompile(cfg: any, rulepath: string) {
     let configs = ""
@@ -500,8 +501,7 @@ export async function openSigconverter() {
     </body>
     </html>
 `
-
-let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", vscode.ViewColumn.Beside, {
+    let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter", vscode.ViewColumn.Beside, {
     enableScripts: true,
         });
     //webviewPanel.webview.html = generateWebviewContent(rule64, backend);
@@ -611,7 +611,7 @@ let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter.io", 
 async function translateRule(rule: string, backend: string) {
     let result = ""
     let rule64 = Buffer.from(rule).toString("base64");
-    let url = `https://sigconverter.io/sigma`
+    let url = sigconverterUrl+"/sigma";
     
     const data = {
         rule: rule64,
@@ -638,6 +638,6 @@ async function translateRule(rule: string, backend: string) {
 
 function getShareLink(rule: string, backend: string) {
     let rule64 = Buffer.from(rule).toString("base64");
-    let url = `https://sigconverter.io/#backend=${backend}format=default&pipeline=&rule=${rule64}&pipelineYml=`
+    let url = sigconverterUrl + `#backend=${backend}format=default&pipeline=&rule=${rule64}&pipelineYml=`
     return url
 }
