@@ -501,8 +501,7 @@ export async function openSigconverter() {
     </body>
     </html>
 `
-let sigconverterDomain = (new URL(sigconverterUrl)).hostname.replace("//", "");
-let webviewPanel = vscode.window.createWebviewPanel("panel", sigconverterDomain, vscode.ViewColumn.Beside, {
+    let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter", vscode.ViewColumn.Beside, {
     enableScripts: true,
         });
     //webviewPanel.webview.html = generateWebviewContent(rule64, backend);
@@ -612,7 +611,7 @@ let webviewPanel = vscode.window.createWebviewPanel("panel", sigconverterDomain,
 async function translateRule(rule: string, backend: string) {
     let result = ""
     let rule64 = Buffer.from(rule).toString("base64");
-    let url = sigconverterUrl;
+    let url = sigconverterUrl+"/sigma";
     
     const data = {
         rule: rule64,
