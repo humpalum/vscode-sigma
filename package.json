@@ -69,7 +69,6 @@
                 "command": "sigma.OpenSigConverter",
                 "title": "Open Rule in sigconverter.io"
             }
-            
         ],
         "keybindings": [
             {
@@ -134,13 +133,70 @@
                 "sigma.sigconverterBackend": {
                     "type": "string",
                     "default": "splunk",
-                    "enum": ["splunk", "loki","microsoft365defender", "opensearch","qradar","sentinelone","sentinelone_pq"],
+                    "enum": [
+                        "azure",
+                        "carbonblack",
+                        "cortexxdr",
+                        "elasticsearch",
+                        "ibm-qradar-aql",
+                        "insight_idr",
+                        "loki",
+                        "lucene",
+                        "microsoft365defender",
+                        "opensearch",
+                        "qradar",
+                        "sentinelone",
+                        "sentinelone_pq",
+                        "splunk",
+                        "uberagent"
+                    ],
                     "description": "Default backend in sigconverter "
                 },
                 "sigma.sigconverterUrl": {
                     "type": "string",
                     "default": "https://sigconverter.io/",
                     "description": "URL to Sigconverter Instance"
+                },
+                "sigma.sigconverterConfigs": {
+                    "type": "array",
+                    "description": "Sigconverter.io configurations. Example: \"sigma.sigconverterConfig\": [{\"url\":\"\", \"backend\":\"splunk\", \"pipeline\": [\"/home/tobias/Whatever/pipeline.js\",\"/home/tobias/Whatever/pipeline.js\"], \"format\": \"default|savedsearches|data_model|string\"}]",
+                    "items": {
+                        "name": {
+                            "type": "string",
+                            "description": "Optional name for the output"
+                        },
+                        "url": {
+                            "type": "string",
+                            "description": "The URL to the sigconverter instance (For example: https://beta.sigconverter.io/). Defaults to https://sigconverter.io/"
+                        },
+                        "pipeline": {
+                            "type": "array",
+                            "description": "Names of the predefined sigma pipelines. Refer to sigconverter pipeline dropdown for possible values",
+                            "items": {
+                                "type": "string",
+                                "description": ""
+                            }
+                        },
+                        "pipelineYML": {
+                            "type": [
+                                "string",
+                                "array"
+                            ],
+                            "description": "Paths to custom sigma pipelines. Multiple will be concatenated and applied",
+                            "items": {
+                                "type": "string",
+                                "description": "Path to a custom sigma pipeline"
+                            }
+                        },
+                        "backend": {
+                            "type": "string",
+                            "description": "Target Backend to be used for this config"
+                        },
+                        "format": {
+                            "type": "string",
+                            "description": "The output format of the backend. For example for Splunk one of: default|savedsearches|data_model. Please refer to the target backend for possible values"
+                        }
+                    }
                 }
             },
             "configurationDefaults": {
