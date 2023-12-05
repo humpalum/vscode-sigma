@@ -1,12 +1,17 @@
 import * as vscode from "vscode"
 import { attackTags } from "./extension"
 const cp = require("child_process")
-import { SigmaSearchResultEntry  } from "./types"
-import {execQuery, escapeString, cleanField} from "./sse_util"
-import * as sanitizeHtml from 'sanitize-html';
+import { SigmaSearchResultEntry } from "./types"
+import { execQuery, escapeString, cleanField } from "./sse_util"
+import * as sanitizeHtml from "sanitize-html"
 import axios, { AxiosError, AxiosResponse } from "axios"
 import { SIGMACONVERTERHEAD } from "./sigmaconverter/sigmaconverter"
-import { sigconverterUrl } from "./configuration"
+import {
+    TranslatedSigConverterConfigItem,
+    sigconverterConfigs,
+    sigconverterUrl,
+    translatedSigconverterConfigs,
+} from "./configuration"
 
 export function sigmaCompile(cfg: any, rulepath: string) {
     let configs = ""
@@ -224,24 +229,27 @@ function asNormal(key: string, modifiers?: string) {
     }
 }
 
-export async function related(idx: number) { 
+export async function related(idx: number) {
     let document = vscode.window.activeTextEditor?.document
-    if (!(document)) {
+    if (!document) {
         return
     }
 
-    let stopDefinition = new RegExp('^[a-z].*', "i")
-    let idDefinition = new RegExp('^\\s*-\\sid:\\s([0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12})', "i")
-    let cur = idx+1
+    let stopDefinition = new RegExp("^[a-z].*", "i")
+    let idDefinition = new RegExp(
+        "^\\s*-\\sid:\\s([0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12})",
+        "i",
+    )
+    let cur = idx + 1
     let ids = []
     while (true) {
         let line = document.lineAt(cur).text
         const matchs = stopDefinition.exec(line)
         if (matchs) {
             break
-        }else{
+        } else {
             const idmatch = idDefinition.exec(line)
-            if (idmatch){
+            if (idmatch) {
                 ids.push(idmatch[1])
             }
         }
@@ -250,50 +258,65 @@ export async function related(idx: number) {
 
     console.log(ids)
 
-    let resultM = new Map<string, SigmaSearchResultEntry>();
+    let resultM = new Map<string, SigmaSearchResultEntry>()
     for (var id of ids) {
-        let results = execQuery("id:\""+id+"\"")
+        let results = execQuery('id:"' + id + '"')
         for (var r of await results) {
             resultM.set(id, r)
         }
     }
 
-    const result = Array.from(resultM.values());
-    result.sort((n1,n2) => {
+    const result = Array.from(resultM.values())
+    result.sort((n1, n2) => {
         if (n1.score > n2.score) {
-            return -1;
+            return -1
         }
-    
+
         if (n1.score < n2.score) {
-            return 1;
+            return 1
         }
-    
-        return 0;
-    });
+
+        return 0
+    })
 
     let webviewPanel = vscode.window.createWebviewPanel("panel", "Related Sigma Rules", vscode.ViewColumn.Beside, {
         enableScripts: true,
     })
-    
+
     let html = ""
     html = `<html>` + HEAD
-    result.forEach( (rule: SigmaSearchResultEntry) => {
+    result.forEach((rule: SigmaSearchResultEntry) => {
         html += `<button class="accordion">`
         html += `<div style="float:left">`
-        html += `<a href="` + sanitizeHtml(rule.url, {allowedTags: [], allowedAttributes: {}}) + `">` + sanitizeHtml(rule.title, {allowedTags: [], allowedAttributes: {}}) + `</a>`
+        html +=
+            `<a href="` +
+            sanitizeHtml(rule.url, { allowedTags: [], allowedAttributes: {} }) +
+            `">` +
+            sanitizeHtml(rule.title, { allowedTags: [], allowedAttributes: {} }) +
+            `</a>`
         html += `</div>`
-        html += `<div style="float:right">` + sanitizeHtml(rule.id, {allowedTags: [], allowedAttributes: {}}) + `</div>`
+        html +=
+            `<div style="float:right">` + sanitizeHtml(rule.id, { allowedTags: [], allowedAttributes: {} }) + `</div>`
 
-        html += `<br><div style="float:left">` + sanitizeHtml(rule.description, {allowedTags: [], allowedAttributes: {}}) + `</div>`
-        
-        html += `<div style="float:left">File: ` + sanitizeHtml(rule.file, {allowedTags: [], allowedAttributes: {}}) + `</div>`
-        html += `<br><div style="float:right">Level: ` + sanitizeHtml(rule.level, {allowedTags: [], allowedAttributes: {}}) + `</div>`
+        html +=
+            `<br><div style="float:left">` +
+            sanitizeHtml(rule.description, { allowedTags: [], allowedAttributes: {} }) +
+            `</div>`
+
+        html +=
+            `<div style="float:left">File: ` +
+            sanitizeHtml(rule.file, { allowedTags: [], allowedAttributes: {} }) +
+            `</div>`
+        html +=
+            `<br><div style="float:right">Level: ` +
+            sanitizeHtml(rule.level, { allowedTags: [], allowedAttributes: {} }) +
+            `</div>`
 
         html += `</button>`
         html += `<div class="panel">`
-        html += "<pre>" + sanitizeHtml(rule.detection, {allowedTags: [], allowedAttributes: {}}) + "</pre>"
+        html += "<pre>" + sanitizeHtml(rule.detection, { allowedTags: [], allowedAttributes: {} }) + "</pre>"
         html += `</div><br>`
-    });
+    })
 
     html += SCRIPT + `</html>`
 
@@ -305,8 +328,8 @@ export async function lookup() {
     let document = vscode.window.activeTextEditor?.document
     let strings = []
     let indices = []
-    let stringDefinition = new RegExp('[:-]\\s["\'](.+)["\']', "i")
-    let fieldDefinition = new RegExp('^\\s*[-\\s]?(.+):', "i")
+    let stringDefinition = new RegExp("[:-]\\s[\"'](.+)[\"']", "i")
+    let fieldDefinition = new RegExp("^\\s*[-\\s]?(.+):", "i")
     if (!(sels && document)) {
         return
     }
@@ -326,11 +349,10 @@ export async function lookup() {
                 strings.push(matchs[1])
                 indices.push(i)
             }
-
         }
     }
 
-    if (strings.length === 0){
+    if (strings.length === 0) {
         return
     }
 
@@ -348,8 +370,8 @@ export async function lookup() {
             let line = document.lineAt(cur).text
             const matchs = fieldDefinition.exec(line)
             if (matchs) {
-                queryFieldMust += "+" + cleanField(matchs[1]) + ":\"" + s + "\" "
-                queryFieldShould += cleanField(matchs[1]) + ":\"" + s + "\" "
+                queryFieldMust += "+" + cleanField(matchs[1]) + ':"' + s + '" '
+                queryFieldShould += cleanField(matchs[1]) + ':"' + s + '" '
                 break
             }
             cur--
@@ -363,7 +385,7 @@ export async function lookup() {
     console.log(queryFullShould)
 
     let queries = [queryFieldMust, queryFieldShould, queryFullMust, queryFullShould]
-    let resultM = new Map<string, SigmaSearchResultEntry>();
+    let resultM = new Map<string, SigmaSearchResultEntry>()
     for (var q of queries) {
         let results = execQuery(q)
         for (var r of await results) {
@@ -381,40 +403,57 @@ export async function lookup() {
     let webviewPanel = vscode.window.createWebviewPanel("panel", "Sigma Search", vscode.ViewColumn.Beside, {
         enableScripts: true,
     })
-    
-    const result = Array.from(resultM.values());
-    result.sort((n1,n2) => {
+
+    const result = Array.from(resultM.values())
+    result.sort((n1, n2) => {
         if (n1.score > n2.score) {
-            return -1;
+            return -1
         }
-    
+
         if (n1.score < n2.score) {
-            return 1;
+            return 1
         }
-    
-        return 0;
-    });
+
+        return 0
+    })
 
     let html = ""
     html = `<html>` + HEAD
-    html += "<pre>Query ~ " + sanitizeHtml(queryFullShould, {allowedTags: [], allowedAttributes: {}}) + "</pre>"
+    html += "<pre>Query ~ " + sanitizeHtml(queryFullShould, { allowedTags: [], allowedAttributes: {} }) + "</pre>"
     result.forEach((rule: SigmaSearchResultEntry) => {
         html += `<button class="accordion">`
         html += `<div style="float:left">`
-        html += `<a href="` + sanitizeHtml(rule.url, {allowedTags: [], allowedAttributes: {}}) + `">` + sanitizeHtml(rule.title, {allowedTags: [], allowedAttributes: {}}) + `</a>`
+        html +=
+            `<a href="` +
+            sanitizeHtml(rule.url, { allowedTags: [], allowedAttributes: {} }) +
+            `">` +
+            sanitizeHtml(rule.title, { allowedTags: [], allowedAttributes: {} }) +
+            `</a>`
         html += `</div>`
-        html += `<div style="float:right">String Similarity: ` + sanitizeHtml(rule.score.toFixed(2), {allowedTags: [], allowedAttributes: {}}) + `</div>`
+        html +=
+            `<div style="float:right">String Similarity: ` +
+            sanitizeHtml(rule.score.toFixed(2), { allowedTags: [], allowedAttributes: {} }) +
+            `</div>`
 
-        html += `<br><div style="float:left">` + sanitizeHtml(rule.description, {allowedTags: [], allowedAttributes: {}}) + `</div>`
-        
-        html += `<div style="float:left">File: ` + sanitizeHtml(rule.file, {allowedTags: [], allowedAttributes: {}}) + `</div>`
-        html += `<br><div style="float:right">Level: ` + sanitizeHtml(rule.level, {allowedTags: [], allowedAttributes: {}}) + `</div>`
+        html +=
+            `<br><div style="float:left">` +
+            sanitizeHtml(rule.description, { allowedTags: [], allowedAttributes: {} }) +
+            `</div>`
+
+        html +=
+            `<div style="float:left">File: ` +
+            sanitizeHtml(rule.file, { allowedTags: [], allowedAttributes: {} }) +
+            `</div>`
+        html +=
+            `<br><div style="float:right">Level: ` +
+            sanitizeHtml(rule.level, { allowedTags: [], allowedAttributes: {} }) +
+            `</div>`
 
         html += `</button>`
         html += `<div class="panel">`
-        html += "<pre>" + sanitizeHtml(rule.detection, {allowedTags: [], allowedAttributes: {}}) + "</pre>"
+        html += "<pre>" + sanitizeHtml(rule.detection, { allowedTags: [], allowedAttributes: {} }) + "</pre>"
         html += `</div><br>`
-    });
+    })
 
     html += SCRIPT + `</html>`
 
@@ -486,11 +525,11 @@ for (i = 0; i < acc.length; i++) {
 `
 
 export async function openSigconverter() {
-    let backend :string = vscode.workspace.getConfiguration("sigma").get("sigconverterBackend") || "splunk"
-    
-    let editor = vscode.window.activeTextEditor;
+    let backend: string = vscode.workspace.getConfiguration("sigma").get("sigconverterBackend") || "splunk"
+
+    let editor = vscode.window.activeTextEditor
     if (!editor) {
-        return;
+        return
     }
     let html = `<!DOCTYPE html>
     ${SIGMACONVERTERHEAD}
@@ -502,142 +541,152 @@ export async function openSigconverter() {
     </html>
 `
     let webviewPanel = vscode.window.createWebviewPanel("panel", "sigconverter", vscode.ViewColumn.Beside, {
-    enableScripts: true,
-        });
+        enableScripts: true,
+    })
     //webviewPanel.webview.html = generateWebviewContent(rule64, backend);
     webviewPanel.webview.html = html
 
-    const updateSigconverter = () =>{
+    const updateSigconverter = async () => {
         if (editor) {
-            let rule = editor?.document.getText();
-            translateRule(rule, backend).then((res: string) => {
-                let html = `<!DOCTYPE html>
-                                ${SIGMACONVERTERHEAD}
-                            <body height="100vh">
-                            <div class="flex flex-row items-center gap-2 mb-2" >
-                            <p class="text-lg">
-                            <span>Backend:</span> <span class="text-sigma-blue">${sanitizeHtml(backend)}</span>
-                            </p>
-                            <span class="px-3 py-2 border-x border-t rounded border-sigma-blue">
-                                <i id="rule-share-btn" class="fas fa-share-nodes px-1 py-0 my-0 text-sm text-sigma-blue cursor-pointer"></i>
-                            </span>
-                            <span  id="query-copy-btn" class="px-3 py-2 border-x border-t rounded border-sigma-blue text-sigma-blue cursor-pointer select-none">
-                            <i class="fas fa-copy px-1 py-0 my-0 text-sm"></i>
-                            Query
-                            </span>
-                            <script>
-                                const vscode = acquireVsCodeApi();
-                                var ruleShareBtn = document.getElementById("rule-share-btn");
-                                ruleShareBtn.addEventListener('click', () => {
-                                    const message = {
-                                        command: 'shareLink',
-                                    };
-                                    vscode.postMessage(message);
-                                    ruleShareBtn.classList.toggle("text-sigma-blue");
-                                    ruleShareBtn.classList.toggle("text-green-400");
-                                
-                                    setTimeout(function () {
-                                    ruleShareBtn.classList.toggle("text-sigma-blue");
-                                    ruleShareBtn.classList.toggle("text-green-400");
-                                    }, 1200);
-                                });
-                                    var copyBtn = document.getElementById("query-copy-btn");
-                                    copyBtn.addEventListener('click', () => {
+            let rule = editor?.document.getText()
+            let html = `<!DOCTYPE html>
+                        ${SIGMACONVERTERHEAD}
+                        <body height="100vh">
+                        <script>
+                        const vscode = acquireVsCodeApi();
+                        </script>
+             `
+            const unsolvedPromises = translatedSigconverterConfigs?.map( async (config, index) => {
+                const res = await translateRule(rule, config)
+                return `
+                <div class="mb-6 border border-sigma-blue rounded" >
+                                <div class="flex flex-row items-center gap-2  p-2" >
+                                <p class="text-lg">
+                                ${config.name && `<span class="text-sigma-blue">${sanitizeHtml(config.name)}</span>`|| ""}
+                                <span>Backend:</span> <span class="text-sigma-blue">${sanitizeHtml(
+                                    config.backend,
+                                )}</span>
+                                </p>
+                                <span class="px-3 py-2 border-x border-t rounded border-sigma-blue">
+                                    <i id="rule-share-btn-${index}" class="fas fa-share-nodes px-1 py-0 my-0 text-sm text-sigma-blue cursor-pointer"></i>
+                                </span>
+                                <span  id="query-copy-btn-${index}" class="px-3 py-2 border-x border-t rounded border-sigma-blue text-sigma-blue cursor-pointer select-none">
+                                <i class="fas fa-copy px-1 py-0 my-0 text-sm"></i>
+                                Query
+                                </span>
+                                <script>
+                                    
+                                    var ruleShareBtn${index} = document.getElementById("rule-share-btn-${index}");
+                                    ruleShareBtn${index}.addEventListener('click', () => {
                                         const message = {
-                                            command: 'copyRes',
+                                            command: 'shareLink',
+                                            index: '${index}',
                                         };
                                         vscode.postMessage(message);
-                                        copyBtn.classList.toggle("text-sigma-blue");
-                                        copyBtn.classList.toggle("text-green-400");
-                                      
+                                        ruleShareBtn${index}.classList.toggle("text-sigma-blue");
+                                        ruleShareBtn${index}.classList.toggle("text-green-400");
+                                    
                                         setTimeout(function () {
-                                            copyBtn.classList.toggle("text-sigma-blue");
-                                            copyBtn.classList.toggle("text-green-400");
+                                        ruleShareBtn${index}.classList.toggle("text-sigma-blue");
+                                        ruleShareBtn${index}.classList.toggle("text-green-400");
                                         }, 1200);
                                     });
-                                </script>
-                            </div>
-                            <pre onclick="focusSelect('rule-code')" class="border border-sigma-blue tab-code">
-                            <code id="query-code" class="text-sm language-splunk-spl">
-                            ${sanitizeHtml(res)}
-                            </code>
-                                </pre>
-                                </body>
-                            </html>
+                                        var copyBtn${index} = document.getElementById("query-copy-btn-${index}");
+                                        copyBtn${index}.addEventListener('click', () => {
+                                            const message = {
+                                                command: 'copyRes',
+                                            };
+                                            vscode.postMessage(message);
+                                            copyBtn${index}.classList.toggle("text-sigma-blue");
+                                            copyBtn${index}.classList.toggle("text-green-400");
+                                        
+                                            setTimeout(function () {
+                                                copyBtn${index}.classList.toggle("text-sigma-blue");
+                                                copyBtn${index}.classList.toggle("text-green-400");
+                                            }, 1200);
+                                        });
+                                    </script>
+                                </div>
+                                <pre onclick="focusSelect('rule-code')" class="border rounded border-sigma-blue tab-code">
+                                <code id="query-code" class="text-sm rounded language-${sanitizeHtml(config.backend)}-spl">
+                                ${sanitizeHtml(res)}
+                                </code>
+                                    </pre>
+                    </div>
             `
-            webviewPanel.webview.html = html
-            webviewPanel.webview.onDidReceiveMessage(
-                message => {
-                    switch (message.command) {
-                        case 'shareLink':
-                            vscode.env.clipboard.writeText(getShareLink(rule, backend))
-                              .then(() => {
-                                vscode.window.showInformationMessage("Successfully copied to clipboard!");
-                              })
-                            return;
-                        case 'copyRes':
-                            vscode.env.clipboard.writeText(res)
-                              .then(() => {
-                                vscode.window.showInformationMessage("Successfully copied to clipboard!");
-                              })
-                            return;
-                    }
-                },
-                undefined
-        )
+            })
+            const sigconverterHTML = await Promise.all(unsolvedPromises)
+            html += sigconverterHTML.join("\n")
+            html += `</body>
+                    </html>`
 
-        }).catch((err: any) => {
-            console.log(err)
-        }
-        )
+            webviewPanel.webview.html = html
+            webviewPanel.webview.onDidReceiveMessage(message => {
+                console.log(message)
+                switch (message.command) {
+                    case "shareLink":
+                        vscode.env.clipboard
+                            .writeText(getShareLink(rule, translatedSigconverterConfigs[message.index]))
+                            .then(() => {
+                                vscode.window.showInformationMessage("Successfully copied to clipboard!")
+                            })
+                        return
+                    case "copyRes":
+                        vscode.env.clipboard.writeText(message.msg).then(() => {
+                            vscode.window.showInformationMessage("Successfully copied to clipboard!")
+                        })
+                        return
+                }
+            }, undefined)
         }
     }
     updateSigconverter()
 
-
     // Update the webview content whenever the document changes
     let disposables = vscode.workspace.onDidChangeTextDocument(event => {
-            updateSigconverter()       
-        }
-    )
+        updateSigconverter()
+    })
 
     webviewPanel.onDidDispose(() => {
-        disposables.dispose();
-    });
+        disposables.dispose()
+    })
 }
-
 
 // Translate Rule using Sigconverter
-async function translateRule(rule: string, backend: string) {
+async function translateRule(rule: string, config: TranslatedSigConverterConfigItem) {
     let result = ""
-    let rule64 = Buffer.from(rule).toString("base64");
-    let url = sigconverterUrl+"/sigma";
-    
+    let rule64 = Buffer.from(rule).toString("base64")
+    let url = sigconverterUrl + "/sigma"
+
     const data = {
         rule: rule64,
-        format: "default",
-        target: backend,
-        pipelineYml: "",
-        pipeline: []
+        format: config.format || "",
+        target: config.backend,
+        pipelineYml: config.pipelineYML,
+        pipeline: config.pipeline,
     }
 
-    await axios.post(url, data, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then((res : AxiosResponse) => {
-        result = res.data
-    }).catch((err: AxiosError) => {
-        result = err.response?.data  as string
-    }
-    )
-        return result
+    await axios
+        .post(url, data, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then((res: AxiosResponse) => {
+            result = res.data
+        })
+        .catch((err: AxiosError) => {
+            result = err.response?.data as string
+        })
+    return result
 }
 
-
-
-function getShareLink(rule: string, backend: string) {
-    let rule64 = Buffer.from(rule).toString("base64");
-    let url = sigconverterUrl + `#backend=${backend}format=default&pipeline=&rule=${rule64}&pipelineYml=`
+function getShareLink(rule: string, config: TranslatedSigConverterConfigItem) {
+    let rule64 = Buffer.from(rule).toString("base64")
+    let url =
+        sigconverterUrl +
+        `#backend=${config.backend}format=${config.format}&pipeline=${config?.pipeline?.join(
+            ";",
+        )}&rule=${rule64}&pipelineYml=${config.pipelineYML}`
     return url
 }
