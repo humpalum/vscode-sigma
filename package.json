@@ -194,7 +194,7 @@
                         },
                         "format": {
                             "type": "string",
-                            "description": "The output format of the backend. For example for splunk one of: default|savedsearches|data_model"
+                            "description": "The output format of the backend. For example for Splunk one of: default|savedsearches|data_model. Please refer to the target backend for possible values"
                         }
                     }
                 }
