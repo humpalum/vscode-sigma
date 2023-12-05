@@ -134,13 +134,21 @@
                     "type": "string",
                     "default": "splunk",
                     "enum": [
-                        "splunk",
+                        "azure",
+                        "carbonblack",
+                        "cortexxdr",
+                        "elasticsearch",
+                        "ibm-qradar-aql",
+                        "insight_idr",
                         "loki",
+                        "lucene",
                         "microsoft365defender",
                         "opensearch",
                         "qradar",
                         "sentinelone",
-                        "sentinelone_pq"
+                        "sentinelone_pq",
+                        "splunk",
+                        "uberagent"
                     ],
                     "description": "Default backend in sigconverter "
                 },
