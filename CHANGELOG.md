@@ -2,6 +2,11 @@
 
 All notable changes to the "sigma" extension will be documented in this file.
 
+## [1.6.0]
+### Added
+- Configs for sigconverter
+  - Allows multiple configs aswell as custom pipelines.
+
 ## [1.5.2]
 ### Added
 - Copy Button in sigconverter
