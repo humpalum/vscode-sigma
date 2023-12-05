@@ -2,6 +2,11 @@
 
 All notable changes to the "sigma" extension will be documented in this file.
 
+## [1.6.1]
+### Fixed
+- Actually use the configured URL of configs
+- Configuration example js -> ts
+
 ## [1.6.0]
 ### Added
 - Configs for sigconverter

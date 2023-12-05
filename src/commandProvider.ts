@@ -658,7 +658,7 @@ export async function openSigconverter() {
 async function translateRule(rule: string, config: TranslatedSigConverterConfigItem) {
     let result = ""
     let rule64 = Buffer.from(rule).toString("base64")
-    let url = sigconverterUrl + "/sigma"
+    let url = config.url + "/sigma"
 
     const data = {
         rule: rule64,
@@ -686,7 +686,7 @@ async function translateRule(rule: string, config: TranslatedSigConverterConfigI
 function getShareLink(rule: string, config: TranslatedSigConverterConfigItem) {
     let rule64 = Buffer.from(rule).toString("base64")
     let url =
-        sigconverterUrl +
+        config.url +
         `#backend=${config.backend}format=${config.format}&pipeline=${config?.pipeline?.join(
             ";",
         )}&rule=${rule64}&pipelineYml=${config.pipelineYML}`

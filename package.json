@@ -2,7 +2,7 @@
     "name": "sigma",
     "displayName": "sigma",
     "description": "Support for Sigma Signature Format",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "engines": {
         "vscode": "^1.66.0"
     },
@@ -159,7 +159,7 @@
                 },
                 "sigma.sigconverterConfigs": {
                     "type": "array",
-                    "description": "Sigconverter.io configurations. Example: \"sigma.sigconverterConfig\": [{\"url\":\"\", \"backend\":\"splunk\", \"pipeline\": [\"/home/tobias/Whatever/pipeline.js\",\"/home/tobias/Whatever/pipeline.js\"], \"format\": \"default|savedsearches|data_model|string\"}]",
+                    "description": "Sigconverter.io configurations. Example: \"sigma.sigconverterConfig\": [{\"url\":\"\", \"backend\":\"splunk\", \"pipeline\": [\"/home/tobias/Whatever/pipeline.yml\",\"/home/tobias/Whatever/pipeline.yml\"], \"format\": \"default|savedsearches|data_model|string\"}]",
                     "items": {
                         "name": {
                             "type": "string",
