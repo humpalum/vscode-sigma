@@ -561,12 +561,6 @@ export async function openSigconverter() {
                 return `
                 <div class="mb-6 border border-sigma-blue rounded" >
                                 <div class="flex flex-row items-center gap-2  p-2" >
-                                <p class="text-lg">
-                                ${config.name && `<span class="text-sigma-blue">${sanitizeHtml(config.name)}</span>`|| ""}
-                                <span>Backend:</span> <span class="text-sigma-blue">${sanitizeHtml(
-                                    config.backend,
-                                )}</span>
-                                </p>
                                 <span class="px-3 py-2 border-x border-t rounded border-sigma-blue">
                                     <i id="rule-share-btn-${index}" class="fas fa-share-nodes px-1 py-0 my-0 text-sm text-sigma-blue cursor-pointer"></i>
                                 </span>
@@ -574,6 +568,13 @@ export async function openSigconverter() {
                                 <i class="fas fa-copy px-1 py-0 my-0 text-sm"></i>
                                 Query
                                 </span>
+                                <p class="text-lg">
+                                ${config.name && `<span class="text-sigma-blue">${sanitizeHtml(config.name)}</span>`|| ""}
+                                <span>Backend:</span> <span class="text-sigma-blue">${sanitizeHtml(
+                                    config.backend,
+                                )}</span>
+                                </p>
+                                
                                 <script>
                                     
                                     var ruleShareBtn${index} = document.getElementById("rule-share-btn-${index}");
@@ -595,6 +596,7 @@ export async function openSigconverter() {
                                         copyBtn${index}.addEventListener('click', () => {
                                             const message = {
                                                 command: 'copyRes',
+                                                message: "${Buffer.from(res).toString("base64")}",
                                             };
                                             vscode.postMessage(message);
                                             copyBtn${index}.classList.toggle("text-sigma-blue");
@@ -632,7 +634,7 @@ export async function openSigconverter() {
                             })
                         return
                     case "copyRes":
-                        vscode.env.clipboard.writeText(message.msg).then(() => {
+                        vscode.env.clipboard.writeText(Buffer.from(message.message, 'base64').toString()).then(() => {
                             vscode.window.showInformationMessage("Successfully copied to clipboard!")
                         })
                         return
