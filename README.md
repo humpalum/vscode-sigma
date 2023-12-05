@@ -13,17 +13,21 @@
 
 This [extension](https://marketplace.visualstudio.com/items?itemName=humpalum.sigma) will enhance your VSCode for the [Sigma signature format](https://github.com/SigmaHQ/sigma)
 
-- [Installation](#installation)
-- [Features](#features)
-  - [Snippets](#snippets)
-  - [Diagnostics](#diagnostics)
-  - [Automatic continuation of lists](#automatic-continuation-of-lists)
-  - [Tags](#tags)
-  - [Webextension Support (Quite untested)](#webextension-support-quite-untested)
-- [Requirements](#requirements)
-- [Extension Settings](#extension-settings)
-- [Known Issues](#known-issues)
-- [Changelog](#changelog)
+- [Sigma VsCode Extension](#sigma-vscode-extension)
+  - [Installation](#installation)
+  - [Features](#features)
+    - [Snippets](#snippets)
+    - [Diagnostics](#diagnostics)
+    - [Automatic continuation of lists](#automatic-continuation-of-lists)
+    - [Tags](#tags)
+    - [Sigconverter.io codelens](#sigconverterio-codelens)
+    - [Sigmac compile (deprecated)](#sigmac-compile-deprecated)
+    - [Webextension Support (Quite untested)](#webextension-support-quite-untested)
+    - [Sigma Search Engine Integration](#sigma-search-engine-integration)
+  - [Requirements](#requirements)
+  - [Extension Settings](#extension-settings)
+  - [Known Issues](#known-issues)
+  - [Changelog](#changelog)
 
 
 Checkout Ideas.md for planned features!
@@ -113,9 +117,43 @@ When there is an empty string, it gets deleted.
 
 ![tags](images/gifs/tags.gif)
 
-### Sigmac compile
+### Sigconverter.io codelens
+
+* Click on the `Sigconverter`-Codelens in the first line  convert your sigma rule with sigconverter.
+  
+* You can define multiple sigconverter configs in the `sigma.sigconverterConfigs` setting. Here are some example configurations:
+```json
+[
+  {
+    "name": "Splunk Default",
+    "backend": "splunk"
+  },
+  {
+    "name": "Splunk Sysmon",
+    "pipeline": [
+      "sysmon"
+    ]
+  },
+  {
+    "name": "Splunk savedsearches",
+    "backend": "splunk",
+    "format": "savedsearches"
+  },
+  {
+    "name": "Elasticsearch custom pipeline",
+    "backend": "elasticsearch",
+    "pipelineYML": [
+      "/home/tobias/tmp/sigma/pipe.yml",
+      "/home/tobias/tmp/sigma/pipe2.yml"
+    ]
+  }
+]
+```
+![Alt text](images/sigconverter.png)
+
+### Sigmac compile (deprecated)
 After defining your sigmac configs, click on the codelens in the first line. The compile sigma rule will be in your clipboard.
-![sigmac](images/gifs/sigmac.gif)
+
 
 ### Webextension Support (Quite untested)
 The extension can be used in github vscode mode and on vscode.dev.
@@ -127,9 +165,6 @@ Integration of https://sigmasearchengine.com/.
 * `Look Up` --> Look for similar rules with multiline selection (see codelense above `detection`)
 * Hovering over `detection`-strings --> Look for similar rules
 
-### Sigconverter.io codelens
-* Click on the `Sigconverter`-Codelens in the first line to your sigma rule converted by sigconverter.
-![sigconverter](images/sigconverter.png)
 
 ## Requirements
 
@@ -146,6 +181,7 @@ pip install sigmatools
 - sigma.sigconverterBackend: Sets the target backend to be used for sigconverter
 - sigma.sigmasearchengineurl: Lets you use your own sigmasearchengine
 - sigma.sigconverterUrl: Lets you use your own instance of sigconverter
+- sigma.sigconverterConfigs: Lets you configure multiple configurations for the sigconverter codelens
 
 ## Known Issues
 Only Files that are opened and begin with `title:` are set as `sigma`
