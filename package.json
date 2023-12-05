@@ -182,7 +182,7 @@
                                 "string",
                                 "array"
                             ],
-                            "description": "Paths to the sigma pipelines. Multiple will be concatinated",
+                            "description": "Paths to custom sigma pipelines. Multiple will be concatenated and applied",
                             "items": {
                                 "type": "string",
                                 "description": "Path to the sigma pipeline"
