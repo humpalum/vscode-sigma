@@ -167,7 +167,7 @@
                         },
                         "url": {
                             "type": "string",
-                            "description": "The URL to the sigconverter (For example: https://beta.sigconverter.io/). Defaults to https://sigconverter.io/"
+                            "description": "The URL to the sigconverter instance (For example: https://beta.sigconverter.io/). Defaults to https://sigconverter.io/"
                         },
                         "pipeline": {
                             "type": "array",
