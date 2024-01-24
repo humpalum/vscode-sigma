@@ -3,8 +3,8 @@
 var SIGMACONVERTERCSS = `
 /* Color Definitions */
 :root {
-    --sigma-blue: #00bbe6;
-    --sigma-dark: #12141c;
+    --sigma-blue: var(--vscode-foreground);
+    --sigma-dark: var(--vscode-editor-background);
   }
   
   ::selection {
@@ -60,7 +60,11 @@ var SIGMACONVERTERCSS = `
     color: #c5c8c6;
     width: 20px;
   }
-  
+
+  code {
+    background-color: var(--sigma-dark) !important;
+  }
+
   div[class*="language-"],
   code[class*="language-"],
   code[class*="language-"] *,
@@ -78,8 +82,17 @@ var SIGMACONVERTERCSS = `
   div[class*="language-"] span::selection,
   code[class*="language-"]::selection,
   code[class*="language-"] span::selection {
-    background: var(--sigma-blue);
-    color: var(--sigma-dark);
+     background: var(--sigma-blue);
+     color: var(--sigma-dark);
+  }
+  
+  .token.attr-name,
+  .token.builtin,
+  .token.char,
+  .token.inserted,
+  .token.selector,
+  .token.string {
+    color: white !important;
   }
   
   .token.atrule,
@@ -91,14 +104,7 @@ var SIGMACONVERTERCSS = `
     color: var(--sigma-blue) !important;
   }
   
-  .token.attr-name,
-  .token.builtin,
-  .token.char,
-  .token.inserted,
-  .token.selector,
-  .token.string {
-    color: white !important;
-  }
+
   
   /* tom-select css override */
   .select-sigma > .ts-control,
@@ -140,7 +146,7 @@ var SIGMACONVERTERCSS = `
   }
 `
 
-export var SIGMACONVERTERHEAD= `
+export var SIGMACONVERTERHEAD = `
 <head>
   <!-- Tailwind UI -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>

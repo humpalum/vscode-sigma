@@ -525,6 +525,104 @@ for (i = 0; i < acc.length; i++) {
 `
 
 export async function openSigconverter() {
+    let enabled: boolean = vscode.workspace.getConfiguration("sigma").get("sigconverterEnabled") || false
+    if (!enabled) {
+        let webviewPanelEnable = vscode.window.createWebviewPanel("panel", "sigconverter", vscode.ViewColumn.Beside, {
+            enableScripts: true,
+        })
+        let htmlEnable = `<!DOCTYPE html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+                /* Color Definitions */
+                :root {
+                    --sigma-blue: var(--vscode-foreground);
+                    --sigma-dark: var(--vscode-editor-background);
+                }
+                .button {
+                    background-color: var(--vscode-editor-background);
+                    border: solid 2px var(--sigma-blue);
+                    border-radius: 4px;
+                    color: var(--sigma-blue);
+                    padding: 7px 16px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+                .url {
+                    color: var(--vscode-textLink-foreground)
+                }
+            </style>
+
+                <body height="100vh">
+                    <script>
+                            const vscode = acquireVsCodeApi();
+                    </script>
+                    The following feature will access <span class="url"> ${sanitizeHtml(
+                        sigconverterUrl,
+                    )} </span> in order to convert your sigma rules to different SIEM query languages. 
+                    <br>
+                    In addition to that, it'll use the following Javascript libraries for styling:
+                        <ul>
+                            <li>Tailwind UI</li>
+                            <li>PrismJS</li>
+                            <li>FontAwesome</li>
+                        </ul>
+                    <br>
+                    <span id="enable-feature-btn" class="button">
+                        I'm Aware. Enable Feature
+                    </span>
+                    <script>
+                        var enableFeatureBtn = document.getElementById("enable-feature-btn");
+                        enableFeatureBtn.addEventListener('click', () => {
+                            const message = {
+                                command: 'enableFeature',
+                            };
+                            vscode.postMessage(message);
+                        });
+                    </script>
+                    <span id="cancel-feature-btn"  class="button">
+                        Cancel
+                    </span>
+                    <script>
+                        var cancel-feature-btn = document.getElementById("cancel-feature-btn");
+                        cancel-feature-btn.addEventListener('click', () => {
+                            const message = {
+                                command: 'cancel',
+                            };
+                            vscode.postMessage(message);
+                        });
+                </body>
+        </html>
+    `
+        webviewPanelEnable.webview.html = htmlEnable
+        webviewPanelEnable.webview.onDidReceiveMessage(message => {
+            console.log(message)
+            switch (message.command) {
+                case "enableFeature":
+                    console.log("Enable Feature")
+                    vscode.workspace
+                        .getConfiguration("sigma")
+                        .update("sigconverterEnabled", true, true)
+                        .then(() => {
+                            vscode.window.showInformationMessage(
+                                "Sigma Converter Feature enabled. Please Reuse the Codelens.",
+                            )
+                            //close the webview
+                            webviewPanelEnable.dispose()
+                        })
+                    return
+                case "cancel":
+                    vscode.window.showInformationMessage("Sigma Converter Feature disabled.")
+                    //close the webview
+                    webviewPanelEnable.dispose()
+                    return
+            }
+        }, undefined)
+        return
+    }
     let backend: string = vscode.workspace.getConfiguration("sigma").get("sigconverterBackend") || "splunk"
 
     let editor = vscode.window.activeTextEditor
@@ -556,7 +654,7 @@ export async function openSigconverter() {
                         const vscode = acquireVsCodeApi();
                         </script>
              `
-            const unsolvedPromises = translatedSigconverterConfigs?.map( async (config, index) => {
+            const unsolvedPromises = translatedSigconverterConfigs?.map(async (config, index) => {
                 const res = await translateRule(rule, config)
                 return `
                 <div class="mb-6 border border-sigma-blue rounded" >
@@ -569,7 +667,11 @@ export async function openSigconverter() {
                                 Query
                                 </span>
                                 <p class="text-lg">
-                                ${config.name && `<span class="text-sigma-blue">${sanitizeHtml(config.name)}</span>`|| ""}
+                                ${
+                                    (config.name &&
+                                        `<span class="text-sigma-blue">${sanitizeHtml(config.name)}</span>`) ||
+                                    ""
+                                }
                                 <span>Backend:</span> <span class="text-sigma-blue">${sanitizeHtml(
                                     config.backend,
                                 )}</span>
@@ -610,7 +712,9 @@ export async function openSigconverter() {
                                     </script>
                                 </div>
                                 <pre onclick="focusSelect('rule-code')" class="border rounded border-sigma-blue tab-code">
-                                <code id="query-code" class="text-sm rounded language-${sanitizeHtml(config.backend)}-spl">
+                                <code id="query-code" class="text-sm rounded language-${sanitizeHtml(
+                                    config.backend,
+                                )}-spl">
                                 ${sanitizeHtml(res)}
                                 </code>
                                     </pre>
@@ -634,7 +738,7 @@ export async function openSigconverter() {
                             })
                         return
                     case "copyRes":
-                        vscode.env.clipboard.writeText(Buffer.from(message.message, 'base64').toString()).then(() => {
+                        vscode.env.clipboard.writeText(Buffer.from(message.message, "base64").toString()).then(() => {
                             vscode.window.showInformationMessage("Successfully copied to clipboard!")
                         })
                         return

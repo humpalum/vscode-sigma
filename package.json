@@ -2,7 +2,7 @@
     "name": "sigma",
     "displayName": "sigma",
     "description": "Support for Sigma Signature Format",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "engines": {
         "vscode": "^1.66.0"
     },
@@ -156,6 +156,11 @@
                     "type": "string",
                     "default": "https://sigconverter.io/",
                     "description": "URL to Sigconverter Instance"
+                },
+                "sigma.sigconverterEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable/Disable the sigconverter.io integration"
                 },
                 "sigma.sigconverterConfigs": {
                     "type": "array",
