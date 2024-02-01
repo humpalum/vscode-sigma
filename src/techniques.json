@@ -1020,6 +1020,1098 @@
         "url": "https://capec.mitre.org/data/definitions/98.html"
     },
     {
+        "name": "Active Certificate Analysis",
+        "description": "Actively collecting PKI certificates by connecting to the server and downloading its server certificates for analysis.",
+        "tag": "D3-ACA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Application Configuration Hardening",
+        "description": "Modifying an application's configuration to reduce its attack surface.",
+        "tag": "D3-ACH",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Application Hardening",
+        "description": "",
+        "tag": "D3-AH",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Asset Inventory",
+        "description": "",
+        "tag": "D3-AI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Account Locking",
+        "description": "The process of temporarily disabling user accounts on a system or domain.",
+        "tag": "D3-AL",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Active Logical Link Mapping",
+        "description": "Active logical link mapping sends and receives network traffic as a means to map the whole data link layer, where the links represent logical data flows rather than physical connection",
+        "tag": "D3-ALLM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Access Modeling",
+        "description": "Access modeling identifies and records the access permissions granted to administrators, users, groups, and systems.",
+        "tag": "D3-AM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Administrative Network Activity Analysis",
+        "description": "Detection of unauthorized use of administrative network protocols by analyzing network activity against a baseline.",
+        "tag": "D3-ANAA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Authentication Cache Invalidation",
+        "description": "Removing tokens or credentials from an authentication cache to prevent further user associated account accesses.",
+        "tag": "D3-ANCI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Authentication Event Thresholding",
+        "description": "Collecting authentication events, creating a baseline user profile, and determining whether authentication events are consistent with the baseline profile.",
+        "tag": "D3-ANET",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Active Physical Link Mapping",
+        "description": "Active physical link mapping sends and receives network traffic as a means to map the physical layer.",
+        "tag": "D3-APLM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Asset Vulnerability Enumeration",
+        "description": "Asset vulnerability enumeration enriches inventory items with knowledge identifying their vulnerabilities.",
+        "tag": "D3-AVE",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Authorization Event Thresholding",
+        "description": "Collecting authorization events, creating a baseline user profile, and determining whether authorization events are consistent with the baseline profile.",
+        "tag": "D3-AZET",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Bootloader Authentication",
+        "description": "Cryptographically authenticating the bootloader software before system boot.",
+        "tag": "D3-BA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Biometric Authentication",
+        "description": "Using biological measures in order to authenticate a user.",
+        "tag": "D3-BAN",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Broadcast Domain Isolation",
+        "description": "Broadcast isolation restricts the number of computers a host can contact on their LAN.",
+        "tag": "D3-BDI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Byte Sequence Emulation",
+        "description": "Analyzing sequences of bytes and determining if they likely represent malicious shellcode.",
+        "tag": "D3-BSE",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Certificate Analysis",
+        "description": "Analyzing Public Key Infrastructure certificates to detect if they have been misconfigured or spoofed using both network traffic, certificate fields and third-party logs.",
+        "tag": "D3-CA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Connection Attempt Analysis",
+        "description": "Analyzing failed connections in a network to detect unauthorized activity.",
+        "tag": "D3-CAA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Certificate-based Authentication",
+        "description": "Requiring a digital certificate in order to authenticate a user.",
+        "tag": "D3-CBAN",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Credential Compromise Scope Analysis",
+        "description": "Determining which credentials may have been compromised by analyzing the user logon history of a particular system.",
+        "tag": "D3-CCSA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Credential Eviction",
+        "description": "",
+        "tag": "D3-CE",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Credential Hardening",
+        "description": "",
+        "tag": "D3-CH",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Connected Honeynet",
+        "description": "A decoy service, system, or environment, that is connected to the enterprise network, and simulates or emulates certain functionality to the network, without exposing full access to a production system.",
+        "tag": "D3-CHN",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Configuration Inventory",
+        "description": "Configuration inventory identifies and records the configuration of software and hardware and their components throughout the organization.",
+        "tag": "D3-CI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Container Image Analysis",
+        "description": "Analyzing a Container Image with respect to a set of policies.",
+        "tag": "D3-CIA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Certificate Pinning",
+        "description": "Persisting either a server's X.509 certificate or their public key and comparing that to server's presented identity to allow for greater client confidence in the remote server's identity for SSL connections.",
+        "tag": "D3-CP",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Credential Revoking",
+        "description": "Deleting a set of credentials permanently to prevent them from being used to authenticate.",
+        "tag": "D3-CR",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Credential Rotation",
+        "description": "Expiring an existing set of credentials and reissuing a new valid set",
+        "tag": "D3-CRO",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Client-server Payload Profiling",
+        "description": "Comparing client-server request and response payloads to a baseline profile to identify outliers.",
+        "tag": "D3-CSPP",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Credential Transmission Scoping",
+        "description": "Limiting the transmission of a credential to a scoped set of relying parties.",
+        "tag": "D3-CTS",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Dynamic Analysis",
+        "description": "Executing or opening a file in a synthetic \"sandbox\" environment to determine if the file is a malicious program or if the file exploits another program such as a document reader.",
+        "tag": "D3-DA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Domain Account Monitoring",
+        "description": "Monitoring the existence of or changes to Domain User Accounts.",
+        "tag": "D3-DAM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Dead Code Elimination",
+        "description": "Removing unreachable or \"dead code\" from compiled source code.",
+        "tag": "D3-DCE",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Decoy Environment",
+        "description": "",
+        "tag": "D3-DE",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Data Exchange Mapping",
+        "description": "Data exchange mapping identifies and models the organization's intended design for the flows of the data types, formats, and volumes between systems at the application layer.",
+        "tag": "D3-DEM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Disk Encryption",
+        "description": "Encrypting a hard disk partition to prevent cleartext access to a file system.",
+        "tag": "D3-DENCR",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Decoy File",
+        "description": "A file created for the purposes of deceiving an adversary.",
+        "tag": "D3-DF",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Data Inventory",
+        "description": "Data inventorying identifies and records the schemas, formats, volumes, and locations of data stored and used on the organization's architecture.",
+        "tag": "D3-DI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Driver Load Integrity Checking",
+        "description": "Ensuring the integrity of drivers loaded during initialization of the operating system.",
+        "tag": "D3-DLIC",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Decoy Network Resource",
+        "description": "Deploying a network resource for the purposes of deceiving an adversary.",
+        "tag": "D3-DNR",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Domain Name Reputation Analysis",
+        "description": "Analyzing the reputation of a domain name.",
+        "tag": "D3-DNRA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "DNS Allowlisting",
+        "description": "Permitting only approved domains and their subdomains to be resolved.",
+        "tag": "D3-DNSAL",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "DNS Denylisting",
+        "description": "Blocking DNS Network Traffic based on criteria such as IP address, domain name, or DNS query type.",
+        "tag": "D3-DNSDL",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "DNS Traffic Analysis",
+        "description": "Analysis of domain name metadata, including name and DNS records, to determine whether the domain is likely to resolve to an undesirable host.",
+        "tag": "D3-DNSTA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Decoy Object",
+        "description": "",
+        "tag": "D3-DO",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Decoy Persona",
+        "description": "Establishing a fake online identity to misdirect, deceive, and or interact with adversaries.",
+        "tag": "D3-DP",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Decoy Public Release",
+        "description": "Issuing publicly released media to deceive adversaries.",
+        "tag": "D3-DPR",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Database Query String Analysis",
+        "description": "Analyzing database queries to detect [SQL Injection](https://capec.mitre.org/data/definitions/66.html).",
+        "tag": "D3-DQSA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Decoy Session Token",
+        "description": "An authentication token created for the purposes of deceiving an adversary.",
+        "tag": "D3-DST",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Domain Trust Policy",
+        "description": "Restricting inter-domain trust by modifying domain configuration.",
+        "tag": "D3-DTP",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Decoy User Credential",
+        "description": "A Credential created for the purpose of deceiving an adversary.",
+        "tag": "D3-DUC",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Executable Allowlisting",
+        "description": "Using a digital signature to authenticate a file before opening.",
+        "tag": "D3-EAL",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Executable Denylisting",
+        "description": "Blocking the execution of files on a host in accordance with defined application policy rules.",
+        "tag": "D3-EDL",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Email Filtering",
+        "description": "Filtering incoming email traffic based on specific criteria.",
+        "tag": "D3-EF",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Emulated File Analysis",
+        "description": "Emulating instructions in a file looking for specific patterns.",
+        "tag": "D3-EFA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Endpoint Health Beacon",
+        "description": "Monitoring the security status of an endpoint by sending periodic messages with health status, where absence of a response may indicate that the endpoint has been compromised.",
+        "tag": "D3-EHB",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Exception Handler Pointer Validation",
+        "description": "Validates that a referenced exception handler pointer is a valid exception handler.",
+        "tag": "D3-EHPV",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Execution Isolation",
+        "description": "",
+        "tag": "D3-EI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Email Removal",
+        "description": "The email removal technique deletes email files from system storage.",
+        "tag": "D3-ER",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Encrypted Tunnels",
+        "description": "Encrypted encapsulation of routable network traffic.",
+        "tag": "D3-ET",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Analysis",
+        "description": "",
+        "tag": "D3-FA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Access Pattern Analysis",
+        "description": "Analyzing the files accessed by a process to identify unauthorized activity.",
+        "tag": "D3-FAPA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Firmware Behavior Analysis",
+        "description": "Analyzing the behavior of embedded code in firmware and looking for anomalous behavior and suspicious activity.",
+        "tag": "D3-FBA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Carving",
+        "description": "Identifying and extracting files from network application protocols through the use of network stream reassembly software.",
+        "tag": "D3-FC",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Creation Analysis",
+        "description": "Analyzing the properties of file create system call invocations.",
+        "tag": "D3-FCA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Content Analysis",
+        "description": "Employing a pattern matching algorithm to statically analyze the content of files.",
+        "tag": "D3-FCOA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Content Rules",
+        "description": "Employing a pattern matching rule language to analyze the content of files.",
+        "tag": "D3-FCR",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Encryption",
+        "description": "Encrypting a file using a cryptographic key.",
+        "tag": "D3-FE",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Firmware Embedded Monitoring Code",
+        "description": "Monitoring code is injected into firmware for integrity monitoring of firmware and firmware data.",
+        "tag": "D3-FEMC",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Eviction",
+        "description": "",
+        "tag": "D3-FEV",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Hashing",
+        "description": "Employing file hash comparisons to detect known malware.",
+        "tag": "D3-FH",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Hash Reputation Analysis",
+        "description": "Analyzing the reputation of a file hash.",
+        "tag": "D3-FHRA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Integrity Monitoring",
+        "description": "Detecting any suspicious changes to files in a computer system.",
+        "tag": "D3-FIM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "File Removal",
+        "description": "The file removal technique deletes malicious artifacts or programs from a computer system.",
+        "tag": "D3-FR",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Forward Resolution Domain Denylisting",
+        "description": "Blocking a lookup based on the query's domain name value.",
+        "tag": "D3-FRDDL",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Forward Resolution IP Denylisting",
+        "description": "Blocking a DNS lookup's answer's IP address value.",
+        "tag": "D3-FRIDL",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Firmware Verification",
+        "description": "Cryptographically verifying firmware integrity.",
+        "tag": "D3-FV",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Hardware-based Process Isolation",
+        "description": "Preventing one process from writing to the memory space of another process through hardware based address manager implementations.",
+        "tag": "D3-HBPI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Hardware Component Inventory",
+        "description": "Hardware component inventorying identifies and records the hardware items in the organization's architecture.",
+        "tag": "D3-HCI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Homoglyph Detection",
+        "description": "Comparing strings using a variety of techniques to determine if a deceptive or malicious string is being presented to a user.",
+        "tag": "D3-HD",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Hierarchical Domain Denylisting",
+        "description": "Blocking the resolution of any subdomain of a specified domain name.",
+        "tag": "D3-HDDL",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Homoglyph Denylisting",
+        "description": "Blocking DNS queries that are deceptively similar to legitimate domain names.",
+        "tag": "D3-HDL",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Identifier Activity Analysis",
+        "description": "Taking known malicious identifiers and determining if they are present in a system.",
+        "tag": "D3-IAA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Indirect Branch Call Analysis",
+        "description": "Analyzing vendor specific branch call recording in order to detect ROP style attacks.",
+        "tag": "D3-IBCA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Identifier Analysis",
+        "description": "",
+        "tag": "D3-ID",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Input Device Analysis",
+        "description": "Operating system level mechanisms to prevent abusive input device exploitation.",
+        "tag": "D3-IDA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Integrated Honeynet",
+        "description": "The practice of setting decoys in a production environment to entice interaction from attackers.",
+        "tag": "D3-IHN",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "IO Port Restriction",
+        "description": "Limiting access to computer input/output (IO) ports to restrict unauthorized devices.",
+        "tag": "D3-IOPR",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "IPC Traffic Analysis",
+        "description": "Analyzing standard inter process communication (IPC) protocols to detect deviations from normal protocol activity.",
+        "tag": "D3-IPCTA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "IP Reputation Analysis",
+        "description": "Analyzing the reputation of an IP address.",
+        "tag": "D3-IPRA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Identifier Reputation Analysis",
+        "description": "Analyzing the reputation of an identifier.",
+        "tag": "D3-IRA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Inbound Session Volume Analysis",
+        "description": "Analyzing inbound network session or connection attempt volume.",
+        "tag": "D3-ISVA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Inbound Traffic Filtering",
+        "description": "Restricting network traffic originating from untrusted networks destined towards a private host or enclave.",
+        "tag": "D3-ITF",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Job Function Access Pattern Analysis",
+        "description": "Detecting anomalies in user access patterns by comparing user access activity to behavioral profiles that categorize users by role such as job title, function, department.",
+        "tag": "D3-JFAPA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Kernel-based Process Isolation",
+        "description": "Using kernel-level capabilities to isolate processes.",
+        "tag": "D3-KBPI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Local Account Monitoring",
+        "description": "Analyzing local user accounts to detect unauthorized activity.",
+        "tag": "D3-LAM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Local File Permissions",
+        "description": "Restricting access to a local file by configuring operating system functionality.",
+        "tag": "D3-LFP",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Logical Link Mapping",
+        "description": "Logical link mapping creates a model of existing or previous node-to-node connections using network-layer data or metadata.",
+        "tag": "D3-LLM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Message Analysis",
+        "description": "",
+        "tag": "D3-MA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Mandatory Access Control",
+        "description": "Controlling access to local computer system resources with kernel-level capabilities.",
+        "tag": "D3-MAC",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Message Authentication",
+        "description": "Authenticating the sender of a message and ensuring message integrity.",
+        "tag": "D3-MAN",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Memory Boundary Tracking",
+        "description": "Analyzing a call stack for return addresses which point to unexpected  memory locations.",
+        "tag": "D3-MBT",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Message Encryption",
+        "description": "Encrypting a message body using a cryptographic key.",
+        "tag": "D3-MENCR",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Multi-factor Authentication",
+        "description": "Requiring proof of two or more pieces of evidence in order to authenticate a user.",
+        "tag": "D3-MFA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Message Hardening",
+        "description": "",
+        "tag": "D3-MH",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Network Isolation",
+        "description": "",
+        "tag": "D3-NI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Network Mapping",
+        "description": "",
+        "tag": "D3-NM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Network Node Inventory",
+        "description": "Network node inventorying identifies and records all the network nodes (hosts, routers, switches, firewalls, etc.) in the organization's architecture.",
+        "tag": "D3-NNI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Network Traffic Analysis",
+        "description": "",
+        "tag": "D3-NTA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Network Traffic Community Deviation",
+        "description": "Establishing baseline communities of network hosts and identifying statistically divergent inter-community communication.",
+        "tag": "D3-NTCD",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Network Traffic Filtering",
+        "description": "Restricting network traffic originating from any location.",
+        "tag": "D3-NTF",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Network Traffic Policy Mapping",
+        "description": "Network traffic policy mapping identifies and models the allowed pathways of data at the network, tranport, and/or application levels.",
+        "tag": "D3-NTPM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Network Vulnerability Assessment",
+        "description": "Network vulnerability assessment relates all the vulnerabilities of a network's components in the context of their configuration and interdependencies and can also include assessing risk emerging from the network's design as a whole, not just the sum of individual network node or network segment vulnerabilities.",
+        "tag": "D3-NVA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Operational Activity Mapping",
+        "description": "",
+        "tag": "D3-OAM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Operational Dependency Mapping",
+        "description": "Operational dependency mapping identifies and models the dependencies of the organization's activities on each other and on the organization's performers (people, systems, and services.)  This may include modeling the higher- and lower-level activities of an organization forming a hierarchy, or layering, of the dependencies in an organization's activities.",
+        "tag": "D3-ODM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Organization Mapping",
+        "description": "Organization mapping identifies and models the people, roles, and groups with an organization and the relations between them.",
+        "tag": "D3-OM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Operational Risk Assessment",
+        "description": "Operational risk assessment identifies and models the vulnerabilities of, and risks to, an organization's activities individually and as a whole.",
+        "tag": "D3-ORA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Operating System Monitoring",
+        "description": "The operating system software, for D3FEND's purposes, includes the kernel and its process management functions, hardware drivers, initialization or boot logic. It also includes and other key system daemons and their configuration. The monitoring or analysis of these components for unauthorized activity constitute **Operating System Monitoring**.",
+        "tag": "D3-OSM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Outbound Traffic Filtering",
+        "description": "Restricting network traffic originating from a private host or enclave destined towards untrusted networks.",
+        "tag": "D3-OTF",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "One-time Password",
+        "description": "A one-time password is valid for only one user authentication.",
+        "tag": "D3-OTP",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Process Analysis",
+        "description": "",
+        "tag": "D3-PA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Pointer Authentication",
+        "description": "Comparing the cryptographic hash or derivative of a pointer's value to an expected value.",
+        "tag": "D3-PAN",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Passive Certificate Analysis",
+        "description": "Passively collecting certificates and analyzing them.",
+        "tag": "D3-PCA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Passive Certificate Analysis",
+        "description": "Collecting host certificates from network traffic or other passive sources like a certificate transparency log and analyzing them for unauthorized activity.",
+        "tag": "D3-PCA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Process Code Segment Verification",
+        "description": "Comparing the \"text\" or \"code\" memory segments to a source of truth.",
+        "tag": "D3-PCSV",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Process Eviction",
+        "description": "",
+        "tag": "D3-PE",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Peripheral Firmware Verification",
+        "description": "Cryptographically verifying peripheral firmware integrity.",
+        "tag": "D3-PFV",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Platform Hardening",
+        "description": "",
+        "tag": "D3-PH",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Per Host Download-Upload Ratio Analysis",
+        "description": "Detecting anomalies that indicate malicious activity by comparing the amount of data downloaded versus data uploaded by a host.",
+        "tag": "D3-PHDURA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Process Lineage Analysis",
+        "description": "Identification of suspicious processes executing on an end-point device by examining the ancestry and siblings of a process, and the associated metadata of each node on the tree, such as process execution, duration, and order relative to siblings and ancestors.",
+        "tag": "D3-PLA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Passive Logical Link Mapping",
+        "description": "Passive logical link mapping only listens to network traffic as a means to map the the whole data link layer, where the links represent logical data flows rather than physical connections.",
+        "tag": "D3-PLLM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Physical Link Mapping",
+        "description": "Physical link mapping identifies and models the link connectivity of the network devices within a physical network.",
+        "tag": "D3-PLM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Platform Monitoring",
+        "description": "",
+        "tag": "D3-PM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Protocol Metadata Anomaly Detection",
+        "description": "Collecting network communication protocol metadata and identifying statistical outliers.",
+        "tag": "D3-PMAD",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Passive Physical Link Mapping",
+        "description": "Passive physical link mapping only listens to network traffic as a means to map the physical layer.",
+        "tag": "D3-PPLM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Process Suspension",
+        "description": "Suspending a running process on a computer system.",
+        "tag": "D3-PS",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Process Spawn Analysis",
+        "description": "Analyzing spawn arguments or attributes of a process to detect processes that are unauthorized.",
+        "tag": "D3-PSA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Process Segment Execution Prevention",
+        "description": "Preventing execution of any address in a memory region other than the code segment.",
+        "tag": "D3-PSEP",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Process Self-Modification Detection",
+        "description": "Detects processes that modify, change, or replace their own code at runtime.",
+        "tag": "D3-PSMD",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Process Termination",
+        "description": "Terminating a running application process on a computer system.",
+        "tag": "D3-PT",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Resource Access Pattern Analysis",
+        "description": "Analyzing the resources accessed by a user to identify unauthorized activity.",
+        "tag": "D3-RAPA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "RF Shielding",
+        "description": "Adding physical barriers to a platform to prevent undesired radio interference.",
+        "tag": "D3-RFS",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Relay Pattern Analysis",
+        "description": "The detection of an internal host relaying traffic between the internal network and the external network.",
+        "tag": "D3-RPA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Reverse Resolution Domain Denylisting",
+        "description": "Blocking a reverse DNS lookup's answer's domain name value.",
+        "tag": "D3-RRDD",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Reverse Resolution IP Denylisting",
+        "description": "Blocking a reverse lookup based on the query's IP address value.",
+        "tag": "D3-RRID",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "RPC Traffic Analysis",
+        "description": "Monitoring the activity of remote procedure calls in communication traffic to establish standard protocol operations and potential attacker activities.",
+        "tag": "D3-RTA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Remote Terminal Session Detection",
+        "description": "Detection of an unauthorized remote live terminal console session by examining network traffic to a network host.",
+        "tag": "D3-RTSD",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Segment Address Offset Randomization",
+        "description": "Randomizing the base (start) address of one or more segments of memory during the initialization of a process.",
+        "tag": "D3-SAOR",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Service Binary Verification",
+        "description": "Analyzing changes in service binary files by comparing to a source of truth.",
+        "tag": "D3-SBV",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "System Call Analysis",
+        "description": "Analyzing system calls to determine whether a process is exhibiting unauthorized behavior.",
+        "tag": "D3-SCA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "System Call Filtering",
+        "description": "Configuring a kernel to use an allow or deny list to filter kernel api calls.",
+        "tag": "D3-SCF",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "System Configuration Permissions",
+        "description": "Restricting system configuration modifications to a specific user or group of users.",
+        "tag": "D3-SCP",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Session Duration Analysis",
+        "description": "Analyzing the duration of user sessions in order to detect unauthorized  activity.",
+        "tag": "D3-SDA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "System Daemon Monitoring",
+        "description": "Tracking changes to the state or configuration of critical system level processes.",
+        "tag": "D3-SDM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Script Execution Analysis",
+        "description": "Analyzing the execution of a script to detect unauthorized user activity.",
+        "tag": "D3-SEA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "System File Analysis",
+        "description": "Monitoring system files such as authentication databases, configuration files, system logs, and system executables for modification or tampering.",
+        "tag": "D3-SFA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Stack Frame Canary Validation",
+        "description": "Comparing a value stored in a stack frame with a known good value in order to prevent or detect a memory segment overwrite.",
+        "tag": "D3-SFCV",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "System Firmware Verification",
+        "description": "Cryptographically verifying installed system firmware integrity.",
+        "tag": "D3-SFV",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Standalone Honeynet",
+        "description": "An environment created for the purpose of attracting attackers and eliciting their behaviors that is not connected to any production enterprise systems.",
+        "tag": "D3-SHN",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "System Init Config Analysis",
+        "description": "Analysis of any system process startup configuration.",
+        "tag": "D3-SICA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Scheduled Job Analysis",
+        "description": "Analysis of source files, processes, destination files, or destination servers associated with a scheduled job to detect unauthorized use of job scheduling.",
+        "tag": "D3-SJA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Sender MTA Reputation Analysis",
+        "description": "Characterizing the reputation of mail transfer agents (MTA) to determine the security risk in emails.",
+        "tag": "D3-SMRA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Strong Password Policy",
+        "description": "Modifying system configuration to increase password strength.",
+        "tag": "D3-SPP",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Sender Reputation Analysis",
+        "description": "Ascertaining sender reputation based on information associated with a message (e.g. email/instant messaging).",
+        "tag": "D3-SRA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Shadow Stack Comparisons",
+        "description": "Comparing a call stack in system memory with a shadow call stack maintained by the processor to determine unauthorized shellcode activity.",
+        "tag": "D3-SSC",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Software Update",
+        "description": "Replacing old software on a computer system component.",
+        "tag": "D3-SU",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Service Dependency Mapping",
+        "description": "Service dependency mapping determines the services on which each given service relies.",
+        "tag": "D3-SVCDM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Software Inventory",
+        "description": "Software inventorying identifies and records the software items in the organization's architecture.",
+        "tag": "D3-SWI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "System Dependency Mapping",
+        "description": "System dependency mapping identifies and models the dependencies of system components on each other to carry out their function.",
+        "tag": "D3-SYSDM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "System Mapping",
+        "description": "",
+        "tag": "D3-SYSM",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "System Vulnerability Assessment",
+        "description": "System vulnerability assessment relates all the vulnerabilities of a system's components in the context of their configuration and internal dependencies and can also include assessing risk emerging from the system's design as a whole, not just the sum of individual component vulnerabilities.",
+        "tag": "D3-SYSVA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Transfer Agent Authentication",
+        "description": "Validating that server components of a messaging infrastructure are authorized to send a particular message.",
+        "tag": "D3-TAAN",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "TPM Boot Integrity",
+        "description": "Assuring the integrity of a platform by demonstrating that the boot process starts from a trusted combination of hardware and software and continues until the operating system has fully booted and applications are running.  Sometimes called Static Root of Trust Measurement (STRM).",
+        "tag": "D3-TBI",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "URL Analysis",
+        "description": "Determining if a URL is benign or malicious by analyzing the URL or its components.",
+        "tag": "D3-UA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "User Account Permissions",
+        "description": "Restricting a user account's access to resources.",
+        "tag": "D3-UAP",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "User Behavior Analysis",
+        "description": "",
+        "tag": "D3-UBA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "User Data Transfer Analysis",
+        "description": "Analyzing the amount of data transferred by a user.",
+        "tag": "D3-UDTA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "User Geolocation Logon Pattern Analysis",
+        "description": "Monitoring geolocation data of user logon attempts and comparing it to a baseline user behavior profile to identify anomalies in logon location.",
+        "tag": "D3-UGLPA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "URL Reputation Analysis",
+        "description": "Analyzing the reputation of a URL.",
+        "tag": "D3-URA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "User Session Init Config Analysis",
+        "description": "Analyzing modifications to user session config files such as .bashrc or .bash_profile.",
+        "tag": "D3-USICA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
+        "name": "Web Session Activity Analysis",
+        "description": "Monitoring changes in user web session behavior by comparing current web session activity to a baseline behavior profile or a catalog of predetermined malicious behavior.",
+        "tag": "D3-WSAA",
+        "url": "https://d3fend.mitre.org/"
+    },
+    {
         "name": "Firmware",
         "description": "Computer software that provides low-level control for the hardware and device(s) of a host, such as BIOS or UEFI/EFI",
         "tag": "DS0001",
@@ -2116,6 +3208,12 @@
         "description": "[EXOTIC LILY](https://attack.mitre.org/groups/G1011) is a financially motivated group that has been closely linked with [Wizard Spider](https://attack.mitre.org/groups/G0102) and the deployment of ransomware including [Conti](https://attack.mitre.org/software/S0575) and [Diavol](https://attack.mitre.org/software/S0659). [EXOTIC LILY](https://attack.mitre.org/groups/G1011) may be acting as an initial access broker for other malicious actors, and has targeted a wide range of industries including IT, cybersecurity, and healthcare since at least September 2021.(Citation: Google EXOTIC LILY March 2022)",
         "tag": "G1011",
         "url": "https://attack.mitre.org/groups/G1011"
+    },
+    {
+        "name": "D3FEND Technique",
+        "description": "Definition",
+        "tag": "ID",
+        "url": "https://d3fend.mitre.org/"
     },
     {
         "name": "Application Developer Guidance",
