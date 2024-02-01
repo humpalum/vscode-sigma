@@ -2,6 +2,10 @@
 
 All notable changes to the "sigma" extension will be documented in this file.
 
+## [1.6.3]
+-   Implemented MITRE D3fend
+-   Attack Tag Command -> Tag Command
+ 
 ## [1.6.2]
 
 ### Added

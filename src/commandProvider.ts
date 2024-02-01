@@ -78,15 +78,27 @@ export async function addTagQuickpick() {
 
             let pos = vscode.window.activeTextEditor?.document.positionAt(index)
             vscode.window.activeTextEditor?.edit(textEdit => {
-                textEdit.insert(
-                    vscode.window.activeTextEditor?.document.positionAt(index)!,
-                    `${tab}- attack.${tagtoadd}\n`,
-                )
+
+                if(tagtoadd.slice(0, 2) == "d3"){
+                    textEdit.insert(
+                        vscode.window.activeTextEditor?.document.positionAt(index)!,
+                        `${tab}- d3fend.${tagtoadd}\n`,
+                    )
+                }else{
+                    textEdit.insert(
+                        vscode.window.activeTextEditor?.document.positionAt(index)!,
+                        `${tab}- attack.${tagtoadd}\n`,
+                    )
+                }                
             })
         } else {
             vscode.window.activeTextEditor!.document.lineAt(vscode.window.activeTextEditor!.selection.active.line).range
             vscode.window.activeTextEditor?.edit(textEdit => {
-                textEdit.insert(vscode.window.activeTextEditor?.selection.end!, `${tab}- attack.${tagtoadd}`)
+                if(tagtoadd.slice(0, 2) == "d3"){
+                    textEdit.insert(vscode.window.activeTextEditor?.selection.end!, `${tab}- d3fend.${tagtoadd}`)
+                }else{
+                    textEdit.insert(vscode.window.activeTextEditor?.selection.end!, `${tab}- attack.${tagtoadd}`)
+                }
             })
         }
     }
