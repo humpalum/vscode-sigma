@@ -87,9 +87,9 @@ function generateTodaySnippet(
         console.log("SigmaSnippetCompletionItemProvider: Generating 'today' snippet")
     }
     snippet.appendVariable("CURRENT_YEAR", "Unknown Year")
-    snippet.appendText("/")
+    snippet.appendText("-")
     snippet.appendVariable("CURRENT_MONTH", "Unknown Month")
-    snippet.appendText("/")
+    snippet.appendText("-")
     snippet.appendVariable("CURRENT_DATE", "Unknown Date")
     return snippet
 }
