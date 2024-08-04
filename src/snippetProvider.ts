@@ -28,7 +28,7 @@ function generateRelatedSnippet(
     snippet.appendText("related:\n")
     snippet.appendText("\t- id: \n")
     snippet.appendText("\t  type: ")
-    snippet.appendChoice(['derived', 'merged', 'obsoletes', 'renamed', 'similar'])
+    snippet.appendChoice(['derived', 'merged', 'obsolete', 'renamed', 'similar'])
     return snippet
 }
 

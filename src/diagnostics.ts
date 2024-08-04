@@ -398,7 +398,7 @@ function testMeta(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | un
             }
         }
         // Check Related Field
-        let validRelType = ["derived", "obsoletes", "merged", "renamed", "similar"]
+        let validRelType = ["derived", "obsolete", "merged", "renamed", "similar"]
         if (rule.related) {
             if (!Array.isArray(rule.related)) {
                 var range = getRangeOfString("related:", doc)
@@ -415,7 +415,7 @@ function testMeta(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | un
                             diagnostics.push(
                                 new vscode.Diagnostic(
                                     range,
-                                    "Unknown Related Type - Allowed: derived, obsoletes, merged, renamed, similar",
+                                    "Unknown Related Type - Allowed: derived, obsolete, merged, renamed, similar",
                                     vscode.DiagnosticSeverity.Warning,
                                 ),
                             )
