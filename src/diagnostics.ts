@@ -276,6 +276,11 @@ function testSigmaDetection(rule: any, doc: vscode.TextDocument): vscode.Diagnos
             if (depth > 3) {
                 return
             }
+            if (!cur){
+                // Empty Value, maybe set "EMPTY VALUE Diagnostic?"
+                return
+            }
+
             if (cur.constructor !== Object) {
                 if (Array.isArray(cur)) {
                     if (cur.length !== [new Set(cur)].length) {
@@ -337,7 +342,7 @@ function testSigmaDetection(rule: any, doc: vscode.TextDocument): vscode.Diagnos
 
         return diagnostics
     } catch (error) {
-        console.log("Something went wring checking duplicate Filters:")
+        console.log("Something went wrong checking duplicate Filters:")
         console.log(error)
     }
 }
