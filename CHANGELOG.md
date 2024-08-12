@@ -1,6 +1,12 @@
 # Change Log
 
 All notable changes to the "sigma" extension will be documented in this file.
+## [1.7.0]
+### Added
+-  Support for diagnostics with correlation rules
+
+### Fixed
+-  Fixed some error handling in diagnostics
 
 ## [1.6.3]
 ### Added
