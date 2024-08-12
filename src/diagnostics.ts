@@ -206,7 +206,7 @@ export function subscribeToDocumentChanges(
 
 function testSigmaTags(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
     try {
-        var tagsPattern = /cve\.\d+\.\d+|attack\.t\d+\.*\d*|attack\.[a-z_]+|d3fend\.[a-z_]+|car\.\d{4}-\d{2}-\d{3}|tlp\.|detection\.|stp\./
+        var tagsPattern = /cve\.\d+\-\d+|attack\.t\d+\.*\d*|attack\.[a-z_]+|d3fend\.[a-z_]+|d3fend\.[a-z_]+|car\.\d{4}-\d{2}-\d{3}|tlp\.(red|amber(\-strict)?|green|clear)|detection\.(dfir|threat-hunting|emerging-threats)|stp\./
         let knowntags: string[] = []
         var diagnostics = rule.tags
             .map((tag: string) => {
@@ -403,7 +403,7 @@ function testMeta(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | un
             }
         }
         // Check Related Field
-        let validRelType = ["derived", "obsoletes", "merged", "renamed", "similar"]
+        let validRelType = ["derived", "obsolete", "merged", "renamed", "similar"]
         if (rule.related) {
             if (!Array.isArray(rule.related)) {
                 var range = getRangeOfString("related:", doc)
@@ -420,7 +420,7 @@ function testMeta(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | un
                             diagnostics.push(
                                 new vscode.Diagnostic(
                                     range,
-                                    "Unknown Related Type - Allowed: derived, obsoletes, merged, renamed, similar",
+                                    "Unknown Related Type - Allowed: derived, obsolete, merged, renamed, similar",
                                     vscode.DiagnosticSeverity.Warning,
                                 ),
                             )
