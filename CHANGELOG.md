@@ -3,9 +3,22 @@
 All notable changes to the "sigma" extension will be documented in this file.
 
 ## [1.6.3]
--   Implemented MITRE D3fend
--   Attack Tag Command -> Tag Command
- 
+### Added
+-   Implemented MITRE D3fend (Thanks @n36l3c7 https://github.com/humpalum/vscode-sigma/pull/21)
+
+### Changed
+-   Attack Tag Command -> Tag Command (Thanks @n36l3c7 https://github.com/humpalum/vscode-sigma/pull/21)
+-   Update the generateTodaySnippet function to use - instead of / (Thanks @nasbench for the rest https://github.com/humpalum/vscode-sigma/pull/24)
+-   Update the related type from obsoletes to obsolete
+-   Update the tagsPattern for the following:
+    - The cve will use - instead of /
+    - Added all current possible values for TLP namespace
+    - Added all current possible values for detection namespace
+
+### Fixed
+-   Fixed dev dependency - webpack
+-   Fixed some typos in logging
+
 ## [1.6.2]
 
 ### Added
