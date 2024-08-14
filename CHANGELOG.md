@@ -5,6 +5,7 @@ All notable changes to the "sigma" extension will be documented in this file.
 ### Added
 -   Support for diagnostics with correlation rules
 -   Correlation Snippets
+-   Automatically update sigconverter on pipeline file change (Fix for https://github.com/humpalum/vscode-sigma/issues/23)
 
 ### Fixed
 -  Fixed some error handling in diagnostics
