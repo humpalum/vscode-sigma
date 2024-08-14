@@ -38,9 +38,9 @@ export interface SigConverterConfigItem {
      * default|savedsearches|data_model|string
      */
     format: string
-    /** 
-    *  Optional name to better identify the output
-    */
+    /**
+     *  Optional name to better identify the output
+     */
     name: string
 }
 
@@ -71,9 +71,9 @@ export interface TranslatedSigConverterConfigItem {
      * default|savedsearches|data_model|string
      */
     format: string
-    /** 
-    *  Optional name to better identify the output
-    */
+    /**
+     *  Optional name to better identify the output
+     */
     name: string
 }
 
@@ -87,7 +87,35 @@ export function setConfigs(): void {
         debug = false
         console.log("Debug logging disabled")
     }
+
     sigmacConfigs = vscode.workspace.getConfiguration(configSection).get("compileConfig")
+
+    updateSigconverterConfigs()
+
+    // Setup the FileSystemWatcher for the sigconverterConfigs
+    if (sigconverterConfigs && sigconverterConfigs?.length > 0) {
+        sigconverterConfigs.map(config => {
+            let pipelineData = ""
+            if (typeof config.pipelineYML !== "string") {
+                config.pipelineYML?.map(file => {
+                    vscode.workspace.createFileSystemWatcher(file).onDidChange(() => {
+                        updateSigconverterConfigs()
+                        if (onSigconverterConfigUpdated) {
+                            onSigconverterConfigUpdated()
+                        }
+                    })
+                })
+            }
+        })
+    }
+}
+
+let onSigconverterConfigUpdated: () => void | undefined
+// Export a function to set the onSigconverterConfigUpdated callback
+export function setOnSigconverterConfigUpdated(callback: () => void): void {
+    onSigconverterConfigUpdated = callback
+}
+function updateSigconverterConfigs() {
     sigmasearchengineURL = vscode.workspace.getConfiguration(configSection).get("sigmasearchengineurl")
     sigconverterUrl =
         vscode.workspace.getConfiguration(configSection).get("sigconverterUrl") || "https://sigconverter.io/"
@@ -95,9 +123,17 @@ export function setConfigs(): void {
     sigconverterConfigs = vscode.workspace.getConfiguration(configSection).get("sigconverterConfigs")
 
     // If no custom sigconverter configs are set, put in the default one
+    translatedSigconverterConfigs = []
     if (!sigconverterConfigs || sigconverterConfigs?.length === 0) {
         translatedSigconverterConfigs = [
-            { url: sigconverterUrl, pipelineYML: "", pipeline: [], backend: sigconverterBackend, format: "default", name:""},
+            {
+                url: sigconverterUrl,
+                pipelineYML: "",
+                pipeline: [],
+                backend: sigconverterBackend,
+                format: "default",
+                name: "",
+            },
         ]
     } else {
         // Else just put in all the Configs
@@ -107,9 +143,12 @@ export function setConfigs(): void {
             if (typeof config.pipelineYML === "string") {
                 pipelineData += fs.readFileSync(path.resolve(config.pipelineYML), "utf-8")
             } else {
-                pipelineData = config.pipelineYML?.map(file => {
-                    return  fs.readFileSync(path.resolve(file), "utf-8")
-                }).join("\n---\n") || ""
+                pipelineData =
+                    config.pipelineYML
+                        ?.map(file => {
+                            return fs.readFileSync(path.resolve(file), "utf-8")
+                        })
+                        .join("\n---\n") || ""
             }
 
             let encodedData = Buffer.Buffer.from(pipelineData).toString("base64")
