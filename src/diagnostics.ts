@@ -39,7 +39,9 @@ export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: v
                     )
                 }
             }
+
             if (sigmaRule) {
+                const ruleRange = new vscode.Range(doc.positionAt(offset), doc.positionAt(offset + rule.length))
                 tmpDias = testSigmaTags(sigmaRule, doc)
                 if (tmpDias) {
                     diagnostics = diagnostics.concat(tmpDias)
@@ -48,7 +50,7 @@ export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: v
                 if (tmpDias) {
                     diagnostics = diagnostics.concat(tmpDias)
                 }
-                tmpDias = testMeta(sigmaRule, doc)
+                tmpDias = testMeta(sigmaRule, doc, ruleRange)
                 if (tmpDias) {
                     diagnostics = diagnostics.concat(tmpDias)
                 }
@@ -371,7 +373,7 @@ function testSigmaDetection(rule: any, doc: vscode.TextDocument): vscode.Diagnos
     }
 }
 
-function testMeta(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
+function testMeta(rule: any, doc: vscode.TextDocument, ruleRange: vscode.Range): vscode.Diagnostic[] | undefined {
     try {
         var diagnostics: vscode.Diagnostic[] = []
         function recursiveChecks(cur: any, depth: number) {
@@ -402,13 +404,7 @@ function testMeta(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | un
 
         // Check if ID is good
         if (!("id" in rule)) {
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    new vscode.Range(0, 0, 100, 0),
-                    "Rule needs ID Field",
-                    vscode.DiagnosticSeverity.Warning,
-                ),
-            )
+            diagnostics.push(new vscode.Diagnostic(ruleRange, "Rule needs ID Field", vscode.DiagnosticSeverity.Warning))
         }
         if (!rule.id) {
             range = getRangeOfString("id:", doc)
