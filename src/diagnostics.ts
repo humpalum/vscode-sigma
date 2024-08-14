@@ -17,68 +17,81 @@ export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: v
     }
     let diagnostics: vscode.Diagnostic[] = []
     if (doc.languageId === "sigma") {
-        let tmpDias
-        let sigmaRule
-        try {
-            sigmaRule = YAML.parse(doc.getText())
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Error) {
-                diagnostics.push(
-                    new vscode.Diagnostic(
-                        new vscode.Range(doc.positionAt((error as any).pos[0]), doc.positionAt((error as any).pos[1])),
-                        error.message,
-                        vscode.DiagnosticSeverity.Error,
-                    ),
-                )
+        const sigmaRules = doc.getText().split(/---\s*\n/)
+        let offset = 0
+        sigmaRules.forEach(rule => {
+            let tmpDias
+            let sigmaRule
+            try {
+                sigmaRule = YAML.parse(rule)
+            } catch (error) {
+                console.log("YAML PARSE ERROR", error)
+                if (error instanceof Error) {
+                    diagnostics.push(
+                        new vscode.Diagnostic(
+                            new vscode.Range(
+                                doc.positionAt((error as any).pos[0] + offset),
+                                doc.positionAt((error as any).pos[1] + offset),
+                            ),
+                            error.message,
+                            vscode.DiagnosticSeverity.Error,
+                        ),
+                    )
+                }
             }
-        }
-        if (sigmaRule) {
-            tmpDias = testSigmaTags(sigmaRule, doc)
-            if (tmpDias) {
-                diagnostics = diagnostics.concat(tmpDias)
-            }
-            tmpDias = testSigmaDetection(sigmaRule, doc)
-            if (tmpDias) {
-                diagnostics = diagnostics.concat(tmpDias)
-            }
-            tmpDias = testMeta(sigmaRule, doc)
-            if (tmpDias) {
-                diagnostics = diagnostics.concat(tmpDias)
-            }
-            tmpDias = testOther(sigmaRule, doc)
-            if (tmpDias) {
-                diagnostics = diagnostics.concat(tmpDias)
-            }
-        }
 
-        for (let lineIndex = 0; lineIndex < doc.lineCount; lineIndex++) {
-            const lineOfText = doc.lineAt(lineIndex)
-            // Check for Errors Here
-            // Check modifiers
-            if (lineOfText.text.includes("contains|")) {
-                if (!lineOfText.text.includes("contains|all:")) {
-                    diagnostics.push(creatDiaContainsInMiddle(doc, lineOfText, lineIndex))
+            if (sigmaRule) {
+                const ruleRange = new vscode.Range(doc.positionAt(offset), doc.positionAt(offset + rule.length))
+                tmpDias = testSigmaTags(sigmaRule, doc)
+                if (tmpDias) {
+                    diagnostics = diagnostics.concat(tmpDias)
+                }
+                tmpDias = testSigmaDetection(sigmaRule, doc)
+                if (tmpDias) {
+                    diagnostics = diagnostics.concat(tmpDias)
+                }
+                tmpDias = testMeta(sigmaRule, doc, ruleRange)
+                if (tmpDias) {
+                    diagnostics = diagnostics.concat(tmpDias)
                 }
             }
-            if (lineOfText.text.includes("|all:")) {
-                if (!lineOfText.text.match(/\|all:\s*$/)) {
-                    diagnostics.push(creatDiaSingleAll(doc, lineOfText, lineIndex))
-                }
+
+            offset = offset + rule.length + 4
+        })
+    }
+
+    const tmpDias = testOther(doc)
+    if (tmpDias) {
+        diagnostics = diagnostics.concat(tmpDias)
+    }
+
+    for (let lineIndex = 0; lineIndex < doc.lineCount; lineIndex++) {
+        const lineOfText = doc.lineAt(lineIndex)
+        // Check for Errors Here
+        // Check modifiers
+        if (lineOfText.text.includes("contains|")) {
+            if (!lineOfText.text.includes("contains|all:")) {
+                diagnostics.push(creatDiaContainsInMiddle(doc, lineOfText, lineIndex))
             }
-            if (lineOfText.text.match(/^title:.{71,}/)) {
-                diagnostics.push(creatDiaTitleTooLong(doc, lineOfText, lineIndex))
+        }
+        if (lineOfText.text.includes("|all:")) {
+            if (!lineOfText.text.match(/\|all:\s*$/)) {
+                diagnostics.push(creatDiaSingleAll(doc, lineOfText, lineIndex))
             }
-            if (lineOfText.text.match(/^description:.{0,32}$/)) {
-                if (!lineOfText.text.match(/^description:\s+\|\s*$/)) {
-                    diagnostics.push(creatDiaDescTooShort(doc, lineOfText, lineIndex))
-                }
+        }
+        if (lineOfText.text.match(/^title:.{71,}/)) {
+            diagnostics.push(creatDiaTitleTooLong(doc, lineOfText, lineIndex))
+        }
+        if (lineOfText.text.match(/^description:.{0,32}$/)) {
+            if (!lineOfText.text.match(/^description:\s+\|\s*$/)) {
+                diagnostics.push(creatDiaDescTooShort(doc, lineOfText, lineIndex))
             }
-            if (lineOfText.text.match(/[\s]+$/)) {
-                diagnostics.push(creatDiaTrailingWhitespace(doc, lineOfText, lineIndex))
-            }
+        }
+        if (lineOfText.text.match(/[\s]+$/)) {
+            diagnostics.push(creatDiaTrailingWhitespace(doc, lineOfText, lineIndex))
         }
     }
+    console.log("Diagnostics: ", diagnostics)
     sigmaDiagnostics.set(doc.uri, diagnostics)
 }
 function creatDiaSingleAll(
@@ -206,8 +219,12 @@ export function subscribeToDocumentChanges(
 
 function testSigmaTags(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
     try {
-        var tagsPattern = /cve\.\d+\-\d+|attack\.t\d+\.*\d*|attack\.[a-z_]+|d3fend\.[a-z_]+|d3fend\.[a-z_]+|car\.\d{4}-\d{2}-\d{3}|tlp\.(red|amber(\-strict)?|green|clear)|detection\.(dfir|threat-hunting|emerging-threats)|stp\./
+        var tagsPattern =
+            /cve\.\d+\-\d+|attack\.t\d+\.*\d*|attack\.[a-z_]+|d3fend\.[a-z_]+|d3fend\.[a-z_]+|car\.\d{4}-\d{2}-\d{3}|tlp\.(red|amber(\-strict)?|green|clear)|detection\.(dfir|threat-hunting|emerging-threats)|stp\./
         let knowntags: string[] = []
+        if (!rule.tags) {
+            return
+        }
         var diagnostics = rule.tags
             .map((tag: string) => {
                 let tagDias: vscode.Diagnostic[] = []
@@ -276,7 +293,7 @@ function testSigmaDetection(rule: any, doc: vscode.TextDocument): vscode.Diagnos
             if (depth > 3) {
                 return
             }
-            if (!cur){
+            if (!cur) {
                 // Empty Value, maybe set "EMPTY VALUE Diagnostic?"
                 return
             }
@@ -287,7 +304,11 @@ function testSigmaDetection(rule: any, doc: vscode.TextDocument): vscode.Diagnos
                         let duplicates = cur.filter((item: string, index: Number) => {
                             let dupl = false
                             cur.forEach((item2: string, index2: Number) => {
-                                if (item.toLocaleLowerCase() === item2.toLocaleLowerCase() && index !== index2) {
+                                // Make sure its compared as string
+                                if (
+                                    (item + "").toLocaleLowerCase() === (item2 + "").toLocaleLowerCase() &&
+                                    index !== index2
+                                ) {
                                     dupl = true
                                 }
                             })
@@ -313,7 +334,12 @@ function testSigmaDetection(rule: any, doc: vscode.TextDocument): vscode.Diagnos
         checkListRecursive(rule.detection, 0)
 
         // Check Single named condition with x of them
-        if (rule.detection.condition.includes("them") && Object.keys(rule.detection).length === 2) {
+        if (
+            rule.detection &&
+            rule.detection.condition &&
+            rule.detection.condition.includes("them") &&
+            Object.keys(rule.detection).length === 2
+        ) {
             var range = getRangeOfString(rule.detection.condition, doc)
             if (range) {
                 diagnostics.push(
@@ -327,7 +353,7 @@ function testSigmaDetection(rule: any, doc: vscode.TextDocument): vscode.Diagnos
         }
 
         // Check "all of them"
-        if (rule.detection.condition.includes("all of them")) {
+        if (rule.detection && rule.detection.condition && rule.detection.condition.includes("all of them")) {
             var range = getRangeOfString(rule.detection.condition, doc)
             if (range) {
                 diagnostics.push(
@@ -347,7 +373,7 @@ function testSigmaDetection(rule: any, doc: vscode.TextDocument): vscode.Diagnos
     }
 }
 
-function testMeta(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
+function testMeta(rule: any, doc: vscode.TextDocument, ruleRange: vscode.Range): vscode.Diagnostic[] | undefined {
     try {
         var diagnostics: vscode.Diagnostic[] = []
         function recursiveChecks(cur: any, depth: number) {
@@ -378,13 +404,7 @@ function testMeta(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | un
 
         // Check if ID is good
         if (!("id" in rule)) {
-            diagnostics.push(
-                new vscode.Diagnostic(
-                    new vscode.Range(0, 0, 100, 0),
-                    "Rule needs ID Field",
-                    vscode.DiagnosticSeverity.Warning,
-                ),
-            )
+            diagnostics.push(new vscode.Diagnostic(ruleRange, "Rule needs ID Field", vscode.DiagnosticSeverity.Warning))
         }
         if (!rule.id) {
             range = getRangeOfString("id:", doc)
@@ -437,7 +457,8 @@ function testMeta(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | un
     }
 }
 
-function testOther(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
+// Not on per Rule Basis but on the whole Document
+function testOther(doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
     try {
         var diagnostics: vscode.Diagnostic[] = []
 

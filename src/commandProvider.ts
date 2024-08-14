@@ -8,6 +8,7 @@ import axios, { AxiosError, AxiosResponse } from "axios"
 import { SIGMACONVERTERHEAD } from "./sigmaconverter/sigmaconverter"
 import {
     TranslatedSigConverterConfigItem,
+    setOnSigconverterConfigUpdated,
     sigconverterConfigs,
     sigconverterUrl,
     translatedSigconverterConfigs,
@@ -78,25 +79,24 @@ export async function addTagQuickpick() {
 
             let pos = vscode.window.activeTextEditor?.document.positionAt(index)
             vscode.window.activeTextEditor?.edit(textEdit => {
-
-                if(tagtoadd.slice(0, 2) == "d3"){
+                if (tagtoadd.slice(0, 2) == "d3") {
                     textEdit.insert(
                         vscode.window.activeTextEditor?.document.positionAt(index)!,
                         `${tab}- d3fend.${tagtoadd}\n`,
                     )
-                }else{
+                } else {
                     textEdit.insert(
                         vscode.window.activeTextEditor?.document.positionAt(index)!,
                         `${tab}- attack.${tagtoadd}\n`,
                     )
-                }                
+                }
             })
         } else {
             vscode.window.activeTextEditor!.document.lineAt(vscode.window.activeTextEditor!.selection.active.line).range
             vscode.window.activeTextEditor?.edit(textEdit => {
-                if(tagtoadd.slice(0, 2) == "d3"){
+                if (tagtoadd.slice(0, 2) === "d3") {
                     textEdit.insert(vscode.window.activeTextEditor?.selection.end!, `${tab}- d3fend.${tagtoadd}`)
-                }else{
+                } else {
                     textEdit.insert(vscode.window.activeTextEditor?.selection.end!, `${tab}- attack.${tagtoadd}`)
                 }
             })
@@ -765,7 +765,11 @@ export async function openSigconverter() {
         updateSigconverter()
     })
 
+    // Update the weview content whenever the config updates
+    setOnSigconverterConfigUpdated(updateSigconverter)
+
     webviewPanel.onDidDispose(() => {
+        setOnSigconverterConfigUpdated(() => {})
         disposables.dispose()
     })
 }

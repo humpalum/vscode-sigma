@@ -28,7 +28,7 @@ function generateRelatedSnippet(
     snippet.appendText("related:\n")
     snippet.appendText("\t- id: \n")
     snippet.appendText("\t  type: ")
-    snippet.appendChoice(['derived', 'merged', 'obsolete', 'renamed', 'similar'])
+    snippet.appendChoice(["derived", "merged", "obsolete", "renamed", "similar"])
     return snippet
 }
 
@@ -196,20 +196,20 @@ function generateProductSnippet(
     }
     snippet.appendText("product: ")
     snippet.appendChoice([
-        "aws", 
-        "azure", 
+        "aws",
+        "azure",
         "cisco",
-        "gcp", 
+        "gcp",
         "github",
         "huawei",
         "juniper",
-        "linux", 
+        "linux",
         "m365",
-        "macos", 
+        "macos",
         "okta",
         "onelogin",
-        "spring", 
-        "windows", 
+        "spring",
+        "windows",
         "zeek",
     ])
     return snippet
@@ -338,6 +338,72 @@ function generateRuleSnippet(
     return snippet
 }
 
+function generateCorrelation_event_count_Snippet(
+    snippet: vscode.SnippetString = new vscode.SnippetString(),
+    numTabs = 0,
+): vscode.SnippetString {
+    if (debug) {
+        console.log("SigmaSnippetCompletionItemProvider: Generating 'correlation - event_count' snippet")
+    }
+    snippet.appendText("correlation:\n")
+    snippet.appendText("\ttype: event_count\n")
+    snippet.appendText("\trules:\n")
+    snippet.appendText("\tgroup-by:\n")
+    snippet.appendText("\ttimespan:\n")
+    snippet.appendText("\tcondition:")
+
+    return snippet
+}
+function generateCorrelation_value_count_Snippet(
+    snippet: vscode.SnippetString = new vscode.SnippetString(),
+    numTabs = 0,
+): vscode.SnippetString {
+    if (debug) {
+        console.log("SigmaSnippetCompletionItemProvider: Generating 'correlation - value_count' snippet")
+    }
+    snippet.appendText("correlation:\n")
+    snippet.appendText("\ttype: value_count\n")
+    snippet.appendText("\trules:\n")
+    snippet.appendText("\tgroup-by:\n")
+    snippet.appendText("\ttimespan:\n")
+    snippet.appendText("\tcondition:\n")
+    snippet.appendText("\t\tfield:")
+
+    return snippet
+}
+function generateCorrelation_temporal_Snippet(
+    snippet: vscode.SnippetString = new vscode.SnippetString(),
+    numTabs = 0,
+): vscode.SnippetString {
+    if (debug) {
+        console.log("SigmaSnippetCompletionItemProvider: Generating 'correlation - temporal' snippet")
+    }
+    snippet.appendText("correlation:\n")
+    snippet.appendText("\ttype: temporal\n")
+    snippet.appendText("\trules:\n")
+    snippet.appendText("\tgroup-by:\n")
+    snippet.appendText("\ttimespan:\n")
+    snippet.appendText("\tcondition:")
+
+    return snippet
+}
+function generateCorrelation_temporal_ordered_Snippet(
+    snippet: vscode.SnippetString = new vscode.SnippetString(),
+    numTabs = 0,
+): vscode.SnippetString {
+    if (debug) {
+        console.log("SigmaSnippetCompletionItemProvider: Generating 'correlation - temporal_ordered' snippet")
+    }
+    snippet.appendText("correlation:\n")
+    snippet.appendText("\ttype: temporal_ordered\n")
+    snippet.appendText("\trules:\n")
+    snippet.appendText("\tgroup-by:\n")
+    snippet.appendText("\ttimespan:\n")
+    snippet.appendText("\tcondition:")
+
+    return snippet
+}
+
 export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItemProvider {
     private generateBasicItems(): vscode.CompletionList {
         const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration(configName)
@@ -380,7 +446,6 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
         statusItem.documentation.appendCodeblock("status: [choice]")
         items.items.push(statusItem)
 
-
         const relatedItem: vscode.CompletionItem = new vscode.CompletionItem(
             "related: ",
             vscode.CompletionItemKind.Snippet,
@@ -391,10 +456,7 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
         relatedItem.documentation.appendCodeblock("related: \n\t- id: \n\t  type:")
         items.items.push(relatedItem)
 
-        const tagItem: vscode.CompletionItem = new vscode.CompletionItem(
-            "tags: ",
-            vscode.CompletionItemKind.Snippet,
-        )
+        const tagItem: vscode.CompletionItem = new vscode.CompletionItem("tags: ", vscode.CompletionItemKind.Snippet)
         tagItem.detail = "Generate a new tags section (sigma)"
         tagItem.insertText = new vscode.SnippetString("tags: ")
         tagItem.documentation = new vscode.MarkdownString("Generates tags section")
@@ -411,7 +473,6 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
         serviceItem.documentation.appendCodeblock("service: ")
         items.items.push(serviceItem)
 
-    
         const authorItem: vscode.CompletionItem = new vscode.CompletionItem(
             "author: ",
             vscode.CompletionItemKind.Snippet,
@@ -486,6 +547,54 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
         falsepositiveItem.documentation.appendCodeblock("falsepositives: [choice]")
         items.items.push(falsepositiveItem)
 
+        const corEventCountItem: vscode.CompletionItem = new vscode.CompletionItem(
+            "correlation: type: event_count",
+            vscode.CompletionItemKind.Snippet,
+        )
+        corEventCountItem.detail = "Generate Correlation EventCount (sigma)"
+        corEventCountItem.insertText = new vscode.SnippetString("correlation: ")
+        corEventCountItem.documentation = new vscode.MarkdownString("Generates correlation event count")
+        corEventCountItem.documentation.appendCodeblock(
+            "correlation:\n\ttype: event_count\nrules:\n\tgroup-by:\n\ttimespan:\n\tcondition:",
+        )
+        items.items.push(corEventCountItem)
+
+        const corValueCountItem: vscode.CompletionItem = new vscode.CompletionItem(
+            "correlation: type: value_count",
+            vscode.CompletionItemKind.Snippet,
+        )
+        corValueCountItem.detail = "Generate Correlation ValueCount (sigma)"
+        corValueCountItem.insertText = new vscode.SnippetString("correlation: ")
+        corValueCountItem.documentation = new vscode.MarkdownString("Generates correlation value count")
+        corValueCountItem.documentation.appendCodeblock(
+            "correlation:\n\ttype: value_count\nrules:\n\tgroup-by:\n\ttimespan:\n\tcondition:\n\t\tfield:",
+        )
+        items.items.push(corValueCountItem)
+
+        const corTemporalItem: vscode.CompletionItem = new vscode.CompletionItem(
+            "correlation: type: temporal",
+            vscode.CompletionItemKind.Snippet,
+        )
+        corTemporalItem.detail = "Generate Correlation Temporal (sigma)"
+        corTemporalItem.insertText = new vscode.SnippetString("correlation: ")
+        corTemporalItem.documentation = new vscode.MarkdownString("Generates correlation temporal")
+        corTemporalItem.documentation.appendCodeblock(
+            "correlation:\n\ttype: temporal\nrules:\n\tgroup-by:\n\ttimespan:\n\tcondition:",
+        )
+        items.items.push(corTemporalItem)
+
+        const corTemporalOrderedItem: vscode.CompletionItem = new vscode.CompletionItem(
+            "correlation: type: temporal_ordered",
+            vscode.CompletionItemKind.Snippet,
+        )
+        corTemporalOrderedItem.detail = "Generate Correlation Temporal Ordered (sigma)"
+        corTemporalOrderedItem.insertText = new vscode.SnippetString("correlation: ")
+        corTemporalOrderedItem.documentation = new vscode.MarkdownString("Generates correlation temporal ordered")
+        corTemporalOrderedItem.documentation.appendCodeblock(
+            "correlation:\n\ttype: temporal_ordered\nrules:\n\tgroup-by:\n\ttimespan:\n\tcondition:",
+        )
+        items.items.push(corTemporalOrderedItem)
+
         if (debug) {
             console.log(`SigmaSnippetCompletionItemProvider: Generated ${items.items.length} snippets`)
         }
@@ -506,6 +615,7 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
             })
             try {
                 const items: vscode.CompletionList = this.generateBasicItems()
+                console.log(`SigmaSnippetCompletionItemProvider: Generated ${items.items.length} snippets`)
                 resolve(items)
             } catch (error) {
                 console.log(`SigmaSnippetCompletionItemProvider error: ${error}`)
@@ -567,6 +677,18 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
                     break
                 case "falsepositives: ":
                     snippet = generateFalsePositves()
+                    break
+                case "correlation: type: event_count":
+                    snippet = generateCorrelation_event_count_Snippet()
+                    break
+                case "correlation: type: value_count":
+                    snippet = generateCorrelation_value_count_Snippet()
+                    break
+                case "correlation: type: temporal":
+                    snippet = generateCorrelation_temporal_Snippet()
+                    break
+                case "correlation: type: temporal_ordered":
+                    snippet = generateCorrelation_temporal_ordered_Snippet()
                     break
                 default:
                     console.log(`Unrecognizable snippet: ${item.label} => ${JSON.stringify(item)}`)
