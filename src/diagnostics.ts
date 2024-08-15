@@ -58,39 +58,40 @@ export function refreshDiagnostics(doc: vscode.TextDocument, sigmaDiagnostics: v
 
             offset = offset + rule.length + 4
         })
+
+        const tmpDias = testOther(doc)
+        if (tmpDias) {
+            diagnostics = diagnostics.concat(tmpDias)
+        }
+
+        for (let lineIndex = 0; lineIndex < doc.lineCount; lineIndex++) {
+            const lineOfText = doc.lineAt(lineIndex)
+            // Check for Errors Here
+            // Check modifiers
+            if (lineOfText.text.includes("contains|")) {
+                if (!lineOfText.text.includes("contains|all:")) {
+                    diagnostics.push(creatDiaContainsInMiddle(doc, lineOfText, lineIndex))
+                }
+            }
+            if (lineOfText.text.includes("|all:")) {
+                if (!lineOfText.text.match(/\|all:\s*$/)) {
+                    diagnostics.push(creatDiaSingleAll(doc, lineOfText, lineIndex))
+                }
+            }
+            if (lineOfText.text.match(/^title:.{71,}/)) {
+                diagnostics.push(creatDiaTitleTooLong(doc, lineOfText, lineIndex))
+            }
+            if (lineOfText.text.match(/^description:.{0,32}$/)) {
+                if (!lineOfText.text.match(/^description:\s+\|\s*$/)) {
+                    diagnostics.push(creatDiaDescTooShort(doc, lineOfText, lineIndex))
+                }
+            }
+            if (lineOfText.text.match(/[\s]+$/)) {
+                diagnostics.push(creatDiaTrailingWhitespace(doc, lineOfText, lineIndex))
+            }
+        }
     }
 
-    const tmpDias = testOther(doc)
-    if (tmpDias) {
-        diagnostics = diagnostics.concat(tmpDias)
-    }
-
-    for (let lineIndex = 0; lineIndex < doc.lineCount; lineIndex++) {
-        const lineOfText = doc.lineAt(lineIndex)
-        // Check for Errors Here
-        // Check modifiers
-        if (lineOfText.text.includes("contains|")) {
-            if (!lineOfText.text.includes("contains|all:")) {
-                diagnostics.push(creatDiaContainsInMiddle(doc, lineOfText, lineIndex))
-            }
-        }
-        if (lineOfText.text.includes("|all:")) {
-            if (!lineOfText.text.match(/\|all:\s*$/)) {
-                diagnostics.push(creatDiaSingleAll(doc, lineOfText, lineIndex))
-            }
-        }
-        if (lineOfText.text.match(/^title:.{71,}/)) {
-            diagnostics.push(creatDiaTitleTooLong(doc, lineOfText, lineIndex))
-        }
-        if (lineOfText.text.match(/^description:.{0,32}$/)) {
-            if (!lineOfText.text.match(/^description:\s+\|\s*$/)) {
-                diagnostics.push(creatDiaDescTooShort(doc, lineOfText, lineIndex))
-            }
-        }
-        if (lineOfText.text.match(/[\s]+$/)) {
-            diagnostics.push(creatDiaTrailingWhitespace(doc, lineOfText, lineIndex))
-        }
-    }
     console.log("Diagnostics: ", diagnostics)
     sigmaDiagnostics.set(doc.uri, diagnostics)
 }
