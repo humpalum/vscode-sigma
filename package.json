@@ -107,6 +107,11 @@
                     "default": "",
                     "description": "Sets the Sigma author"
                 },
+                "sigma.dateformat": {
+                    "type": "string",
+                    "default": "YYYY-MM-DD",
+                    "description": "Sets the date format"
+                },
                 "sigma.sigmasearchengineurl": {
                     "type": "string",
                     "default": "https://sigmasearchengine.com/",

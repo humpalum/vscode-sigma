@@ -79,6 +79,7 @@ function generateModifiedSnippet(
     generateTodaySnippet(snippet)
     return snippet
 }
+
 function generateTodaySnippet(
     snippet: vscode.SnippetString = new vscode.SnippetString(),
     numTabs = 0,
@@ -86,11 +87,13 @@ function generateTodaySnippet(
     if (debug) {
         console.log("SigmaSnippetCompletionItemProvider: Generating 'today' snippet")
     }
-    snippet.appendVariable("CURRENT_YEAR", "Unknown Year")
-    snippet.appendText("-")
-    snippet.appendVariable("CURRENT_MONTH", "Unknown Month")
-    snippet.appendText("-")
-    snippet.appendVariable("CURRENT_DATE", "Unknown Date")
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration(configName)
+    const dateformat: string = config.get("dateformat")!
+    const date: Date = new Date()
+    const year: string = date.getFullYear().toString()
+    const month: string = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day: string = date.getDate().toString().padStart(2, '0')
+    snippet.appendText(dateformat.replace('YYYY', year).replace('MM', month).replace('DD', day))
     return snippet
 }
 
