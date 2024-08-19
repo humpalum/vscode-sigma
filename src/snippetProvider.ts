@@ -463,6 +463,26 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
         tagItem.documentation.appendCodeblock("tags: \n\t- ")
         items.items.push(tagItem)
 
+	const categoryItem: vscode.CompletionItem = new vscode.CompletionItem(
+            "category: ",
+            vscode.CompletionItemKind.Snippet,
+        )
+        categoryItem.detail = "Generate a new category section (sigma)"
+        categoryItem.insertText = new vscode.SnippetString("category: ")
+        categoryItem.documentation = new vscode.MarkdownString("Generates category section")
+        categoryItem.documentation.appendCodeblock("category: ")
+        items.items.push(categoryItem)
+
+	const productItem: vscode.CompletionItem = new vscode.CompletionItem(
+            "product: ",
+            vscode.CompletionItemKind.Snippet,
+        )
+        productItem.detail = "Generate a new product section (sigma)"
+        productItem.insertText = new vscode.SnippetString("product: ")
+        productItem.documentation = new vscode.MarkdownString("Generates product section")
+        productItem.documentation.appendCodeblock("product: ")
+        items.items.push(productItem)
+
         const serviceItem: vscode.CompletionItem = new vscode.CompletionItem(
             "service: ",
             vscode.CompletionItemKind.Snippet,
@@ -646,6 +666,12 @@ export class SigmaSnippetCompletionItemProvider implements vscode.CompletionItem
                     break
                 case "tags: ":
                     snippet = generateTagsSnippet()
+                    break
+                case "category: ":
+                    snippet = generateCategorySnippet()
+                    break
+                case "product: ":
+                    snippet = generateProductSnippet()
                     break
                 case "service: ":
                     snippet = generateServiceSnippet()
