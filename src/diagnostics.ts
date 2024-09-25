@@ -252,7 +252,7 @@ function testSigmaTags(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[]
                     }
                     if (tag2["tag"].toLowerCase().match(/^ta.*/)) {
                         // Check actual name instead
-                        let testTag = "attack." + tag2["name"].replace(/\s/g, "_").toLocaleLowerCase()
+                        let testTag = "attack." + tag2["name"].replace(/\s/g, "-").toLocaleLowerCase()
                         if (tag === testTag) {
                             tagExists = true
                         }

@@ -19,7 +19,7 @@ export function provideHover(
             .map((tag: any) => {
                 if (
                     tag["tag"].toLowerCase().includes(curtag) ||
-                    tag["name"].toLowerCase() === curtag.replace(/_/, " ")
+                    tag["name"].toLowerCase() === curtag.replace(/-/g, " ")
                 ) {
                     return `### [${tag["tag"]} - ${tag["name"]}](${tag["url"]})\n${tag["description"]}\n\n___\n\n`
                 }
