@@ -72,7 +72,7 @@ export async function addTagQuickpick() {
         let tagtoadd = target?.label.match("(.+?) -")![1].toLowerCase()
         if (tagtoadd.match(/^ta.*/)) {
             // Use actual name instead
-            tagtoadd = target?.label.match(".+ - (.+)")![1].replace(/\s/g, "_").toLocaleLowerCase()
+            tagtoadd = target?.label.match(".+ - (.+)")![1].replace(/\s/g, "-").toLocaleLowerCase()
         }
         if (tags) {
             let index = docText.indexOf(tags[0]) + tags[0].length
