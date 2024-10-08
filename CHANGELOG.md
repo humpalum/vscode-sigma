@@ -1,6 +1,12 @@
 # Change Log
 
 All notable changes to the "sigma" extension will be documented in this file.
+## [1.7.3]
+### Added
+-   Completion for category and product items (Thanks to @s1lvn PR #27)
+### Fix
+-   Align tag whitespace behaiviour with v2 spec ( Thanks to @frack113 Fixes https://github.com/humpalum/vscode-sigma/issues/28)
+ 
 ## [1.7.2]
 ### Fix
 -   Apply Diagnostics only in sigma files
