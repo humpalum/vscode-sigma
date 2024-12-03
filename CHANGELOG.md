@@ -1,6 +1,9 @@
 # Change Log
 
 All notable changes to the "sigma" extension will be documented in this file.
+## [1.7.4]
+### Fix
+-   Sigconverter URL -> Added version config
 ## [1.7.3]
 ### Added
 -   Completion for category and product items (Thanks to @s1lvn PR #27)

@@ -2,7 +2,7 @@
     "name": "sigma",
     "displayName": "sigma",
     "description": "Support for Sigma Signature Format",
-    "version": "1.7.3",
+    "version": "1.7.4",
     "engines": {
         "vscode": "^1.66.0"
     },
