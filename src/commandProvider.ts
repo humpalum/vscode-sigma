@@ -778,7 +778,8 @@ export async function openSigconverter() {
 async function translateRule(rule: string, config: TranslatedSigConverterConfigItem) {
     let result = ""
     let rule64 = Buffer.from(rule).toString("base64")
-    let url = config.url + "/sigma"
+
+    let url = config.url + "/api/v1/" + config.version + "/convert"
 
     const data = {
         rule: rule64,

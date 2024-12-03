@@ -157,6 +157,10 @@
                     "default": "https://sigconverter.io/",
                     "description": "URL to Sigconverter Instance"
                 },
+                "sigma.sigconverterVersion": {
+                    "type": "string",
+                    "description": "Overwrite for the version of sigconverter"
+                },
                 "sigma.sigconverterEnabled": {
                     "type": "boolean",
                     "default": false,

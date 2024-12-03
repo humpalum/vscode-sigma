@@ -42,6 +42,10 @@ export interface SigConverterConfigItem {
      *  Optional name to better identify the output
      */
     name: string
+    /**
+     * The sigvconverter to useVersion
+     */
+    version: string | undefined
 }
 
 export let sigconverterConfigs: SigConverterConfigItem[] | undefined
@@ -75,6 +79,11 @@ export interface TranslatedSigConverterConfigItem {
      *  Optional name to better identify the output
      */
     name: string
+
+    /**
+     * The sigvconverter to useVersion
+     */
+    version: string | undefined
 }
 
 export let translatedSigconverterConfigs: TranslatedSigConverterConfigItem[] = []
@@ -115,7 +124,7 @@ let onSigconverterConfigUpdated: () => void | undefined
 export function setOnSigconverterConfigUpdated(callback: () => void): void {
     onSigconverterConfigUpdated = callback
 }
-function updateSigconverterConfigs() {
+async function updateSigconverterConfigs() {
     sigmasearchengineURL = vscode.workspace.getConfiguration(configSection).get("sigmasearchengineurl")
     sigconverterUrl =
         vscode.workspace.getConfiguration(configSection).get("sigconverterUrl") || "https://sigconverter.io/"
@@ -125,6 +134,17 @@ function updateSigconverterConfigs() {
     // If no custom sigconverter configs are set, put in the default one
     translatedSigconverterConfigs = []
     if (!sigconverterConfigs || sigconverterConfigs?.length === 0) {
+        // Get available sigconverter versions
+        let availableVersions: string[] = []
+        await fetch(sigconverterUrl + "api/v1/sigma-versions")
+            .then(response => response.json())
+            .then(data => {
+                availableVersions = data
+            })
+            .catch(error => {
+                console.error("Error fetching sigconverter versions: ", error)
+            })
+
         translatedSigconverterConfigs = [
             {
                 url: sigconverterUrl,
@@ -133,11 +153,12 @@ function updateSigconverterConfigs() {
                 backend: sigconverterBackend,
                 format: "default",
                 name: "",
+                version: availableVersions[0] || undefined,
             },
         ]
     } else {
         // Else just put in all the Configs
-        sigconverterConfigs.map(config => {
+        sigconverterConfigs.map(async config => {
             // If a pipeline is set, read the files that are fiven in the config, concatinate them and base64 encode the result
             let pipelineData = ""
             if (typeof config.pipelineYML === "string") {
@@ -151,6 +172,16 @@ function updateSigconverterConfigs() {
                         .join("\n---\n") || ""
             }
 
+            let availableVersions: string[] = []
+            await fetch(config.url || sigconverterUrl + "api/v1/sigma-versions")
+                .then(response => response.json())
+                .then(data => {
+                    availableVersions = data
+                })
+                .catch(error => {
+                    console.error("Error fetching sigconverter versions: ", error)
+                })
+
             let encodedData = Buffer.Buffer.from(pipelineData).toString("base64")
             translatedSigconverterConfigs.push({
                 name: config.name || "",
@@ -159,6 +190,7 @@ function updateSigconverterConfigs() {
                 pipeline: config.pipeline || [],
                 backend: config.backend || sigconverterBackend,
                 format: config.format || "default",
+                version: config.version || availableVersions[0] || undefined,
             })
         })
     }
