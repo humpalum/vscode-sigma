@@ -59,7 +59,7 @@ export async function addTagQuickpick() {
         },
     )
     if (target !== undefined && vscode.window.activeTextEditor!.selection) {
-        const tagsRegex = new RegExp("^tags:$\n(\\s*-.+\\n)*", "m")
+        const tagsRegex = new RegExp("^tags:\r?\n(\s*-.+\r?\n)*", "m")
         let docText = vscode.window.activeTextEditor?.document.getText()!
         let tags = tagsRegex.exec(docText)
         let tab = "    "
