@@ -14,6 +14,8 @@ finobj = []
 #                    finobj.append(
 #                        {"name": i["name"], "description": i["description"], "tag": id["external_id"], "url": id["url"]})
 
+# Get this at https://attack.mitre.org/docs/enterprise-attack-v16.1/enterprise-attack-v16.1-techniques.xlsx
+# Then save as csv the first sheet
 with open("enterprise-attack-v16.1-techniques.csv", mode="r") as f:
     data = csv.reader(f, delimiter=',')
     for row in data:
