@@ -124,5 +124,5 @@ with open("d3fend.csv") as file:
 
 
 finobj.sort(key=lambda x: x["tag"])
-with open("techniques.json", 'w') as nf:
+with open("./src/techniques.json", 'w') as nf:
     nf.write(json.dumps(finobj, indent=4))
