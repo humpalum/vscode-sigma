@@ -1,6 +1,10 @@
 # Change Log
 
 All notable changes to the "sigma" extension will be documented in this file.
+## [1.7.5]
+### Fix
+- Updated Mitre Tags (Thanks @msoheem https://github.com/humpalum/vscode-sigma/pull/31)
+- Fixed "Add Tag" on Windows (Thanks @msoheem https://github.com/humpalum/vscode-sigma/pull/31)
 ## [1.7.4]
 ### Fix
 -   Sigconverter URL -> Added version config
