@@ -22,9 +22,9 @@ function isSigma(doc: vscode.TextDocument): boolean {
   const lineCount = Math.min(doc.lineCount, 100);
   for (let i = 1; i < lineCount; i++) {
     const text = doc.lineAt(i).text;
-    if (/^detection:\s+.*$/.test(text)) {
+    if (/^detection:\s*$/.test(text)) {
       hasDetection = true;
-    } else if (/^logsource:\s+.*$/.test(text)) {
+    } else if (/^logsource:\s*$/.test(text)) {
       hasLogsource = true;
     }
     if (hasDetection && hasLogsource) {
