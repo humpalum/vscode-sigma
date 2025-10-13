@@ -1,6 +1,10 @@
 # Change Log
 
 All notable changes to the "sigma" extension will be documented in this file.
+## [1.7.6]
+### Fix
+- More robust format recognition (Thanks @marius-benthin https://github.com/humpalum/vscode-sigma/pull/36)
+
 ## [1.7.5]
 ### Fix
 - Updated Mitre Tags (Thanks @msoheem https://github.com/humpalum/vscode-sigma/pull/31)
