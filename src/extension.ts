@@ -13,6 +13,26 @@ import { addTagQuickpick, sigmaCompile, onEnterKey, lookup, related, openSigconv
 
 export var attackTags = require("./techniques.json")
 
+function isSigma(doc: vscode.TextDocument): boolean {
+  if (!/^title:\s+.*$/.test(doc.lineAt(0).text)) {
+    return false;
+  }
+  let hasDetection = false;
+  let hasLogsource = false;
+  const lineCount = Math.min(doc.lineCount, 100);
+  for (let i = 1; i < lineCount; i++) {
+    const text = doc.lineAt(i).text;
+    if (/^detection:\s*$/.test(text)) {
+      hasDetection = true;
+    } else if (/^logsource:\s*$/.test(text)) {
+      hasLogsource = true;
+    }
+    if (hasDetection && hasLogsource) {
+      return true;
+    }
+  }
+  return false;
+}
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -28,7 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
         if (debug) {
             console.log(doc.fileName)
         }
-        if (doc.lineAt(0).text.match(/^title: .*$/)) {
+        if (isSigma(doc)) {
             vscode.languages.setTextDocumentLanguage(doc, "sigma")
         }
     })
@@ -36,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
     // This Part Works fine. When opening a new file with "title:", sigma gets set as the Language
     context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(doc => {
-            if (doc.lineAt(0).text.match(/^title: .*$/)) {
+            if (isSigma(doc)) {
                 vscode.languages.setTextDocumentLanguage(doc, "sigma")
             }
         }),
