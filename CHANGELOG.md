@@ -1,6 +1,19 @@
 # Change Log
 
 All notable changes to the "sigma" extension will be documented in this file.
+## [1.8.0]
+### Added
+- Upgraded MITRE ATT&CK matrix to v19.2, supporting over 2,100 active techniques, tactics, groups, software, campaigns, data sources, and mitigations.
+- Added support for new ATT&CK v19 tactics: Stealth (`attack.stealth`, `TA0005`) and Defense Impairment (`attack.defense-impairment`, `TA0112`).
+- Added support for both hyphenated (`attack.tactic-name`) and underscored (`attack.tactic_name`) tactic formats in diagnostics and hover documentation.
+- Added backward compatibility for legacy `attack.defense-evasion` / `attack.defense_evasion` tags.
+- Updated MITRE D3FEND ontology tags and descriptions.
+
+### Fix
+- Fixed tag regex pattern in diagnostics to properly recognize campaigns, data sources, mitigations, groups, and software tags.
+- Fixed D3FEND ontology header row leak that created an invalid `ID` tag entry.
+- Modernized `buildattck.py` to ingest official STIX 2.1 data directly from `mitre-attack/attack-stix-data`, eliminating manual spreadsheet parsing.
+
 ## [1.7.6]
 ### Fix
 - More robust format recognition (Thanks @marius-benthin https://github.com/humpalum/vscode-sigma/pull/36)
