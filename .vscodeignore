@@ -11,3 +11,7 @@ vsc-extension-quickstart.md
 **/.eslintrc.json
 **/*.map
 **/*.ts
+enterprise-attack.json
+d3fend.csv
+buildattck.py
+Ideas.md
