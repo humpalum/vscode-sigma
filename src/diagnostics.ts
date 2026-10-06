@@ -221,7 +221,7 @@ export function subscribeToDocumentChanges(
 function testSigmaTags(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[] | undefined {
     try {
         var tagsPattern =
-            /cve\.\d+\-\d+|attack\.t\d+\.*\d*|attack\.[a-z_]+|d3fend\.[a-z_]+|d3fend\.[a-z_]+|car\.\d{4}-\d{2}-\d{3}|tlp\.(red|amber(\-strict)?|green|clear)|detection\.(dfir|threat-hunting|emerging-threats)|stp\./
+            /cve\.\d+\-\d+|attack\.(t\d+(\.\d+)?|ta\d+|g\d+|s\d+|c\d+|ds\d+|m\d+|[a-z0-9_-]+)|d3fend\.[a-z0-9_-]+|car\.\d{4}-\d{2}-\d{3}|tlp\.(red|amber(\-strict)?|green|clear)|detection\.(dfir|threat-hunting|emerging-threats)|stp\./
         let knowntags: string[] = []
         if (!rule.tags) {
             return
@@ -244,16 +244,17 @@ function testSigmaTags(rule: any, doc: vscode.TextDocument): vscode.Diagnostic[]
                     }
                 }
                 knowntags.push(tag)
-                // Check if Tag is exists
+                // Check if Tag exists
                 let tagExists = false
                 attackTags.map((tag2: any) => {
                     if (tag.toLowerCase() === "attack." + tag2["tag"].toLowerCase()) {
                         tagExists = true
                     }
                     if (tag2["tag"].toLowerCase().match(/^ta.*/)) {
-                        // Check actual name instead
-                        let testTag = "attack." + tag2["name"].replace(/\s/g, "-").toLocaleLowerCase()
-                        if (tag === testTag) {
+                        // Check actual name instead (support both hyphenated and underscored tactics)
+                        let testTagHyphen = "attack." + tag2["name"].replace(/\s/g, "-").toLowerCase()
+                        let testTagUnderscore = "attack." + tag2["name"].replace(/\s/g, "_").toLowerCase()
+                        if (tag.toLowerCase() === testTagHyphen || tag.toLowerCase() === testTagUnderscore) {
                             tagExists = true
                         }
                     }
